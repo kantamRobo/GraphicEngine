@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DirectX12Engine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GPUBuffer.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DirectX12Engine.cpp" />
     <ClCompile Include="GPUBuffer.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
