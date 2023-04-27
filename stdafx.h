@@ -23,3 +23,4 @@
 #include <dxgitype.h>
 #include <dxgiformat.h>
 #include <wrl/client.h>
+#include "d3dx12.h"
