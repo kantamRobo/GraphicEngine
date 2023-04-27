@@ -39,6 +39,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="GPUBuffer.h">
+      <Filter>Resourceibinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -48,6 +51,9 @@
       <Filter>Resourceibinding</Filter>
     </ClCompile>
     <ClCompile Include="IndexBuffer.cpp">
+      <Filter>Resourceibinding</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUBuffer.cpp">
       <Filter>Resourceibinding</Filter>
     </ClCompile>
   </ItemGroup>
