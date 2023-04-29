@@ -16,6 +16,9 @@
     <Filter Include="Resourceibinding">
       <UniqueIdentifier>{c7613159-5a57-4928-b5d0-3b4461984e06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{5ab41c02-e248-461c-a8d4-e8cee9d2eaff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -54,6 +57,18 @@
     <ClInclude Include="RWStructuredBuffer.h">
       <Filter>Resourceibinding</Filter>
     </ClInclude>
+    <ClInclude Include="RenderContext.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="IShaderResource.h">
+      <Filter>Resourceibinding</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnorderAccessResrouce.h">
+      <Filter>Resourceibinding</Filter>
+    </ClInclude>
+    <ClInclude Include="DescriptorHeap.h">
+      <Filter>Resourceibinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -75,6 +90,12 @@
       <Filter>Resourceibinding</Filter>
     </ClCompile>
     <ClCompile Include="RWStructuredBuffer.cpp">
+      <Filter>Resourceibinding</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderContext.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptorHeap.cpp">
       <Filter>Resourceibinding</Filter>
     </ClCompile>
   </ItemGroup>

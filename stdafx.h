@@ -26,3 +26,4 @@
 #include "d3dx12.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "ConstantBuffer.h"

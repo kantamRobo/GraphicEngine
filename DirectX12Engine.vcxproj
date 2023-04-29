@@ -130,10 +130,14 @@
   <ItemGroup>
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="d3dx12.h" />
+    <ClInclude Include="DescriptorHeap.h" />
     <ClInclude Include="DirectX12Engine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GPUBuffer.h" />
     <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="IShaderResource.h" />
+    <ClInclude Include="IUnorderAccessResrouce.h" />
+    <ClInclude Include="RenderContext.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="stdafx.h" />
@@ -143,9 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="DirectX12Engine.cpp" />
     <ClCompile Include="GPUBuffer.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
