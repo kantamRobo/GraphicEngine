@@ -51,6 +51,9 @@
     <ClInclude Include="StructuredBuffer.h">
       <Filter>Resourceibinding</Filter>
     </ClInclude>
+    <ClInclude Include="RWStructuredBuffer.h">
+      <Filter>Resourceibinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -69,6 +72,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="StructuredBuffer.cpp">
+      <Filter>Resourceibinding</Filter>
+    </ClCompile>
+    <ClCompile Include="RWStructuredBuffer.cpp">
       <Filter>Resourceibinding</Filter>
     </ClCompile>
   </ItemGroup>

@@ -16,6 +16,19 @@ public:
 			return m_vertexBufferView.SizeInBytes;
 		}
 
+		/// <summary>
+	/// 頂点バッファのストライド(単位：バイト)を取得。
+	/// </summary>
+	/// <remarks>
+	/// ストライドというのは、１要素のサイズのこと。
+	/// ここでは、一つの頂点のサイズを取得することになる。
+	/// </remarks>
+	/// <returns></returns>
+		UINT GetStrideInBytes() const
+		{
+			return m_vertexBufferView.StrideInBytes;
+		}
+
 		const D3D12_VERTEX_BUFFER_VIEW& GetView()
 		{
 

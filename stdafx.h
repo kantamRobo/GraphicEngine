@@ -24,3 +24,5 @@
 #include <dxgiformat.h>
 #include <wrl/client.h>
 #include "d3dx12.h"
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
