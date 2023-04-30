@@ -137,6 +137,7 @@
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IShaderResource.h" />
     <ClInclude Include="IUnorderAccessResrouce.h" />
+    <ClInclude Include="PipelineState.h" />
     <ClInclude Include="RenderContext.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="DirectX12Engine.cpp" />
     <ClCompile Include="GPUBuffer.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="PipelineState.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />

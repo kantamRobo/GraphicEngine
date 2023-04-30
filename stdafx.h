@@ -27,3 +27,5 @@
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include "ConstantBuffer.h"
+template <class T>
+using ComPtr = Microsoft::WRL::ComPtr<T>;
