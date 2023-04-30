@@ -140,7 +140,9 @@
     <ClInclude Include="PipelineState.h" />
     <ClInclude Include="RenderContext.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="RootSignature.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="targetver.h" />
@@ -154,7 +156,9 @@
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="PipelineState.cpp" />
     <ClCompile Include="RenderContext.cpp" />
+    <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
