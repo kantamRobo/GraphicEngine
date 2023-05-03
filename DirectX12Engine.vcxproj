@@ -139,6 +139,7 @@
     <ClInclude Include="IUnorderAccessResrouce.h" />
     <ClInclude Include="PipelineState.h" />
     <ClInclude Include="RenderContext.h" />
+    <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RootSignature.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="PipelineState.cpp" />
     <ClCompile Include="RenderContext.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="Shader.cpp" />

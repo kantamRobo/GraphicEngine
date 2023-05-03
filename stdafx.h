@@ -27,5 +27,6 @@
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include "ConstantBuffer.h"
+#include "Texture.h"
 template <class T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;

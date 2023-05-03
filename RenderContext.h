@@ -153,6 +153,8 @@ public:
 
 	void SetShaderResource(int registerNo, std::shared_ptr<Texture> texture)
 	{
+
+	}
 private:
 	enum { MAX_DESCRIPTOR_HEAP = 4 };
 	enum { MAX_CONSTANT_BUFFER = 8 };
