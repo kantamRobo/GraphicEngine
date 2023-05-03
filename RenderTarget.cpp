@@ -85,7 +85,7 @@ bool RenderTarget::CreateRenderTargetTexture(GraphicsEngine& ge, ID3D12Device5*&
 		D3D12_TEXTURE_LAYOUT_UNKNOWN,
 		D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
-
+	//レンダー＾パス
 	D3D12_CLEAR_VALUE clearValue;
 	clearValue.Format = format;
 	if (clearColor != nullptr)
