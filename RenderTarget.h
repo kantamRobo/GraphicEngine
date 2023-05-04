@@ -15,6 +15,14 @@ public:
 		DXGI_FORMAT depthStencilFormat,
 		float clearColor[4] = nullptr
 	);
+	/// <summary>
+	/// レンダリングターゲットとなるテクスチャを取得。
+	/// </summary>
+	/// <returns></returns>
+	std::shared_ptr<Texture> GetRenderTargetTexture()
+	{
+		return m_renderTargetTexture;
+	}
 
 	D3D12_CPU_DESCRIPTOR_HANDLE GetRTVCpuDescriptorHandle() const
 	{
@@ -108,7 +116,7 @@ private:
 		DXGI_FORMAT format);
 
 	private:
-		Texture m_renderTargetTexture;
+		std::shared_ptr<Texture> m_renderTargetTexture;
 		ComPtr<ID3D12Resource> m_renderTargetTextureDx12 = nullptr;
 		ComPtr<ID3D12Resource> m_depthStencilTexture = nullptr;
 		ComPtr<ID3D12DescriptorHeap> m_rtvHeap = nullptr;

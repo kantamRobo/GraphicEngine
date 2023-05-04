@@ -2,6 +2,7 @@
 #include "stdafx.h"
 class PipelineState
 {
+public:
 	~PipelineState()
 	{
 		if (m_pipelineState)

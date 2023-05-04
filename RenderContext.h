@@ -1,5 +1,7 @@
 #pragma once
 #include "stdafx.h"
+#include "PipelineState.h"
+#include "RootSignature.h"
 
 class ConstantBuffer;
 class Texture;
@@ -88,17 +90,17 @@ public:
 	{
 		m_commandList->SetGraphicsRootSignature(rootSignature);
 	}
-	void SetRootSignature(RootSignature& rootSignature)
+	void SetRootSignature(std::shared_ptr<RootSignature> rootSignature)
 	{
-		m_commandList->SetGraphicsRootSignature(rootSignature.Get());
+		m_commandList->SetGraphicsRootSignature(rootSignature->Get().Get());
 	}
 	void SetComputeRootSignature(ID3D12RootSignature* rootSignature)
 	{
 		m_commandList->SetComputeRootSignature(rootSignature);
 	}
-	void SetComputeRootSignature(RootSignature& rootSignature)
+	void SetComputeRootSignature(std::shared_ptr<RootSignature> rootSignature)
 	{
-		m_commandList->SetComputeRootSignature(rootSignature.Get());
+		m_commandList->SetComputeRootSignature(rootSignature->Get().Get());
 	}
 	/// <summary>
 	/// パイプラインステートを設定。
@@ -107,16 +109,11 @@ public:
 	{
 		m_commandList->SetPipelineState(pipelineState);
 	}
-	void SetPipelineState(PipelineState& pipelineState)
+	void SetPipelineState(std::shared_ptr<PipelineState> pipelineState)
 	{
-		m_commandList->SetPipelineState(pipelineState.Get());
+		m_commandList->SetPipelineState(pipelineState->Get().Get());
 	}
-	/// <summary>
-	/// レイトレ用のパイプラインステートオブジェクトを設定。
-	/// </summary>
-	/// <param name="pso"></param>
-	void SetPipelineState(raytracing::PSO& pso);
-
+	
 	/// <summary>
 	/// ディスクリプタヒープを設定。
 	/// </summary>
@@ -126,8 +123,8 @@ public:
 		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps.data()->GetAddressOf());
 	}
 
-	void SetDescriptorHeap(DescriptorHeap& descHeap);
-	void SetComputeDescriptorHeap(DescriptorHeap& descHeap);
+	void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+	void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
 
 	void SetDescriptorHeaps(int numDescriptorHeap, const ComPtr<DescriptorHeap> descHeaps[])
 	{
@@ -155,7 +152,73 @@ public:
 	{
 
 	}
+
+	/// <summary>
+	/// レンダリングターゲットとビューポートを同時に設定する。
+	/// </summary>
+	/// <remarks>
+	/// この関数を利用するとレンダリングターゲットと同じ幅と高さのビューポートが設定されます。
+	/// </remarks>
+	/// <param name="renderTarget">レンダリングターゲット</param>
+	void SetRenderTargetAndViewport(RenderTarget& renderTarget);
+	/// <summary>
+	/// 複数枚のレンダリングターゲットとビューポートを同時に設定する。
+	/// </summary>
+	/// /// <remarks>
+	/// この関数を利用するとレンダリングターゲットと同じ幅と高さのビューポートが設定されます。
+	/// </remarks>
+	/// <param name="numRT">設定するレンダリングターゲットの枚数</param>
+	/// <param name="renderTargets">レンダリングターゲットの配列。</param>
+	void SetRenderTargetsAndViewport(UINT numRT, RenderTarget* renderTargets[]);
+
+
+	/// <summary>
+/// 複数枚のレンダリングターゲットを設定する。
+/// </summary>
+/// <remarks>
+/// MRTを利用したレンダリングを行いたい場合に利用してください。
+/// </remarks>
+/// <param name="numRT">レンダリングターゲットの数</param>
+/// <param name="renderTarget">レンダリングターゲットの配列。</param>
+	void SetRenderTargets(UINT numRT, RenderTarget* renderTargets[]);
+
+
+	void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+	void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
+	void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
 private:
+
+	/// <summary>
+	/// ディスクリプタテーブルを設定。
+	/// </summary>
+	/// <param name="RootParameterIndex"></param>
+	/// <param name="BaseDescriptor"></param>
+	void SetGraphicsRootDescriptorTable(
+		UINT RootParameterIndex,
+		D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
+	{
+		m_commandList->SetGraphicsRootDescriptorTable(
+			RootParameterIndex,
+			BaseDescriptor
+		);
+	}
+	/// <summary>
+	/// ディスクリプタテーブルを設定。
+	/// </summary>
+	/// <param name="RootParameterIndex"></param>
+	/// <param name="BaseDescriptor"></param>
+	void SetComputeRootDescriptorTable(
+		UINT RootParameterIndex,
+		D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
+	{
+		m_commandList->SetComputeRootDescriptorTable(
+			RootParameterIndex,
+			BaseDescriptor
+		);
+	}
+
+	
+
 	enum { MAX_DESCRIPTOR_HEAP = 4 };
 	enum { MAX_CONSTANT_BUFFER = 8 };
 	enum { MAX_SHADER_RESOURCE = 16 };

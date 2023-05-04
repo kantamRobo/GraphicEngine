@@ -100,6 +100,54 @@ public:
 			L"DescriptorHeap::RegistSamplerDesc() レジスタ番号が範囲外です。"
 		);
 	}
+
+	/// <summary>
+	/// シェーダーリソースが一つでも登録されているか判定。
+	/// </summary>
+	/// <returns></returns>
+	bool IsRegistShaderResource() const
+	{
+		return m_numShaderResource != 0;
+	}
+	public:
+	/// <summary>
+	/// 定数バッファが一つでも登録されているか判定。
+	/// </summary>
+	/// <returns></returns>
+	bool IsRegistConstantBuffer() const
+	{
+		return m_numConstantBuffer != 0;
+	}
+	/// <summary>
+	/// UAVリソースが一つでも登録されているか判定。
+	/// </summary>
+	/// <returns></returns>
+	bool IsRegistUavResource() const
+	{
+		return m_numUavResource != 0;
+	}
+
+	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetConstantBufferGpuDescriptorStartHandle() const
+	{
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		return m_cbGpuDescriptorStart[backBufferIndex];
+	}
+	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetShaderResourceGpuDescriptorStartHandle() const
+	{
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		return m_srGpuDescriptorStart[backBufferIndex];
+	}
+	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetUavResourceGpuDescriptorStartHandle() const
+	{
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		return m_uavGpuDescriptorStart[backBufferIndex];
+	}
+	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetSamplerResourceGpuDescriptorStartHandle() const
+	{
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		return m_samplerGpuDescriptorStart[backBufferIndex];
+	}
+
 	private:
 		/// <summary>
 	/// リソースをディスクリプタヒープに登録。
@@ -138,6 +186,8 @@ public:
 			MAX_CONSTANT_BUFFER = 1024 * 10,	//定数バッファの最大数。
 			MAX_SAMPLER_STATE = 16,	//サンプラステートの最大数。
 		};
+
+
 
 		int m_numShaderResource = 0;
 		int m_numConstantBuffer = 0;

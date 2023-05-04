@@ -4,6 +4,7 @@
 class Shader;
 class RootSignature
 {
+public:
 	~RootSignature()
 	{
 		if (m_rootSignature)
