@@ -24,8 +24,22 @@ void RenderContext::SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap)
 {
 }
 
-void RenderContext::SetRenderTargetAndViewport(RenderTarget& renderTarget)
+void RenderContext::SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget)
 {
+	D3D12_VIEWPORT viewport;
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width =
+		static_cast<float>(renderTarget->GetWidth());
+	viewport.Height =
+		static_cast<float>(renderTarget->GetHeight());
+	viewport.MinDepth = D3D12_MIN_DEPTH;
+	viewport.MaxDepth = D3D12_MAX_DEPTH;
+	SetViewportAndScissor(viewport);
+
+	SetRenderTarget(renderTarget);
+
+
 }
 
 void RenderContext::SetRenderTargetsAndViewport(UINT numRT, RenderTarget* renderTargets[])
@@ -51,6 +65,27 @@ void RenderContext::SetRenderTargetsAndViewport(UINT numRT, RenderTarget* render
 
 void RenderContext::SetRenderTargets(UINT numRT, RenderTarget* renderTargets[])
 {
+	D3D12_CPU_DESCRIPTOR_HANDLE rtDSHandleTbl[32];
+
+	int rtNo = 0;
+
+	for (UINT rtNo = 0; rtNo < numRT; rtNo++)
+	{
+		rtDSHandleTbl[rtNo] = renderTargets[rtNo]
+			->GetRTVCpuDescriptorHandle();
+	}
+	if (renderTargets[0]->IsExistDepthStencilBuffer())
+	{
+		//深度バッファがある。
+		D3D12_CPU_DESCRIPTOR_HANDLE dsDS = renderTargets[0]->GetDSVCpuDescriptorHandle();
+		m_commandList->OMSetRenderTargets(numRT, rtDSHandleTbl, FALSE, &dsDS);
+	}
+	else
+	{
+		//深度バッファがない
+		m_commandList->OMSetRenderTargets(numRT, rtDSHandleTbl, FALSE, nullptr);
+	}
+
 }
 
 void RenderContext::WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget)

@@ -28,5 +28,6 @@
 #include "VertexBuffer.h"
 #include "ConstantBuffer.h"
 #include "Texture.h"
+#include "RenderTarget.h"
 template <class T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;

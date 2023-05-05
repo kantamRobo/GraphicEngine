@@ -6,7 +6,7 @@
 class ConstantBuffer;
 class Texture;
 class DescriptorHeap;
-class RenderTarget;
+
 class RenderContext
 {
 public:
@@ -126,6 +126,8 @@ public:
 	void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
 	void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
 
+	void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
+
 	void SetDescriptorHeaps(int numDescriptorHeap, const ComPtr<DescriptorHeap> descHeaps[])
 	{
 		for (int i = 0; i < numDescriptorHeap; i++)
@@ -146,6 +148,25 @@ public:
 			//範囲外アクセス。
 			std::abort();
 		}
+	}
+	/// <param name="renderTarget"></param>
+	void SetRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle)
+	{
+		m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
+	}
+
+	/// <summary>
+	/// レンダリングターゲットをスロット0に設定する。
+	/// </summary>
+	/// <remarks>
+	/// 本関数はビューポートの設定を行いません。
+	/// ユーザー側で適切なビューポートを指定する必要があります。
+	/// </remarks>
+	/// <param name="renderTarget">レンダリングターゲット</param>
+	void SetRenderTarget(std::shared_ptr<RenderTarget> Rendertarget)
+	{
+		std::array<RenderTarget*,1>rtArray[] = { Rendertarget.get()};
+		SetRenderTargets(1, rtArray->data());
 	}
 
 	void SetShaderResource(int registerNo, std::shared_ptr<Texture> texture)
@@ -186,6 +207,75 @@ public:
 	void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
 	void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
 	void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+
+	/// <summary>
+		/// リソースバリア。
+		/// </summary>
+		/// <param name="barrier"></param>
+	void ResourceBarrier(D3D12_RESOURCE_BARRIER& barrier)
+	{
+		m_commandList->ResourceBarrier(1, &barrier);
+	}
+	/// <summary>
+	/// リソースステートを遷移する。
+	/// </summary>
+	/// <param name="resrouce"></param>
+	/// <param name="beforeState"></param>
+	/// <param name="afterState"></param>
+	void TransitionResourceState(ID3D12Resource* resrouce, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState)
+	{
+		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(resrouce, beforeState, afterState);
+		m_commandList->ResourceBarrier(1, &barrier);
+	}
+	/// <summary>
+	/// コマンドリストを閉じる
+	/// </summary>
+	void Close()
+	{
+		m_commandList->Close();
+	}
+	
+	/// <summary>
+	/// インデックスつきプリミティブを描画。
+	/// </summary>
+	/// <param name="indexCount">インデックスの数。</param>
+	void DrawIndexed(UINT indexCount)
+	{
+		m_commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+	}
+	/// <summary>
+	/// インスタンシング描画
+	/// </summary>
+	/// <param name="indexCount">インデックス数</param>
+	/// <param name="numInstance">インスタンス数</param>
+	void DrawIndexedInstanced(UINT indexCount, UINT numInstance)
+	{
+		m_commandList->DrawIndexedInstanced(indexCount, numInstance, 0, 0, 0);
+	}
+	/// <summary>
+	/// コンピュートシェーダーをディスパッチ。
+	/// </summary>
+	/// <param name="ThreadGroupCountX"></param>
+	/// <param name="ThreadGroupCountY"></param>
+	/// <param name="ThreadGroupCountZ"></param>
+	void Dispatch(
+		UINT ThreadGroupCountX,
+		UINT ThreadGroupCountY,
+		UINT ThreadGroupCountZ)
+	{
+		m_commandList->Dispatch(ThreadGroupCountX, ThreadGroupCountY, ThreadGroupCountZ);
+	}
+
+	/// <summary>
+	/// リソースをコピー。
+	/// </summary>
+	/// <param name="pDst">コピー先のリソース</param>
+	/// <param name="pSrc">コピー元のリソース</param>
+	void CopyResource(ID3D12Resource* pDst, ID3D12Resource* pSrc)
+	{
+		m_commandList->CopyResource(pDst, pSrc);
+	}
+
 private:
 
 	/// <summary>
@@ -226,6 +316,6 @@ private:
 	std::array<ComPtr<ID3D12DescriptorHeap>, MAX_DESCRIPTOR_HEAP> m_descriptorHeaps;
 	std::shared_ptr<ConstantBuffer>m_constantBuffers[MAX_CONSTANT_BUFFER];
 	std::shared_ptr<Texture> m_shaderResources[MAX_SHADER_RESOURCE];
-
+	D3D12_VIEWPORT m_currentViewport;
 };
 
