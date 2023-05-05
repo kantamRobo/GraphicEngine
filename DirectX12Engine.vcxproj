@@ -134,6 +134,7 @@
     <ClInclude Include="DirectX12Engine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GPUBuffer.h" />
+    <ClInclude Include="GraphicsEngine.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IShaderResource.h" />
     <ClInclude Include="IUnorderAccessResrouce.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="DirectX12Engine.cpp" />
     <ClCompile Include="GPUBuffer.cpp" />
+    <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="PipelineState.cpp" />
     <ClCompile Include="RenderContext.cpp" />
@@ -173,7 +175,17 @@
     <Image Include="DirectX12Engine.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets" Condition="Exists('packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets'))" />
+  </Target>
 </Project>
