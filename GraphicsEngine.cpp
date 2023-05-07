@@ -138,6 +138,21 @@ bool GraphicsEngine::CreateCommandQueue()
 	return true;
 }
 
+
+bool GraphicsEngine::CreateCommandList()
+{
+	//コマンドリストの作成。
+	m_d3dDevice->CreateCommandList(
+		0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator, nullptr, IID_PPV_ARGS(&m_commandList)
+	);
+	if (!m_commandList) {
+		return false;
+	}
+	//コマンドリストは開かれている状態で作成されるので、いったん閉じる。
+	m_commandList->Close();
+	return true;
+}
+
 bool GraphicsEngine::CreateSwapChain(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight, IDXGIFactory4* dxgiFactory)
 {
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
@@ -175,6 +190,17 @@ bool GraphicsEngine::InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT f
 	frameBufferHeight = frameBufferHeight;
 
 	auto dxgiFactory = CreateDXGIFactory();
+
+
+	//コマンドアロケータの作成。
+	m_d3dDevice->CreateCommandAllocator(
+		D3D12_COMMAND_LIST_TYPE_DIRECT,
+		IID_PPV_ARGS(&m_commandAllocator));
+
+	if (!m_commandAllocator) {
+		MessageBox(hwnd, TEXT("コマンドアロケータの作成に失敗しました。"), TEXT("エラー"), MB_OK);
+		return false;
+	}
 }
 
 void GraphicsEngine::BeginRender()
@@ -185,11 +211,115 @@ void GraphicsEngine::EndRender()
 {
 }
 
+
 bool GraphicsEngine::CreateDescriptorHeapForFrameBuffer()
 {
-	return false;
+	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 
+	desc.NumDescriptors = FRAME_BUFFER_COUNT;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	auto hr = m_d3dDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_rtvHeap));
+	
+	if (FAILED(hr)) {
+		//RTV用のディスクリプタヒープの作成に失敗した。
+		return false;
+	}
+	m_rtvDescriptorSize = m_d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
-void GraphicsEngine::ChangeRenderTargetToFrameBuffer(std::shared_ptr<RenderContext> rc)
+	desc.NumDescriptors = 1;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	hr = m_d3dDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_dsvHeap));
+	if (FAILED(hr)) {
+		//DSV用のディスクリプタヒープの作成に失敗した。
+		return false;
+	}
+	//ディスクリプタのサイズを取得。
+	m_dsvDescriptorSize = m_d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	return true;
+
+}
+/// <summary>
+	/// フレームバッファ用のレンダリングターゲットビューを作成。
+	/// </summary>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+bool GraphicsEngine::CreateRTVForFrameBuffer()
 {
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_rtvHeap->GetCPUDescriptorHandleForHeapStart();
+
+
+	for (UINT n = 0; n > FRAME_BUFFER_COUNT; n++)
+	{
+		m_swapChain->GetBuffer(n, IID_PPV_ARGS(&m_renderTargets[n]));
+
+		m_d3dDevice->CreateRenderTargetView(
+			m_renderTargets[n].Get(), nullptr, rtvHandle
+		);
+		rtvHandle.ptr += m_rtvDescriptorSize;
+	}
+	return true;
+}
+
+
+bool GraphicsEngine::CreateDSVForFrameBuffer(UINT frameBufferWidth, UINT frameBufferHeight)
+{
+	D3D12_CLEAR_VALUE dsvClearValue;
+	dsvClearValue.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvClearValue.DepthStencil.Depth = 1.0f;
+	dsvClearValue.DepthStencil.Stencil = 0;
+
+	CD3DX12_RESOURCE_DESC desc(
+		D3D12_RESOURCE_DIMENSION_TEXTURE2D,
+		0,
+		frameBufferWidth,
+		frameBufferHeight,
+		1,
+		1,
+		DXGI_FORMAT_D32_FLOAT,
+		1,
+		0,
+		D3D12_TEXTURE_LAYOUT_UNKNOWN,
+		D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL | D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE);
+
+	auto heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	auto hr = m_d3dDevice->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&desc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		&dsvClearValue,
+		IID_PPV_ARGS(m_depthStencilBuffer.GetAddressOf())
+	);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	//ディスクリプタを作成
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = m_dsvHeap->GetCPUDescriptorHandleForHeapStart();
+
+	m_d3dDevice->CreateDepthStencilView(
+		m_depthStencilBuffer.Get(), nullptr, dsvHandle
+	);
+
+	return true;
+
+}
+
+
+bool GraphicsEngine::CreateSynchronizationWithGPUObject()
+{
+	m_d3dDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence));
+
+	if (!m_fence) {
+		//フェンスの作成に失敗した。
+		return false;
+	}
+	m_fenceValue = 1;
+	//同期を行うときのイベントハンドラを作成する。
+	m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+	if (m_fenceEvent == nullptr) {
+		return false;
+	}
+	return true;
 }

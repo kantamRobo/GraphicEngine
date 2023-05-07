@@ -39,12 +39,12 @@ public:
 		IDXGIFactory4* dxgiFactory
 	);
 	
-	
+	bool CreateDSVForFrameBuffer(UINT frameBufferWidth, UINT frameBufferHeight);
+
+
+
 	//初期化
 		/// 本関数を呼び出すことでDirectX12の初期化が行われます。
-	
-	
-	
 	bool InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight);
 
 	//レンダリング開始
@@ -101,7 +101,7 @@ public:
 	}
 
 
-
+	bool CreateCommandList();
 
 	//レンダリングコンテキストを取得
 	std::shared_ptr<RenderContext> GetRenderContext()
@@ -126,6 +126,16 @@ public:
 	{
 		return m_frameBufferHeight;
 	}
+	/// <summary>
+	/// フレームバッファ用のディスクリプタヒープを作成。
+	/// </summary>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+	bool CreateDescriptorHeapForFrameBuffer();
+	/// <summary>
+	/// フレームバッファ用のレンダリングターゲットビューを作成。
+	/// </summary>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+	bool CreateRTVForFrameBuffer();
 
 	/// <summary>
 	/// レンダリングターゲットをフレームバッファに変更する。
@@ -141,6 +151,8 @@ public:
 	{
 		return m_currentFrameBufferRTVHandle;
 	}
+
+	bool CreateSynchronizationWithGPUObject();
 
 	/// <summary>
 	/// フレームバッファにコピー。
@@ -185,10 +197,20 @@ private:
 	ComPtr<ID3D12GraphicsCommandList4> m_commandList;
 	ComPtr<ID3D12CommandQueue> m_commandQueue;
 	ComPtr<ID3D12Device5> m_d3dDevice;
+	ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
+	ComPtr<ID3D12Resource> m_renderTargets[FRAME_BUFFER_COUNT] = { nullptr };	//フレームバッファ用のレンダリングターゲット。
+	ComPtr<ID3D12Resource>  m_depthStencilBuffer = nullptr;	//深度ステンシルバッファ。
+	ComPtr<ID3D12DescriptorHeap> m_dsvHeap = nullptr;
+	ComPtr<ID3D12Fence> m_fence;
+	ComPtr<ID3D12Resource> m_commandAllocator;
 	UINT m_cbrSrvDescriptorSize = 0;
 	UINT m_samplerDescriptorSize = 0;
+	UINT m_rtvDescriptorSize = 0;
 	UINT m_frameBufferWidth = 0;				//フレームバッファの幅。
 	UINT m_frameBufferHeight = 0;
+	UINT m_dsvDescriptorSize = 0;
+	UINT64 m_fenceValue = 0;
+	HANDLE m_fenceEvent = nullptr;
 	int m_currentBackBufferIndex = 0;
 	std::shared_ptr<RenderContext> m_renderContext;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferRTVHandle;		//現在書き込み中のフレームバッファのレンダリングターゲットビューのハンドル。

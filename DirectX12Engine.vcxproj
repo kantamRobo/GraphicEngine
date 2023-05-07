@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DescriptorHeap.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IShaderResource.h" />
     <ClInclude Include="IUnorderAccessResrouce.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="PipelineState.h" />
     <ClInclude Include="RenderContext.h" />
     <ClInclude Include="RenderTarget.h" />
@@ -152,6 +154,7 @@
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="DirectX12Engine.cpp" />
