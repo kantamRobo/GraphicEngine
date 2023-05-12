@@ -3,6 +3,7 @@
 #include "stdafx.h"
 class ConstantBuffer
 {
+public:
 //コンストラクタ
 	ConstantBuffer(){}
 

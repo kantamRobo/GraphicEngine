@@ -11,7 +11,8 @@ public:
 	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv,
 		UINT offsetInDescriptorsFromTableStartCB,
 		UINT offsetInDescriptorsFromTableStartSRV,
-		D3D12_FILTER samplerFilter);
+		D3D12_FILTER samplerFilter,
+		const char* fxfilePath);
 
 	//レンダリングを開始するときに呼び出す関数
 
@@ -63,6 +64,12 @@ private:
 		const char* psEntryPointFunc);
 
 	//テクスチャを初期化
+
+	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv, UINT offsetInDescriptorsFromTableStartCB, UINT offsetInDescriptorsFromTableStartSRV, D3D12_FILTER samplerFilter, const char* fxfilePath, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, );
+
+	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv, UINT offsetInDescriptorsFromTableStartCB, UINT offsetInDescriptorsFromTableStartSRV, D3D12_FILTER samplerFilter, const char* fxfilePath, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc);
+
+	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv, const std::array<DXGI_FORMAT, D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT>& colorBufferFormat, UINT offsetInDescriptorsFromTableStartCB, UINT offsetInDescriptorsFromTableStartSRV, D3D12_FILTER samplerFilter, const char* fxfilePath, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc);
 
 	void InitTexture(const aiMaterial* aiMat);
 

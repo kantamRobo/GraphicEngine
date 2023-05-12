@@ -31,6 +31,16 @@ public:
 		UINT offsetInDescriptorsFromTableStartUAV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND);
 		bool InitRootSignature(Shader& shader);
 
+   		bool InitRootSignature(
+				D3D12_STATIC_SAMPLER_DESC* samplerDescArray,
+				int numSampler,
+				UINT maxCbvDescriptor = 8,
+				UINT maxSrvDescriptor = 32,
+				UINT maxUavDescritor = 8,
+				UINT offsetInDescriptorsFromTableStartCB = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND,
+				UINT offsetInDescriptorsFromTableStartSRV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND,
+				UINT offsetInDescriptorsFromTableStartUAV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
+			);
 		ComPtr<ID3D12RootSignature> Get() {
 			return m_rootSignature;
 		}
