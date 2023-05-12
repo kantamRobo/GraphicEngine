@@ -19,25 +19,25 @@ public:
 
 	std::shared_ptr<Texture> GetAlbedoMap()
 	{
-
+		return m_albedoMap;
 	}
 
 	//法線マップを取得
 	std::shared_ptr<Texture> GetNormalMap()
 	{
-		return
+		return m_normalMap;
 	}
 
 	std::shared_ptr<Texture> GetSpecularMap()
 	{
-		return
+		return m_specularMap;
 	}
 
 	//反射マップを取得
 
 	std::shared_ptr<Texture> GetReflectionMap()
 	{
-		return 
+		return m_reflectionMap;
 	}
 
 	std::shared_ptr<ConstantBuffer> GetConstantBuffer()
@@ -81,5 +81,17 @@ private:
 	std::shared_ptr<Shader> m_vsNonSkingModel = nullptr;
 	std::shared_ptr<Shader> m_vsSkinModel = nullptr;
 	std::shared_ptr<Shader> m_psModel = nullptr;
+
+	ConstantBuffer m_constantBuffer;				//定数バッファ。
+	RootSignature m_rootSignature;					//ルートシグネチャ。
+	PipelineState m_nonSkinModelPipelineState;		//スキンなしモデル用のパイプラインステート。
+	PipelineState m_skinModelPipelineState;			//スキンありモデル用のパイプラインステート。
+	PipelineState m_transSkinModelPipelineState;	//スキンありモデル用のパイプラインステート(半透明マテリアル)。
+	PipelineState m_transNonSkinModelPipelineState;	//スキンなしモデル用のパイプラインステート(半透明マテリアル)。
+
+	std::shared_ptr<Shader> m_vsNonSkinModel = nullptr;
+	std::shared_ptr<Shader> m_vs_SkinModel = nullptr;
+	std::shared_ptr<Shader> m_psModel = nullptr;
+
 };
 
