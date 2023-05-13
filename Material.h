@@ -65,10 +65,7 @@ private:
 
 	//テクスチャを初期化
 
-	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv, UINT offsetInDescriptorsFromTableStartCB, UINT offsetInDescriptorsFromTableStartSRV, D3D12_FILTER samplerFilter, const char* fxfilePath, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, );
-
-	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv, UINT offsetInDescriptorsFromTableStartCB, UINT offsetInDescriptorsFromTableStartSRV, D3D12_FILTER samplerFilter, const char* fxfilePath, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc);
-
+	
 	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv, const std::array<DXGI_FORMAT, D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT>& colorBufferFormat, UINT offsetInDescriptorsFromTableStartCB, UINT offsetInDescriptorsFromTableStartSRV, D3D12_FILTER samplerFilter, const char* fxfilePath, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc);
 
 	void InitTexture(const aiMaterial* aiMat);
@@ -85,10 +82,8 @@ private:
 	std::shared_ptr<Texture> m_specularMap;
 	std::shared_ptr<Texture> m_reflectionMap;
 	std::shared_ptr<Texture> m_refractionMap;
-	std::shared_ptr<Shader> m_vsNonSkingModel = nullptr;
-	std::shared_ptr<Shader> m_vsSkinModel = nullptr;
-	std::shared_ptr<Shader> m_psModel = nullptr;
 
+	
 	ConstantBuffer m_constantBuffer;				//定数バッファ。
 	RootSignature m_rootSignature;					//ルートシグネチャ。
 	PipelineState m_nonSkinModelPipelineState;		//スキンなしモデル用のパイプラインステート。
@@ -99,6 +94,9 @@ private:
 	std::shared_ptr<Shader> m_vsNonSkinModel = nullptr;
 	std::shared_ptr<Shader> m_vs_SkinModel = nullptr;
 	std::shared_ptr<Shader> m_psModel = nullptr;
+	std::shared_ptr<Shader> m_vsSkinModel = nullptr;
+	std::shared_ptr<Shader> m_psModel = nullptr;
+
 
 };
 

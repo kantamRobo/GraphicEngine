@@ -7,6 +7,19 @@ enum {
 	enNumDescriptorHeap
 };
 
+void Material::BeginRender(std::shared_ptr<RenderContext> rc, int hasSkin)
+{
+	rc->SetRootSignature(m_rootSignature.Get().Get());
+	if (hasSkin)
+	{
+		rc->SetPipelineState(m_transSkinModelPipelineState.Get().Get());
+	}
+	else
+	{
+		rc->SetPipelineState(m_transNonSkinModelPipelineState.Get().Get());
+	}
+}
+
 void Material::InitPipelineState(const std::array<DXGI_FORMAT, D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT>& colorBufferFormat)
 {
 	// 頂点レイアウトを定義する。
@@ -74,6 +87,41 @@ void Material::InitPipelineState(const std::array<DXGI_FORMAT, D3D12_SIMULTANEOU
 	m_transNonSkinModelPipelineState.InitGraphicPipelineState(psoDesc);
 
 }
+
+void Material::InitShaders(
+	const char* fxFilePath, 
+	const char* vsEntrypointFunc, 
+	const char* vsSkinEntrypointFunc, 
+	const char* psEntryPointFunc)
+{
+	//スキン無しモデル用のシェーダーをロードする
+	m_vsNonSkinModel = g_engine->GetShaderFromBank(fxFilePath, vsEntryPointFunc);
+	if (m_vsNonSkinModel == nullptr)
+	{
+		m_vsNonSkinModel = std::make_shared<Shader>();
+		m_vsNonSkinModel->LoadVS(fxFilePath, vsEntrypointFunc);
+		g_engine->RegistShaderToBank(fxFilePath, vsEntryPointFunc, m_vsNonSkinModel);
+	}
+	//スキンありモデル用のシェーダーをロードする
+	m_vsSkinModel = g_engine->GetShaderFromBank(fxFilePath, vsSkinEntriyPointFunc);
+	if (m_vsSkinModel == nullptr)
+	{
+		m_vsSkinModel = std::make_shared<Shader>();
+		m_vsSkinModel->LoadVS(fxFilePath, vsSkinEntriyPointFunc);
+		g_engine->RegistShaderToBank(fxFilePath, vsSkinEntriyPointFunc, m_vsSkinModel);
+	}
+
+	m_psModel = g_engine->GetShaderFromBank(fxFilePath, psEntryPointFunc);
+
+	if (m_psModel == nullptr)
+	{
+		m_psModel = std::make_shared<Shader>();
+		m_psModel->LoadPS(fxFilePath, psEntryPointFunc);
+		g_engine->RegistShaderToBank(fxFilePath, psEntryPointFunc, m_psModel);
+	}
+
+}
+
 
 void Material::InitFromAssimpMaterial(
 	const aiMaterial* aiMat, 
