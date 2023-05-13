@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "math/Vector.h"
+
 
 /// <summary>
 /// 行列クラス。
