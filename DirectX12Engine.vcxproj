@@ -141,6 +141,7 @@
     <ClInclude Include="IUnorderAccessResrouce.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="NullTextureMaps.h" />
     <ClInclude Include="PipelineState.h" />
     <ClInclude Include="RenderContext.h" />
     <ClInclude Include="RenderTarget.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="NullTexture.cpp" />
     <ClCompile Include="PipelineState.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
