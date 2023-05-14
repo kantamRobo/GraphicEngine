@@ -45,9 +45,6 @@
     <ClInclude Include="GPUBuffer.h">
       <Filter>Resourceibinding</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="d3dx12.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -114,6 +111,9 @@
     <ClInclude Include="Skeleton.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Resourceibinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -127,9 +127,6 @@
     </ClCompile>
     <ClCompile Include="GPUBuffer.cpp">
       <Filter>Resourceibinding</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffer.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="StructuredBuffer.cpp">
       <Filter>Resourceibinding</Filter>
@@ -184,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="Skeleton.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>Resourceibinding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
