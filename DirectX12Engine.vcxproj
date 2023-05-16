@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationClip.h" />
+    <ClInclude Include="AnimationPlayController.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="d3dx12.h" />
@@ -163,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
+    <ClCompile Include="AnimationPlayController.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DescriptorHeap.cpp" />
