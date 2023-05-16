@@ -2,6 +2,10 @@
 #include "Vector.h"
 #include <utility>
 
+#include "AnimationClip.h"
+#include "Animation.h"
+#include "Skeleton.h"
+#include "stdafx.h"
 class Skeleton;
 class AnimationClip;
 class Animation;
@@ -21,8 +25,11 @@ public:
 	void InitAnimationPlayController(Skeleton* skeleton, int footStepBoneNo);
 
 
-	void ChangeAnimationClip(AnimationClip* clip);
+	void InitAnimationPlayController(std::shared_ptr<Skeleton> skeleton, int footStepBoneNo);
 
+	void ChangeAnimationClip(std::shared_ptr<AnimationClip> clip);
+
+	
 	void SetInterpolateTime(float interpolateTime)
 	{
 		if (interpolateTime < 0.0f)
@@ -43,7 +50,7 @@ public:
 		return std::min(1.0f, m_interpolateTime / m_interpolateEndTime);
 	}
 
-	void UpdateSAnimationplayController(float deltaTime, Animation* animation);
+	void UpdateAnimationplayController(float deltaTime, Animation* animation);
 
 	const std::vector<Matrix>& GetBoneLocalMatrix()const
 	{
