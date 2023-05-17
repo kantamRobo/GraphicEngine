@@ -75,6 +75,9 @@
     <ClInclude Include="Shader.h">
       <Filter>Resourceibinding</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="RenderTarget.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -85,6 +88,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="NullTextureMaps.h">
@@ -111,11 +117,11 @@
     <ClInclude Include="AnimationPlayController.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Rendering</Filter>
+    <ClInclude Include="Engine.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Rendering</Filter>
+    <ClInclude Include="TResourceBank.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +158,9 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Resourceibinding</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -159,6 +168,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="NullTexture.cpp">
@@ -185,11 +197,8 @@
     <ClCompile Include="AnimationPlayController.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Rendering</Filter>
+    <ClCompile Include="Engine.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
