@@ -30,7 +30,7 @@ MeshParts::~MeshParts()
 
 }
 
-void MeshParts::InitFromAssimpFile(const aiScene* scene,const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
+void MeshParts::InitFromAssimpFile(const aiScene* scene,const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
 {
 	//assimpから頂点をロードしたいが、
 	// 処理が複雑なので調査してからメッシュメモリ確保の
@@ -67,8 +67,92 @@ void MeshParts::InitFromAssimpFile(const aiScene* scene,const char* fxFilePath, 
 	CreateDescriptorHeaps();
 }
 
-void MeshParts::Draw(RenderContext& rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj)
+void MeshParts::BindSkeleton(std::shared_ptr<Skeleton> skeleton)
 {
+	m_skeleton = skeleton;
+	m_boneMatricesStructureBuffer->InitStructuredBuffer(
+		sizeof(Matrix),
+		m_skeleton->GetNumBones(),
+		m_skeleton->GetBoneMatricesTopAddress()
+		);
+
+
+}
+
+void MeshParts::DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj)
+{
+	//メッシュごとにドロー
+	//プリミティブのトポロジーはトライアングルリストのみ。
+	rc->SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//定数バッファを更新する。
+	SConstantBuffer cb;
+	cb.mWorld = mWorld;
+	cb.mView = mView;
+	cb.mProj = mProj;
+	m_commonConstantBuffer.CopyToVRAM(cb);
+
+	if (m_expandData) {
+		m_expandConstantBuffer.CopyToVRAM(m_expandData);
+	}
+	if (m_boneMatricesStructureBuffer->IsInited()) {
+		//ボーン行列を更新する。
+		m_boneMatricesStructureBuffer->Update(m_skeleton->GetBoneMatricesTopAddress());
+	}
+}
+
+
+void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj)
+{
+	//定数バッファの設定、更新など描画の共通処理を実行する。
+	DrawCommon(rc, g_matIdentity, mView, mProj);
+
+	int descriptorHeapNo = 0;
+	for (auto& mesh : m_meshs) {
+		//1. 頂点バッファを設定。
+		rc->SetVertexBuffer(mesh->m_vertexBuffer);
+		//マテリアルごとにドロー。
+		for (int matNo = 0; matNo < mesh->m_materials.size(); matNo++) {
+			//このマテリアルが貼られているメッシュの描画開始。
+			mesh->m_materials[matNo]->BeginRender(rc, mesh->skinFlags[matNo]);
+			//2. ディスクリプタヒープを設定。
+			rc->SetDescriptorHeap(m_descriptorHeap.get());
+			//3. インデックスバッファを設定。
+			auto& ib = mesh->m_indexBufferArray[matNo];
+			rc->SetIndexBuffer(*ib);
+
+			//4. ドローコールを実行。
+			rc->DrawIndexedInstanced(ib->GetCount(), numInstance);
+			descriptorHeapNo++;
+		}
+	}
+
+}
+
+
+void MeshParts::Draw(std::shared_ptr<RenderContext> rc, 
+	const Matrix& mWorld, 
+	const Matrix& mView,
+	const Matrix& mProj)
+{
+	//定数バッファの設定、更新など描画の共通処理を実行する。
+	DrawCommon(rc, mWorld, mView, mProj);
+
+	int descriptorHeapNo = 0;
+
+	for (auto& mesh : m_meshs)
+	{
+		rc->SetVertexBuffer(mesh->m_vertexBuffer);
+
+		for (int matNo = 0; matNo < mesh->m_materials.size(); matNo)
+		{
+			mesh->m_materials[matNo]->BeginRender(rc, mesh->skinFlags[matNo]);
+
+			rc->SetDescriptorHeap(m_descriptorHeap.get());
+
+		}
+	}
+
 }
 
 void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj)
@@ -79,19 +163,19 @@ void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstanc
 	int descriptorHeapNo = 0;
 	for (auto& mesh : m_meshs) {
 		//1. 頂点バッファを設定。
-		rc.SetVertexBuffer(mesh->m_vertexBuffer);
+		rc->SetVertexBuffer(mesh->m_vertexBuffer);
 		//マテリアルごとにドロー。
 		for (int matNo = 0; matNo < mesh->m_materials.size(); matNo++) {
 			//このマテリアルが貼られているメッシュの描画開始。
 			mesh->m_materials[matNo]->BeginRender(rc, mesh->skinFlags[matNo]);
 			//2. ディスクリプタヒープを設定。
-			rc.SetDescriptorHeap(m_descriptorHeap);
+			rc->SetDescriptorHeap(m_descriptorHeap.get());
 			//3. インデックスバッファを設定。
 			auto& ib = mesh->m_indexBufferArray[matNo];
-			rc.SetIndexBuffer(*ib);
+			rc->SetIndexBuffer(*ib);
 
 			//4. ドローコールを実行。
-			rc.DrawIndexedInstanced(ib->GetCount(), numInstance);
+			rc->DrawIndexedInstanced(ib->GetCount(), numInstance);
 			descriptorHeapNo++;
 		}
 	}
@@ -108,22 +192,22 @@ void MeshParts::CreateDescriptorHeaps()
 		for (int matNo = 0; matNo < mesh->m_materials.size(); matNo++) {
 
 			//ディスクリプタヒープにディスクリプタを登録していく。
-			m_descriptorHeap.RegistShaderResource(srvNo, mesh->m_materials[matNo]->GetAlbedoMap());			//アルベドマップ。
-			m_descriptorHeap.RegistShaderResource(srvNo + 1, mesh->m_materials[matNo]->GetNormalMap());		//法線マップ。
-			m_descriptorHeap.RegistShaderResource(srvNo + 2, mesh->m_materials[matNo]->GetSpecularMap());		//スペキュラマップ。
-			m_descriptorHeap.RegistShaderResource(srvNo + 3, m_boneMatricesStructureBuffer);					//ボーンのストラクチャードバッファ。
+			m_descriptorHeap->RegistShaderResource(srvNo, mesh->m_materials[matNo]->GetAlbedoMap());			//アルベドマップ。
+			m_descriptorHeap->RegistShaderResource(srvNo + 1, mesh->m_materials[matNo]->GetNormalMap());		//法線マップ。
+			m_descriptorHeap->RegistShaderResource(srvNo + 2, mesh->m_materials[matNo]->GetSpecularMap());		//スペキュラマップ。
+			m_descriptorHeap->RegistShaderResource(srvNo + 3, m_boneMatricesStructureBuffer);					//ボーンのストラクチャードバッファ。
 			for (int i = 0; i < MAX_MODEL_EXPAND_SRV; i++) {
 				if (m_expandShaderResourceView[i]) {
-					m_descriptorHeap.RegistShaderResource(srvNo + EXPAND_SRV_REG__START_NO + i, *m_expandShaderResourceView[i]);
+					m_descriptorHeap->RegistShaderResource(srvNo + EXPAND_SRV_REG__START_NO + i, m_expandShaderResourceView[i];
 				}
 			}
 			srvNo += NUM_SRV_ONE_MATERIAL;
-			m_descriptorHeap.RegistConstantBuffer(cbNo, m_commonConstantBuffer);
+			m_descriptorHeap->RegistConstantBuffer(cbNo, m_commonConstantBuffer);
 			if (m_expandConstantBuffer.IsValid()) {
-				m_descriptorHeap.RegistConstantBuffer(cbNo + 1, m_expandConstantBuffer);
+				m_descriptorHeap->RegistConstantBuffer(cbNo + 1, m_expandConstantBuffer);
 			}
 			cbNo += NUM_CBV_ONE_MATERIAL;
 		}
 	}
-	m_descriptorHeap.Commit();
+	m_descriptorHeap->Commit();
 }

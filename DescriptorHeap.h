@@ -22,7 +22,7 @@ public:
 		/// レジスタ番号。-1が指定されたら、現在登録されているリソース数の次のレジスタが使用される。
 		/// </param>
 		/// <param name="sr">シェーダーリソース</param>
-		void RegistShaderResource(int registerNo, IShaderResource& sr)
+		void RegistShaderResource(int registerNo, std::shared_ptr<IShaderResource> sr)
 	{
 		RegistResource(
 			registerNo,
@@ -101,6 +101,11 @@ public:
 		);
 	}
 
+	ID3D12DescriptorHeap* get()
+	{
+		return m_descriptorHeap->Get();
+	}
+
 	/// <summary>
 	/// シェーダーリソースが一つでも登録されているか判定。
 	/// </summary>
@@ -127,26 +132,30 @@ public:
 		return m_numUavResource != 0;
 	}
 
-	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetConstantBufferGpuDescriptorStartHandle() const
+	inline D3D12_GPU_DESCRIPTOR_HANDLE GetConstantBufferGpuDescriptorStartHandle() const
 	{
 		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_cbGpuDescriptorStart[backBufferIndex];
 	}
-	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetShaderResourceGpuDescriptorStartHandle() const
+	inline D3D12_GPU_DESCRIPTOR_HANDLE GetShaderResourceGpuDescriptorStartHandle() const
 	{
 		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_srGpuDescriptorStart[backBufferIndex];
 	}
-	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetUavResourceGpuDescriptorStartHandle() const
+	inline D3D12_GPU_DESCRIPTOR_HANDLE GetUavResourceGpuDescriptorStartHandle() const
 	{
 		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_uavGpuDescriptorStart[backBufferIndex];
 	}
-	inline D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetSamplerResourceGpuDescriptorStartHandle() const
+	inline D3D12_GPU_DESCRIPTOR_HANDLE GetSamplerResourceGpuDescriptorStartHandle() const
 	{
 		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_samplerGpuDescriptorStart[backBufferIndex];
 	}
+
+	
+
+	
 
 	private:
 		/// <summary>

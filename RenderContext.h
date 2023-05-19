@@ -6,6 +6,9 @@
 class ConstantBuffer;
 class Texture;
 class DescriptorHeap;
+enum { MAX_DESCRIPTOR_HEAP = 4 };	//ディスクリプタヒープの最大数。
+enum { MAX_CONSTANT_BUFFER = 8 };	//定数バッファの最大数。足りなくなったら増やしてね。
+enum { MAX_SHADER_RESOURCE = 16 };	//シェーダーリソースの最大数。足りなくなったら増やしてね。
 
 class RenderContext
 {
@@ -113,209 +116,223 @@ public:
 	{
 		m_commandList->SetPipelineState(pipelineState->Get().Get());
 	}
-	
+
 	/// <summary>
 	/// ディスクリプタヒープを設定。
 	/// </summary>
 	void SetDescriptorHeap(ID3D12DescriptorHeap* descHeap)
 	{
 		m_descriptorHeaps[0] = descHeap;
-		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps.data()->GetAddressOf());
+
+		
+		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps);
+
+	}
+	inline void SetDescriptorHeap(DescriptorHeap& descHeap)
+	{
+		m_descriptorHeaps[0] = descHeap.get();
+		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps);
+
+		//ディスクリプタテーブルに登録する。
+		if (descHeap.IsRegistConstantBuffer()) {
+			SetGraphicsRootDescriptorTable(0, descHeap.GetConstantBufferGpuDescriptorStartHandle());
+		}
+		if (descHeap.IsRegistShaderResource()) {
+			SetGraphicsRootDescriptorTable(1, descHeap.GetShaderResourceGpuDescriptorStartHandle());
+		}
+		if (descHeap.IsRegistUavResource()) {
+			SetGraphicsRootDescriptorTable(2, descHeap.GetUavResourceGpuDescriptorStartHandle());
+		}
 	}
 
-	void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
-	void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+		void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+		void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
 
-	void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
+		void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
 
-	void SetDescriptorHeaps(int numDescriptorHeap, const ComPtr<DescriptorHeap> descHeaps[])
-	{
-		for (int i = 0; i < numDescriptorHeap; i++)
+		void SetDescriptorHeaps(int numDescriptorHeap, const ComPtr<DescriptorHeap> descHeaps[])
 		{
-			m_descriptorHeaps[i] = descHeaps[i];
+			for (int i = 0; i < numDescriptorHeap; i++)
+			{
+				m_descriptorHeaps[i] = descHeaps[i]->get();
 
+			}
+			m_commandList->SetDescriptorHeaps(numDescriptorHeap
+				, m_descriptorHeaps);
 		}
-		m_commandList->SetDescriptorHeaps(numDescriptorHeap
-			, m_descriptorHeaps.data()->GetAddressOf());
-	}
 
-	void SetConstantBuffer(int registerNo, std::shared_ptr<ConstantBuffer> cb)
-	{
-		if (registerNo < MAX_CONSTANT_BUFFER) {
-			m_constantBuffers[registerNo] = cb;
+		void SetConstantBuffer(int registerNo, std::shared_ptr<ConstantBuffer> cb)
+		{
+			if (registerNo < MAX_CONSTANT_BUFFER) {
+				m_constantBuffers[registerNo] = cb;
+			}
+			else {
+				//範囲外アクセス。
+				std::abort();
+			}
 		}
-		else {
-			//範囲外アクセス。
-			std::abort();
+		/// <param name="renderTarget"></param>
+		void SetRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle)
+		{
+			m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
 		}
-	}
-	/// <param name="renderTarget"></param>
-	void SetRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle)
-	{
-		m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
-	}
 
-	/// <summary>
-	/// レンダリングターゲットをスロット0に設定する。
-	/// </summary>
-	/// <remarks>
-	/// 本関数はビューポートの設定を行いません。
-	/// ユーザー側で適切なビューポートを指定する必要があります。
-	/// </remarks>
-	/// <param name="renderTarget">レンダリングターゲット</param>
-	void SetRenderTarget(std::shared_ptr<RenderTarget> Rendertarget)
-	{
-		std::array<RenderTarget*,1>rtArray[] = { Rendertarget.get()};
-		SetRenderTargets(1, rtArray->data());
-	}
-
-	void SetShaderResource(int registerNo, std::shared_ptr<Texture> texture)
-	{
-
-	}
-
-	/// <summary>
-	/// レンダリングターゲットとビューポートを同時に設定する。
-	/// </summary>
-	/// <remarks>
-	/// この関数を利用するとレンダリングターゲットと同じ幅と高さのビューポートが設定されます。
-	/// </remarks>
-	/// <param name="renderTarget">レンダリングターゲット</param>
-	void SetRenderTargetAndViewport(RenderTarget& renderTarget);
-	/// <summary>
-	/// 複数枚のレンダリングターゲットとビューポートを同時に設定する。
-	/// </summary>
-	/// /// <remarks>
-	/// この関数を利用するとレンダリングターゲットと同じ幅と高さのビューポートが設定されます。
-	/// </remarks>
-	/// <param name="numRT">設定するレンダリングターゲットの枚数</param>
-	/// <param name="renderTargets">レンダリングターゲットの配列。</param>
-	void SetRenderTargetsAndViewport(UINT numRT, RenderTarget* renderTargets[]);
-
-
-	/// <summary>
-/// 複数枚のレンダリングターゲットを設定する。
-/// </summary>
-/// <remarks>
-/// MRTを利用したレンダリングを行いたい場合に利用してください。
-/// </remarks>
-/// <param name="numRT">レンダリングターゲットの数</param>
-/// <param name="renderTarget">レンダリングターゲットの配列。</param>
-	void SetRenderTargets(UINT numRT, RenderTarget* renderTargets[]);
-
-
-	void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
-	void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
-	void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
-
-	/// <summary>
-		/// リソースバリア。
+		/// <summary>
+		/// レンダリングターゲットをスロット0に設定する。
 		/// </summary>
-		/// <param name="barrier"></param>
-	void ResourceBarrier(D3D12_RESOURCE_BARRIER& barrier)
-	{
-		m_commandList->ResourceBarrier(1, &barrier);
-	}
-	/// <summary>
-	/// リソースステートを遷移する。
+		/// <remarks>
+		/// 本関数はビューポートの設定を行いません。
+		/// ユーザー側で適切なビューポートを指定する必要があります。
+		/// </remarks>
+		/// <param name="renderTarget">レンダリングターゲット</param>
+		void SetRenderTarget(std::shared_ptr<RenderTarget> Rendertarget)
+		{
+			std::array<RenderTarget*, 1>rtArray[] = { Rendertarget.get() };
+			SetRenderTargets(1, rtArray->data());
+		}
+
+		void SetShaderResource(int registerNo, std::shared_ptr<Texture> texture)
+		{
+
+		}
+
+		/// <summary>
+		/// レンダリングターゲットとビューポートを同時に設定する。
+		/// </summary>
+		/// <remarks>
+		/// この関数を利用するとレンダリングターゲットと同じ幅と高さのビューポートが設定されます。
+		/// </remarks>
+		/// <param name="renderTarget">レンダリングターゲット</param>
+		void SetRenderTargetAndViewport(RenderTarget & renderTarget);
+		/// <summary>
+		/// 複数枚のレンダリングターゲットとビューポートを同時に設定する。
+		/// </summary>
+		/// /// <remarks>
+		/// この関数を利用するとレンダリングターゲットと同じ幅と高さのビューポートが設定されます。
+		/// </remarks>
+		/// <param name="numRT">設定するレンダリングターゲットの枚数</param>
+		/// <param name="renderTargets">レンダリングターゲットの配列。</param>
+		void SetRenderTargetsAndViewport(UINT numRT, RenderTarget * renderTargets[]);
+
+
+		/// <summary>
+	/// 複数枚のレンダリングターゲットを設定する。
 	/// </summary>
-	/// <param name="resrouce"></param>
-	/// <param name="beforeState"></param>
-	/// <param name="afterState"></param>
-	void TransitionResourceState(ID3D12Resource* resrouce, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState)
-	{
-		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(resrouce, beforeState, afterState);
-		m_commandList->ResourceBarrier(1, &barrier);
-	}
-	/// <summary>
-	/// コマンドリストを閉じる
-	/// </summary>
-	void Close()
-	{
-		m_commandList->Close();
-	}
+	/// <remarks>
+	/// MRTを利用したレンダリングを行いたい場合に利用してください。
+	/// </remarks>
+	/// <param name="numRT">レンダリングターゲットの数</param>
+	/// <param name="renderTarget">レンダリングターゲットの配列。</param>
+		void SetRenderTargets(UINT numRT, RenderTarget * renderTargets[]);
+
+
+		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+		void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
+		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+
+		
+		void ResourceBarrier(D3D12_RESOURCE_BARRIER & barrier)
+		{
+			m_commandList->ResourceBarrier(1, &barrier);
+		}
+		/// <summary>
+		/// リソースステートを遷移する。
+		/// </summary>
+		/// <param name="resrouce"></param>
+		/// <param name="beforeState"></param>
+		/// <param name="afterState"></param>
+		void TransitionResourceState(ID3D12Resource * resrouce, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState)
+		{
+			auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(resrouce, beforeState, afterState);
+			m_commandList->ResourceBarrier(1, &barrier);
+		}
+		/// <summary>
+		/// コマンドリストを閉じる
+		/// </summary>
+		void Close()
+		{
+			m_commandList->Close();
+		}
+
+		/// <summary>
+		/// インデックスつきプリミティブを描画。
+		/// </summary>
+		/// <param name="indexCount">インデックスの数。</param>
+		void DrawIndexed(UINT indexCount)
+		{
+			m_commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+		}
+		/// <summary>
+		/// インスタンシング描画
+		/// </summary>
+		/// <param name="indexCount">インデックス数</param>
+		/// <param name="numInstance">インスタンス数</param>
+		void DrawIndexedInstanced(UINT indexCount, UINT numInstance)
+		{
+			m_commandList->DrawIndexedInstanced(indexCount, numInstance, 0, 0, 0);
+		}
+		/// <summary>
+		/// コンピュートシェーダーをディスパッチ。
+		/// </summary>
+		/// <param name="ThreadGroupCountX"></param>
+		/// <param name="ThreadGroupCountY"></param>
+		/// <param name="ThreadGroupCountZ"></param>
+		void Dispatch(
+			UINT ThreadGroupCountX,
+			UINT ThreadGroupCountY,
+			UINT ThreadGroupCountZ)
+		{
+			m_commandList->Dispatch(ThreadGroupCountX, ThreadGroupCountY, ThreadGroupCountZ);
+		}
+
+		/// <summary>
+		/// リソースをコピー。
+		/// </summary>
+		/// <param name="pDst">コピー先のリソース</param>
+		/// <param name="pSrc">コピー元のリソース</param>
+		void CopyResource(ID3D12Resource * pDst, ID3D12Resource * pSrc)
+		{
+			m_commandList->CopyResource(pDst, pSrc);
+		}
+
+	private:
+
+		/// <summary>
+		/// ディスクリプタテーブルを設定。
+		/// </summary>
+		/// <param name="RootParameterIndex"></param>
+		/// <param name="BaseDescriptor"></param>
+		void SetGraphicsRootDescriptorTable(
+			UINT RootParameterIndex,
+			D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
+		{
+			m_commandList->SetGraphicsRootDescriptorTable(
+				RootParameterIndex,
+				BaseDescriptor
+			);
+		}
+		/// <summary>
+		/// ディスクリプタテーブルを設定。
+		/// </summary>
+		/// <param name="RootParameterIndex"></param>
+		/// <param name="BaseDescriptor"></param>
+		void SetComputeRootDescriptorTable(
+			UINT RootParameterIndex,
+			D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
+		{
+			m_commandList->SetComputeRootDescriptorTable(
+				RootParameterIndex,
+				BaseDescriptor
+			);
+		}
+
+
+
 	
-	/// <summary>
-	/// インデックスつきプリミティブを描画。
-	/// </summary>
-	/// <param name="indexCount">インデックスの数。</param>
-	void DrawIndexed(UINT indexCount)
-	{
-		m_commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
-	}
-	/// <summary>
-	/// インスタンシング描画
-	/// </summary>
-	/// <param name="indexCount">インデックス数</param>
-	/// <param name="numInstance">インスタンス数</param>
-	void DrawIndexedInstanced(UINT indexCount, UINT numInstance)
-	{
-		m_commandList->DrawIndexedInstanced(indexCount, numInstance, 0, 0, 0);
-	}
-	/// <summary>
-	/// コンピュートシェーダーをディスパッチ。
-	/// </summary>
-	/// <param name="ThreadGroupCountX"></param>
-	/// <param name="ThreadGroupCountY"></param>
-	/// <param name="ThreadGroupCountZ"></param>
-	void Dispatch(
-		UINT ThreadGroupCountX,
-		UINT ThreadGroupCountY,
-		UINT ThreadGroupCountZ)
-	{
-		m_commandList->Dispatch(ThreadGroupCountX, ThreadGroupCountY, ThreadGroupCountZ);
-	}
-
-	/// <summary>
-	/// リソースをコピー。
-	/// </summary>
-	/// <param name="pDst">コピー先のリソース</param>
-	/// <param name="pSrc">コピー元のリソース</param>
-	void CopyResource(ID3D12Resource* pDst, ID3D12Resource* pSrc)
-	{
-		m_commandList->CopyResource(pDst, pSrc);
-	}
-
-private:
-
-	/// <summary>
-	/// ディスクリプタテーブルを設定。
-	/// </summary>
-	/// <param name="RootParameterIndex"></param>
-	/// <param name="BaseDescriptor"></param>
-	void SetGraphicsRootDescriptorTable(
-		UINT RootParameterIndex,
-		D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
-	{
-		m_commandList->SetGraphicsRootDescriptorTable(
-			RootParameterIndex,
-			BaseDescriptor
-		);
-	}
-	/// <summary>
-	/// ディスクリプタテーブルを設定。
-	/// </summary>
-	/// <param name="RootParameterIndex"></param>
-	/// <param name="BaseDescriptor"></param>
-	void SetComputeRootDescriptorTable(
-		UINT RootParameterIndex,
-		D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
-	{
-		m_commandList->SetComputeRootDescriptorTable(
-			RootParameterIndex,
-			BaseDescriptor
-		);
-	}
-
+		ComPtr<ID3D12GraphicsCommandList4> m_commandList;
+		ID3D12DescriptorHeap* m_descriptorHeaps[MAX_DESCRIPTOR_HEAP];
+		std::shared_ptr<ConstantBuffer>m_constantBuffers[MAX_CONSTANT_BUFFER];
+		std::shared_ptr<Texture> m_shaderResources[MAX_SHADER_RESOURCE];
+		D3D12_VIEWPORT m_currentViewport;
 	
-
-	enum { MAX_DESCRIPTOR_HEAP = 4 };
-	enum { MAX_CONSTANT_BUFFER = 8 };
-	enum { MAX_SHADER_RESOURCE = 16 };
-	ComPtr<ID3D12GraphicsCommandList4> m_commandList;
-	std::array<ComPtr<ID3D12DescriptorHeap>, MAX_DESCRIPTOR_HEAP> m_descriptorHeaps;
-	std::shared_ptr<ConstantBuffer>m_constantBuffers[MAX_CONSTANT_BUFFER];
-	std::shared_ptr<Texture> m_shaderResources[MAX_SHADER_RESOURCE];
-	D3D12_VIEWPORT m_currentViewport;
 };
-

@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
-class StructuredBuffer
+#include "IShaderResource.h"
+class StructuredBuffer:public IShaderResource
 {
 public:
 	~StructuredBuffer();

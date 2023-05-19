@@ -58,6 +58,8 @@ public:
 		const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat,
 		D3D12_FILTER samplerFilter
 	);
+	
+	void DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
 	/// <summary>
 	/// 描画。
 	/// </summary>
@@ -66,7 +68,11 @@ public:
 	/// <param name="mView">ビュー行列</param>
 	/// <param name="mProj">プロジェクション行列</param>
 	/// <param name="light">ライト</param>
-	void Draw(RenderContext& rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+	
+	void Draw(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+
+	void InitFromAssimpFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
+
 	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
 	/// <summary>
 	/// インスタンシング描画
@@ -75,12 +81,12 @@ public:
 	/// <param name="numInstance">インスタンス数</param>
 	/// <param name="mView">ビュー行列</param>
 	/// <param name="mProj">プロジェクション行列</param>
-	void DrawInstancing(RenderContext& rc, int numInstance, const Matrix& mView, const Matrix& mProj);
+	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
 	/// <summary>
 	/// スケルトンを関連付ける。
 	/// </summary>
 	/// <param name="skeleton">スケルトン</param>
-	void BindSkeleton(Skeleton& skeleton);
+	void BindSkeleton(std::shared_ptr<Skeleton> skeleton);
 	/// <summary>
 	/// メッシュに対して問い合わせを行う。
 	/// </summary>
@@ -153,11 +159,11 @@ private:
 	};
 	ConstantBuffer m_commonConstantBuffer;					//メッシュ共通の定数バッファ。
 	ConstantBuffer m_expandConstantBuffer;					//ユーザー拡張用の定数バッファ
-	std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV> m_expandShaderResourceView = { nullptr };	//ユーザー拡張シェーダーリソースビュー。
-	StructuredBuffer m_boneMatricesStructureBuffer;	//ボーン行列の構造化バッファ。
+	std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV> m_expandShaderResourceView = { nullptr };	//ユーザー拡張シェーダーリソースビュー。
+	std::shared_ptr<StructuredBuffer> m_boneMatricesStructureBuffer;	//ボーン行列の構造化バッファ。
 	std::vector< std::shared_ptr<SMesh> > m_meshs;						//メッシュ。
 	//std::vector< DescriptorHeap > m_descriptorHeap;	//ディスクリプタヒープ。
-	DescriptorHeap m_descriptorHeap;					//ディスクリプタヒープ。
+	std::shared_ptr<DescriptorHeap> m_descriptorHeap;					//ディスクリプタヒープ。
 	std::shared_ptr<Skeleton> m_skeleton = nullptr;						//スケルトン。
 	void* m_expandData = nullptr;						//ユーザー拡張データ。
 };
