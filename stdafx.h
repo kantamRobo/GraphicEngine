@@ -30,5 +30,6 @@
 #include "Texture.h"
 #include "RenderTarget.h"
 #include "GraphicsEngine.h"
+
 template <class T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;

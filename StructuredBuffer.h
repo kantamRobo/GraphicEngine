@@ -2,6 +2,7 @@
 #include "stdafx.h"
 class StructuredBuffer
 {
+public:
 	~StructuredBuffer();
 
 	//構造化バッファを初期化
