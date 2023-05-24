@@ -1,6 +1,7 @@
 #pragma once
 
-
+#include <DDSTextureLoader.h>
+#include "stdafx.h"
 	class TextureDX11 :public IShaderResource
 	{
 		
@@ -11,30 +12,15 @@
 
 		
 		
+		
 		~TextureDX11();
+		
 		/// <summary>
 			/// ファイルからテクスチャをロードするコンストラクタ
 			/// </summary>
 			/// <param name="filePath">ロードするテクスチャのファイルパス。</param>
 		explicit TextureDX11(const wchar_t* filePath);
-
-		/// <summary>
-		/// メモリからテクスチャを初期化する。
-		/// </summary>
-		/// <param name="memory">テクスチャデータが格納されているメモリの先頭アドレス</param>
-		/// <param name="size">テクスチャのサイズ。</param>
-		void InitFromMemory(const char* memory, unsigned int size);
-		void InitFromD3DResource(ComPtr<ID3D11Texture2D> texture);
-		/// <summary>
-		/// D3Dリソースからテクスチャを初期化する。
-		/// </summary>
-		/// <param name="resrouce">D3Dリソース。</param>
-		/// <summary>
-		/// SRVに登録。
-		/// </summary>
-		/// <param name="descriptorHandle"></param>
-		void RegistShaderResourceView(int bufferNo);
-
+	
 		/// <summary>
 		/// テクスチャが有効か判定。
 		/// </summary>
@@ -66,8 +52,8 @@
 
 		ComPtr<ID3D11ShaderResourceView> m_shaderResourceView;
 
-		ComPtr<ID3D11Texture2D> m_texture;
+		ComPtr<ID3D11Resource> m_texture;
 
-
+		
 	};
 
