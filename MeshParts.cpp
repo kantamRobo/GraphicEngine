@@ -198,7 +198,7 @@ void MeshParts::CreateDescriptorHeaps()
 			m_descriptorHeap->RegistShaderResource(srvNo + 3, m_boneMatricesStructureBuffer);					//ボーンのストラクチャードバッファ。
 			for (int i = 0; i < MAX_MODEL_EXPAND_SRV; i++) {
 				if (m_expandShaderResourceView[i]) {
-					m_descriptorHeap->RegistShaderResource(srvNo + EXPAND_SRV_REG__START_NO + i, m_expandShaderResourceView[i];
+					m_descriptorHeap->RegistShaderResource(srvNo + EXPAND_SRV_REG__START_NO + i, m_expandShaderResourceView[i]);
 				}
 			}
 			srvNo += NUM_SRV_ONE_MATERIAL;
