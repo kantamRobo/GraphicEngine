@@ -1,8 +1,9 @@
 #pragma once
 
 
-	class TextureDX11 :public DX11::IShaderResource
+	class TextureDX11 :public IShaderResource
 	{
+		
 		TextureDX11(const wchar_t* filePath)
 		{
 

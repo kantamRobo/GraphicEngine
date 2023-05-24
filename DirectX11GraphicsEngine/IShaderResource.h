@@ -1,5 +1,5 @@
 #pragma once
-namespace DX11 {
+
 	class IShaderResource
 	{
 
@@ -14,4 +14,4 @@ namespace DX11 {
 		virtual void RegistShaderResourceView( int bufferNo) = 0;
 	};
 
-}
+
