@@ -15,7 +15,7 @@ void GPUBuffer::InitBuffer(D3D12_RESOURCE_DESC desc)
 	};
 
 
-	auto d3dDevice g_graphicEngine->GetD3DDevice();
+	auto d3dDevice =  g_graphicEngine->GetD3DDevice();
 
 	d3dDevice->CreateCommittedResource(
 		&kDefaultHeapProps,

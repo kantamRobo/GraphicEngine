@@ -9,7 +9,7 @@ private:
 	TResourceBank<Texture> m_textureBank;
 public:
 	//デストラクタ
-	Engine();
+	~Engine();
 
 	void BeginFrame();
 

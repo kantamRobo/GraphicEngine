@@ -10,6 +10,7 @@ class GraphicsEngine
 public:
 	//デストラクタ
 	~GraphicsEngine();
+	void WaitDraw();
 	ComPtr<IDXGIFactory4> CreateDXGIFactory();
 
 
@@ -202,7 +203,8 @@ private:
 	ComPtr<ID3D12Resource>  m_depthStencilBuffer = nullptr;	//深度ステンシルバッファ。
 	ComPtr<ID3D12DescriptorHeap> m_dsvHeap = nullptr;
 	ComPtr<ID3D12Fence> m_fence;
-	ComPtr<ID3D12Resource> m_commandAllocator;
+	ComPtr<ID3D12CommandAllocator> m_commandAllocator;
+	ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;
 	UINT m_cbrSrvDescriptorSize = 0;
 	UINT m_samplerDescriptorSize = 0;
 	UINT m_rtvDescriptorSize = 0;
@@ -211,6 +213,7 @@ private:
 	UINT m_dsvDescriptorSize = 0;
 	UINT64 m_fenceValue = 0;
 	HANDLE m_fenceEvent = nullptr;
+	D3D12_VIEWPORT m_viewport;
 	int m_currentBackBufferIndex = 0;
 	std::shared_ptr<RenderContext> m_renderContext;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferRTVHandle;		//現在書き込み中のフレームバッファのレンダリングターゲットビューのハンドル。

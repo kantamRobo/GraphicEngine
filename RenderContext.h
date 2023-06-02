@@ -69,6 +69,18 @@ public:
 		m_commandList->RSSetViewports(1, &viewport);
 		m_currentViewport = viewport;
 	}
+
+	/// <summary>
+/// コマンドリストをリセット。
+/// </summary>
+/// <param name="commandAllocator"></param>
+/// <param name="pipelineState"></param>
+	void Reset(ID3D12CommandAllocator* commandAllocator, ID3D12PipelineState* pipelineState)
+	{
+		m_commandList->Reset(commandAllocator, pipelineState);
+	
+	}
+
 	/// <summary>
 	/// ビューポートを取得。
 	/// </summary>
@@ -311,6 +323,41 @@ public:
 				BaseDescriptor
 			);
 		}
+
+		/// <summary>
+	/// レンダリングターゲットのクリア。
+	/// </summary>
+	/// <param name="rtvHandle">CPUのレンダリングターゲットビューのディスクリプタハンドル</param>
+	/// <param name="clearColor">クリアカラー</param>
+		void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, const float* clearColor)
+		{
+			m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+		}
+
+		/// <summary>
+	/// デプスステンシルビューをクリア
+	/// </summary>
+	/// <param name="renderTarget">レンダリングターゲット</param>
+	/// <param name="clearValue">クリア値</param>
+		void ClearDepthStencilView(D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, float clearValue)
+		{
+			m_commandList->ClearDepthStencilView(
+				dsvHandle,
+				D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
+				clearValue,
+				0,
+				0,
+				nullptr);
+		}
+
+		/// <summary>
+	/// コマンドリストを閉じる
+	/// </summary>
+		void Close()
+		{
+			m_commandList->Close();
+		}
+
 		/// <summary>
 		/// ディスクリプタテーブルを設定。
 		/// </summary>
