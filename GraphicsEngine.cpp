@@ -512,7 +512,7 @@ void GraphicsEngine::BeginRender()
 void GraphicsEngine::EndRender()
 {
 	// レンダリングターゲットへの描き込み完了待ち
-	m_renderContext.WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex]);
+	m_renderContext->WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex]);
 
 
 	m_directXTKGfxMemory->Commit(m_commandQueue.Get());
