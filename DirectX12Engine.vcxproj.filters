@@ -19,6 +19,9 @@
     <Filter Include="Rendering">
       <UniqueIdentifier>{5ab41c02-e248-461c-a8d4-e8cee9d2eaff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="raytracing">
+      <UniqueIdentifier>{c1bc7d06-1881-4e86-8170-03e85808f800}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -129,6 +132,15 @@
     <ClInclude Include="TkaFile.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="RaytracingWorld.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingInstance.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingPSO.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -211,6 +223,15 @@
     </ClCompile>
     <ClCompile Include="TkaFile.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RaytracingWorld.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracingInstance.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracingPSO.cpp">
+      <Filter>raytracing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
