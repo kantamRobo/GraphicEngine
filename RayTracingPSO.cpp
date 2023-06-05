@@ -71,5 +71,47 @@ void raytracing::PSO::InitRTPSO(const std::shared_ptr<DescriptorHeaps> descripto
 		}
 		ass.Init(exportNames, useRootSignature, &(subobjects[rgSOIndex]));
 		subobjects[index++] = ass.subobject;
+	};
+
+	//ルートシグネチャとシェーダーの関連付けを行うサブオブジェクトを作っていく
+	LocalRootSignatureSubObject rayGenSignatureSO, modelSignatureSO, emptySignatureSO;
+	ExportAssociationSubobject rayGenAssSO, modelAssSO, emptuAssSO;
+
+	const WCHAR* rayGenExportName[eShader_Num];
+	const WCHAR* modelExportName[eShader_Num];
+	const WCHAR* emptyExportName[eShader_Num];
+
+	BuildAndRegistRootSignatureAndAssSubobjectFunc(rayGenSignatureSO, rayGenAssSO, eLocalRootSignature_Raygen, rayGenExportName);
+	BuildAndRegistRootSignatureAndAssSubobjectFunc(modelSignatureSO, modelAssSO, eLocalRootSignature_PBRMaterialHit, modelExportName);
+	BuildAndRegistRootSignatureAndAssSubobjectFunc(emptySignatureSO, emptyAssSO, eLocalRootSignature_Empty, emptyExportName);
+
+	//Payloadのサイズと引数の数はとりあえず固定で。
+	struct RayPayload {
+		Vector4 color;
+		Vector4 reflectionColor;
+		Vector4 hit_depth;
+
+	};
+
+	shaderConfig.Init(sizeof(float) : 2, sizeof(RayPayload));
+	subobjects[index] = shaderConfig.subobject;
+
+	uint32_t shaderConfigIndex = index++;
+	ExportAssociationSubobject configAssociationSO;
+	const WCHAR* entryPointNames[eShader_Num];
+	for (int i = 0; i < eShader_Num; i++)
+	{
+		entryPointNames[i] = shaderDatas[i].entryPointName;
 	}
+	configAssociationSO.Init(entryPointNames, eShader_Num, &subobjects[shaderConfigIndex]);
+	subobjects[index++] = configAssociationSO.subobject;
+
+	// パイプライン設定のサブオブジェクトを作成。
+	PipelineConfigSubobject config;
+	subobjects[index++] = config.subobject;
+
+	// グローバルルートシグネチャのサブオブジェクトを作成。
+	GlobalRootSignatureSubobject root;
+	m_emptyRootSignature = root.pRootSig;
+	subobjects[index++] = root.subobject;
 }
