@@ -27,9 +27,15 @@
     <ClInclude Include="VulkanGraphicsEngine.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="RenderingContext.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VulkanGraphicsEngine.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingContext.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
