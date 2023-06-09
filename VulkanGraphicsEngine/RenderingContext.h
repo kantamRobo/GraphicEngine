@@ -15,7 +15,27 @@ class RenderingContext
 	}
 
 	//インデックスバッファを設定
-	void SetIndexBuffer(Index)
+	void SetIndexBuffer(std::shared_ptr<Indexbuffer> ib)
+	{
+		//TODO
+		vkCmdBindIndexBuffer(m_commandBuffer);
+	}
+
+	void SetPrimitiveTopology(VkPrimitiveTopology topology)
+	{
+		vkCmdSetPrimitiveTopology(m_commandBuffer, topology);
+
+	}
+    
+
+	//ビューポートとシザリング矩形をセットで設定
+
+	void SetViewportAndScissor(VkViewport& viewport)
+	{
+		VkRect2D scissorRect = {};
+		scissorRect.
+
+	}
 
 private:
 	VkCommandBuffer m_commandBuffer;
