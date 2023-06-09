@@ -129,7 +129,7 @@ namespace raytracing
 		eHitShaderDescriptorTable_Sampler,	//サンプラ
 		eHitShaderDescriptorTable_Num       //テーブルの数。
 	};
-
+	//todo CCopPtrの実装例を調べてみる
 	struct Instance;
 	using InstancePtr = std::unique_ptr< Instance>;
 	using ID3D12ResourcePtr = CComPtr<ID3D12Resource>;
@@ -139,4 +139,4 @@ namespace raytracing
 }
 #include "stdafx.h"
 #include "RaytracingWorld.h"
-#include <atlbase.h>
+#include <d3dcompiler.h>
