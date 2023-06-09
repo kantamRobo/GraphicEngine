@@ -138,10 +138,15 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="VulkanGraphicsEngine.h" />
+    <ClInclude Include="VulkanIndexBuffer.h" />
+    <ClInclude Include="VulkanVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RenderingContext.cpp" />
+    <ClCompile Include="VkVertexBuffer.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
+    <ClCompile Include="VulkanIndexBuffer.cpp" />
+    <ClCompile Include="VulkanVertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VulkanGraphicsEngine.rc" />

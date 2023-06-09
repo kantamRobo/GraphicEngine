@@ -24,7 +24,7 @@ class RenderingContext
 	void SetPrimitiveTopology(VkPrimitiveTopology topology)
 	{
 		vkCmdSetPrimitiveTopology(m_commandBuffer, topology);
-
+		//
 	}
     
 

@@ -131,6 +131,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="AnimationPlayController.h" />
+    <ClInclude Include="BLASBuffer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="d3dx12.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="MeshParts.h" />
     <ClInclude Include="NullTextureMaps.h" />
     <ClInclude Include="PipelineState.h" />
+    <ClInclude Include="Raytracing.h" />
     <ClInclude Include="RayTracingPSO.h" />
     <ClInclude Include="RaytracingWorld.h" />
     <ClInclude Include="RayTracingInstance.h" />
@@ -172,6 +174,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="AnimationPlayController.cpp" />
+    <ClCompile Include="BLASBuffer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DescriptorHeap.cpp" />
