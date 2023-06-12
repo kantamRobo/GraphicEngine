@@ -50,7 +50,78 @@ namespace raytracing {
 		tlasSize = info.ResultDataMaxSizeInBytes;
 	
 	
-	   //Map the 
+	   //Map the instance desc buffer
+
+		D3D12_RAYTRACING_INSTANCE_DESC* instanceDescs = {};
+
+		m_topLevelASBuffers.pInstanceDesc->Map
+		(0, nullptr, (void**)&instanceDescs);
+		ZeroMemory(instanceDescs, sizeof(D3D12_RAYTRACING_INSTANCE_DESC) * numInstance);
+
+		Matrix mRot;
+		mRot.MakeRotationX(Math::PI * -0.5f);
+		mRot.Transpose();
+
+		for (int i = 0; i < numInstance; i++) {
+			instanceDescs[i].InstanceID = i;
+			instanceDescs[i].InstanceContributionToHitGroupIndex = (int)eHitGroup_Num * i + eHitGroup_PBRCameraRay;
+			instanceDescs[i].Flags = D3D12_RAYTRACING_INSTANCE_FLAG_NONE;
+			instanceDescs[i].AccelerationStructure = bottomLevelASBuffers[i].pResult->GetGPUVirtualAddress();
+			memcpy(instanceDescs[i].Transform, &mRot, sizeof(instanceDescs[i].Transform));
+			instanceDescs[i].InstanceMask = 0xFF;
+		}
+
+		m_topLevelASBuffers.pInstanceDesc->Unmap(0, nullptr);
+
+		D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC asDesc = {};
+
+		asDesc.Inputs = inputs;
+		asDesc.Inputs.InstanceDescs =
+			m_topLevelASBuffers.pInstanceDesc->GetGPUVirtualAddress();
+		asDesc.DestAccelerationStructureData = m_topLevelASBuffers.pResult->GetGPUVirtualAddress();
+		asDesc.ScratchAccelerationStructureData = m_topLevelASBuffers.pScratch->GetGPUVirtualAddress();
+
+
+		/*if (update)
+		{
+			asDesc.Inputs.Flags |= D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_PERFORM_UPDATE;
+			asDesc.SourceAccelerationStructureData = m_topLevelASBuffers.pResult->GetGPUVirtualAddress();
+		}*/
+		rc.BuildRaytracingAccelerationStructure(asDesc);
+
+		//レイトレーシングアクセラレーション構造のビルド完了待ちのバリアを入れる。
+		D3D12_RESOURCE_BARRIER uavBarrier = {};
+		uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+		uavBarrier.UAV.pResource = m_topLevelASBuffers.pResult;
+		rc->ResourceBarrier(uavBarrier);
+
+		/*if (update)
+	{
+		asDesc.Inputs.Flags |= D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_PERFORM_UPDATE;
+		asDesc.SourceAccelerationStructureData = m_topLevelASBuffers.pResult->GetGPUVirtualAddress();
+	}*/
+		rc->BuildRaytracingAccelerationStructure(asDesc);
+
+		//レイトレーシングアクセラレーション構造のビルド完了待ちのバリアを入れる。
+		D3D12_RESOURCE_BARRIER uavBarrier = {};
+		uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+		uavBarrier.UAV.pResource = m_topLevelASBuffers.pResult;
+		rc->ResourceBarrier(uavBarrier);
+	}
+
+	void TLASBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)
+	{
+		auto d3dDevice = g_graphicsEngine->GetD3DDevice();
+
+		//TLASをディスクリプタヒープに登録。
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		memset(&srvDesc, 0, sizeof(srvDesc));
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_RAYTRACING_ACCELERATION_STRUCTURE;
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.RaytracingAccelerationStructure.Location = m_topLevelASBuffers.pResult->GetGPUVirtualAddress();
+		d3dDevice->CreateShaderResourceView(nullptr, &srvDesc, descriptorHandle);
+
+
 	}
 
 }
