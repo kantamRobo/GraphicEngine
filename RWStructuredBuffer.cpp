@@ -76,6 +76,10 @@ void RWStructuredBuffer::InitRWStructuredBuffer(const VertexBuffer& vb, bool isU
 	m_isInited = true;
 }
 
+void RWStructuredBuffer::RegistUnorderAccessView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)
+{
+}
+
 
 void RWStructuredBuffer::InitRWStructuredBuffer(const IndexBuffer& ib, bool isUpdateByCPU)
 {
