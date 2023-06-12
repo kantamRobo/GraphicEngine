@@ -35,11 +35,11 @@ void VulkanVertexBuffer::InitVKVertexBuffer(int size, int stride)
 	
 
 }
-
+//https://github.com/DAGINATSUKO/www-rpcs3
 void VulkanVertexBuffer::Copy(void* srcVertices)
 {
-	uint8_t* pData;
-	vkMapMemory(device,memory, 0, VK_WHOLE_SIZE, 0, &pdata);
+	void* pData;
+	vkMapMemory(device,memory, 0, VK_WHOLE_SIZE, 0, &pData);
 	memcpy(p, srcVertices, sizeof(srcVertices));
 	vkUnmapMemory(device, memory);
 
