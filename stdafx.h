@@ -32,6 +32,7 @@
 #include "GraphicsEngine.h"
 #include <atlbase.h>
 #include "Raytracing.h"
+#include "GPUBuffer.h"
 template <class T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;
 

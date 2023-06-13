@@ -151,6 +151,7 @@
     <ClInclude Include="NullTextureMaps.h" />
     <ClInclude Include="PipelineState.h" />
     <ClInclude Include="Raytracing.h" />
+    <ClInclude Include="RaytracingDescriptorHeaps.h" />
     <ClInclude Include="RayTracingPSO.h" />
     <ClInclude Include="RaytracingWorld.h" />
     <ClInclude Include="RayTracingInstance.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="MeshParts.cpp" />
     <ClCompile Include="NullTexture.cpp" />
     <ClCompile Include="PipelineState.cpp" />
+    <ClCompile Include="RaytracingDescriptorHeaps.cpp" />
     <ClCompile Include="RayTracingPSO.cpp" />
     <ClCompile Include="RaytracingWorld.cpp" />
     <ClCompile Include="RayTracingInstance.cpp" />

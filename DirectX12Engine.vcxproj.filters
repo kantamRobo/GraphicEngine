@@ -150,6 +150,9 @@
     <ClInclude Include="TLASBuffer.h">
       <Filter>raytracing</Filter>
     </ClInclude>
+    <ClInclude Include="RaytracingDescriptorHeaps.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -246,6 +249,9 @@
       <Filter>raytracing</Filter>
     </ClCompile>
     <ClCompile Include="TLASBuffer.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="RaytracingDescriptorHeaps.cpp">
       <Filter>raytracing</Filter>
     </ClCompile>
   </ItemGroup>
