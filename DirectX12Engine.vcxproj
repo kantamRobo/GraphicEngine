@@ -148,6 +148,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MeshParts.h" />
+    <ClInclude Include="MiniEngine.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MyAssert.h" />
     <ClInclude Include="NullTextureMaps.h" />
