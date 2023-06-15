@@ -148,6 +148,8 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MeshParts.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="MyAssert.h" />
     <ClInclude Include="NullTextureMaps.h" />
     <ClInclude Include="PipelineState.h" />
     <ClInclude Include="Raytracing.h" />
@@ -188,6 +190,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MeshParts.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="NullTexture.cpp" />
     <ClCompile Include="PipelineState.cpp" />
     <ClCompile Include="RaytracingDescriptorHeaps.cpp" />
