@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Raytracing.h" />
     <ClInclude Include="RenderingContext.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="VulkanVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="RenderingContext.cpp" />
     <ClCompile Include="VkVertexBuffer.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
