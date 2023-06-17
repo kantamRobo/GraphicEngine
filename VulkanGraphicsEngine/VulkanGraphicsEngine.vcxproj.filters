@@ -45,6 +45,9 @@
     <ClInclude Include="Raytracing.h">
       <Filter>raytracing</Filter>
     </ClInclude>
+    <ClInclude Include="VkRaytracingInstance.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VulkanGraphicsEngine.cpp">
