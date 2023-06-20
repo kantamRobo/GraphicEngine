@@ -3,7 +3,7 @@
 #include "VulkanVertexBuffer.h"
 #include "VulkanIndexBuffer.h"
 
-void RWStructuredBuffer::RegistImageView()
+void RWStructuredBuffer::RegistImageView(int width,int height)
 {
 	VkImage image;
     VkImageCreateInfo imageCI{
