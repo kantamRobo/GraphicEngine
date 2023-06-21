@@ -71,8 +71,14 @@ class RenderingContext
 
 	void SetDescriptorPool(VkDescriptorPool pool)
 	{
-
+		m_descriptorpool[0] = pool;
+		
 	}
+	//void SetDescriptorHeap(DescriptorHeap& descHeap);
+	
+
+	//ユニフォームバッファを設定
+	void SetUniformBuffer(int registerNo,)
 	
 private:
 	enum { MAX_DESCRIPTOR_POOL = 4 };	//

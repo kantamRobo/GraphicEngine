@@ -24,6 +24,8 @@ class UniformBuffer
 
 	void InitUniformBuffer(int size, void* srcData, VkBufferUsageFlags usage, VkMemoryPropertyFlags flags);
 
+	uint32_t getMemoryTypeIndex(uint32_t requestBits, VkMemoryPropertyFlags requestProps) const;
+
 	//利用可能なバッファかどうか判定
 	bool IsValid()const
 	{
