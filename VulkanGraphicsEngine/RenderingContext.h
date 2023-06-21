@@ -69,9 +69,16 @@ class RenderingContext
 	void SetPipelineState(raytracing::PSO& pso);
 	*/
 
+	void SetDescriptorPool(VkDescriptorPool pool)
+	{
+
+	}
 	
 private:
+	enum { MAX_DESCRIPTOR_POOL = 4 };	//
 	VkCommandBuffer m_commandBuffer;
 	VkPipeline m_pipeline;
 	VkViewport m_currentViewport;
+	VkDescriptorPool m_descriptorpool[MAX_DESCRIPTOR_POOL];
+	
 };
