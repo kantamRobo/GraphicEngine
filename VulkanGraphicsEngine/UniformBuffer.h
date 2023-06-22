@@ -50,8 +50,6 @@ private:
 	int m_allocSize = 0;
 	bool m_isValid = false;
 
-
-	
 };
 
 

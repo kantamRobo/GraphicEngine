@@ -1,4 +1,5 @@
 #pragma once
+#include "UniformBuffer.h"
 class RenderingContext
 {//2023.6.7目標
 //４つ実装
@@ -78,13 +79,29 @@ class RenderingContext
 	
 
 	//ユニフォームバッファを設定
-	void SetUniformBuffer(int registerNo,)
+	void SetUniformBuffer(int registerNo, std::shared_ptr<UniformBuffer> ub)
+	{
+		if (registerNo < MAX_UNIFORM_BUFFER)
+		{
+			m_uniformBuffers[registerNo] = ub;
+		}
+		else
+		{
+
+		}
+	}
 	
+	void SetImageResource(int registerNo, Texture& texture)
+	{
+
+
+	}
 private:
 	enum { MAX_DESCRIPTOR_POOL = 4 };	//
+	enum { MAX_UNIFORM_BUFFER = 8 };
 	VkCommandBuffer m_commandBuffer;
 	VkPipeline m_pipeline;
 	VkViewport m_currentViewport;
 	VkDescriptorPool m_descriptorpool[MAX_DESCRIPTOR_POOL];
-	
+	std::shared_ptr<UniformBuffer> m_uniformBuffers[MAX_UNIFORM_BUFFER];
 };

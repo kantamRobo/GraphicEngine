@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\include;$(SolutionDir)\VulkanGraphicsEngine\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IVulkanShaderResource.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Raytracing.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="VkRaytracingInstance.h" />
     <ClInclude Include="VulkanGraphicsEngine.h" />
     <ClInclude Include="VulkanIndexBuffer.h" />
+    <ClInclude Include="VulkanTexture.h" />
     <ClInclude Include="VulkanVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +154,7 @@
     <ClCompile Include="VkVertexBuffer.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
     <ClCompile Include="VulkanIndexBuffer.cpp" />
+    <ClCompile Include="VulkanTexture.cpp" />
     <ClCompile Include="VulkanVertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
