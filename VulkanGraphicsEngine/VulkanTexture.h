@@ -1,4 +1,5 @@
 #pragma once
+#include "IVulkanShaderResource.h"
 class VulkanTexture:public IVulkanShaderResource
 {
 public:

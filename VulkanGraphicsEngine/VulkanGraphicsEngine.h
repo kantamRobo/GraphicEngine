@@ -1,7 +1,7 @@
 #pragma once
 
-#include "resource.h"
-#include <vulkan/vulkan_core.h>
+
+
 #include <vector>
 #include <memory>
 struct FrameCommandBuffer {

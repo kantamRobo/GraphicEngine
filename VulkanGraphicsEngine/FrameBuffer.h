@@ -4,6 +4,8 @@ class FrameBuffer
 
 	//デストラクタ
 	~FrameBuffer();
+	unsigned int getTextureMemoryTypeIndex(unsigned int requestBits, VkMemoryPropertyFlags requestProps, VkPhysicalDeviceMemoryProperties physMemProps);
+	bool CreateFrameBuffer(int w, int h, int mipLevel, VkFormat colorformat, VkFormat depthstencilFormat, float clearColor[4], VkPhysicalDeviceMemoryProperties physMemProps);
 	//フレームバッファの作成
 	//フレームバッファの幅
 	//フレームバッファの高さ
@@ -12,12 +14,10 @@ class FrameBuffer
 	//テクスチャ配列のサイズ
 	//カラーバッファのフォーマット
 	//深度ステンシルバッファのフォーマット
-	bool CreateFrameBuffer(int w, 
-		int h, 
-		int mipLevel, 
-		VkFormat colorformat,
-		VkFormat depthstencilFormat,
-		float clearColor[4] =nullptr);
+	bool CreateFramebufferTexture(VulkanGraphicsEngine& ge, VkDevice Device, int w,
+		int h, int miplevel,
+		 float clearColor[4],
+		VkPhysicalDeviceMemoryProperties physMemProps);
 	VulkanTexture& GetRendarTargetTexture()
 	{
 		return m_FramebufferTexture;
@@ -51,8 +51,8 @@ class FrameBuffer
 
 private:
 
-	bool CreateDescriptorHeap(std::shared_ptr<VulkanGraphicsEngine> ge, VkDevice device);
-	//レンダリングーターゲットとなるテクスチャを作成
+	bool CreateDescriptorPool(VulkanGraphicsEngine& ge, VkDevice device);
+	bool CreateFramebufferTexture(VulkanGraphicsEngine& ge, VkDevice Device, int w, int h, int miplevel, int arraySize, VkFormat format, float clearColor[4], VkPhysicalDeviceMemoryProperties physMemProps);	//レンダリングーターゲットとなるテクスチャを作成
 	//グラフィックエンジン
 	//デバイス
 	//テクスチャの幅
@@ -74,7 +74,7 @@ private:
 	/// <returns>trueが返ってきたら成功</returns>
 	bool CreateDepthStencilTexture(
 		VulkanGraphicsEngine& ge,
-		VkDevice& d3dDevice,
+		const VkDevice& d3dDevice,
 		int w,
 		int h,
 		VkFormat format);
@@ -89,6 +89,9 @@ private:
 	VulkanTexture m_FramebufferTexture;
 	VkBuffer m_framebuffertextureVulkan = nullptr;
 	VkBuffer m_depthStencilTexture = nullptr;
+	VkDescriptorPool m_FrameBuffertextureDP = nullptr;
+	VkDescriptorPool m_depthstenciltextureDP = nullptr;
+	VkDevice m_device;
 	/*
 		UINT m_rtvDescriptorSize = 0;						//フレームバッファのディスクリプタのサイズ。
 	UINT m_dsvDescriptorSize = 0;						//深度ステンシルバッファのディスクリプタのサイズ。
@@ -97,6 +100,6 @@ private:
 	int m_height = 0;
 	float m_framebufferClearColor[4] = { 0.0f,0.0f,0.0f,1.0f };
 	float m_dsvClearValue = 1.0f;
-	
+	VkDeviceMemory FrameBufferdevicememory;
 };
 
