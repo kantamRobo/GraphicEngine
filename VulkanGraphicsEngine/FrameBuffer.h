@@ -18,6 +18,7 @@ class FrameBuffer
 		int h, int miplevel,
 		 float clearColor[4],
 		VkPhysicalDeviceMemoryProperties physMemProps);
+	bool CreateImageView(VulkanGraphicsEngine& ge, VkDevice device);
 	VulkanTexture& GetRendarTargetTexture()
 	{
 		return m_FramebufferTexture;
@@ -89,6 +90,8 @@ private:
 	VulkanTexture m_FramebufferTexture;
 	VkBuffer m_framebuffertextureVulkan = nullptr;
 	VkBuffer m_depthStencilTexture = nullptr;
+	VkImage m_depthImage = nullptr;
+	VkImage m_FrameBufferImage = nullptr;
 	VkDescriptorPool m_FrameBuffertextureDP = nullptr;
 	VkDescriptorPool m_depthstenciltextureDP = nullptr;
 	VkDevice m_device;

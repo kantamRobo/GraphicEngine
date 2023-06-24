@@ -87,25 +87,42 @@ bool FrameBuffer::CreateFramebufferTexture(VulkanGraphicsEngine& ge, VkDevice De
 
 }
 
-bool FrameBuffer::CreateDescriptorPool(VulkanGraphicsEngine& ge, VkDevice device)
+bool FrameBuffer::CreateImageView(VulkanGraphicsEngine& ge, VkDevice device)
 {
 
-	const uint32_t count = 100;
-	std::array<VkDescriptorPoolSize, 2> descPoolSize;
-	descPoolSize[0].descriptorCount = count;
-	descPoolSize[0].type = VK_DESCRIPTOR_TYPE_IMAGE_
-	descPoolSize[1].descriptorCount = count;
-	descPoolSize[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	VkImageCreateInfo depthci{};
+	depthci.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	depthci.imageType = VK_IMAGE_TYPE_2D;
+	depthci.format = VK_FORMAT_D32_SFLOAT;
+	depthci.extent.width = m_width;
+	depthci.extent.height = m_height;
+	depthci.extent.depth = 1;
+	depthci.mipLevels = 1;
+	depthci.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+	depthci.samples = VK_SAMPLE_COUNT_1_BIT;
+	depthci.arrayLayers = 1;
+	auto depthesult = vkCreateImage(m_device, &depthci, nullptr, &m_depthImage);
+	if (!depthesult)
+	{
+		return false;
+	}
+	VkImageCreateInfo framebufferci{};
+	framebufferci.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	framebufferci.imageType = VK_IMAGE_TYPE_2D;
+	framebufferci.format = VK_FORMAT_D32_SFLOAT;
+	framebufferci.extent.width = m_width;
+	framebufferci.extent.height = m_height;
+	framebufferci.extent.depth = 1;
+	framebufferci.mipLevels = 1;
+	framebufferci.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+	framebufferci.samples = VK_SAMPLE_COUNT_1_BIT;
+	framebufferci.arrayLayers = 1;
+	auto frameresult = vkCreateImage(m_device, &framebufferci, nullptr, &m_FrameBufferImage);
+	if (!frameresult) {
+		return false;
+	}
 
-	//uint32_t maxDescriptorCount = uint32_t(m_swapchainImages.size() * m_model.meshes.size());
-	unsigned int FrameBuffermaxDescriptorCount = 2;
-	VkDescriptorPoolCreateInfo frameci{};
-	frameci.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	frameci.maxSets = FrameBuffermaxDescriptorCount;
-	frameci.poolSizeCount = uint32_t(descPoolSize.size());
-	frameci.pPoolSizes = descPoolSize.data();
-	vkCreateDescriptorPool(m_device, &frameci, nullptr, &m_FrameBuffertextureDP);
-	return false;
+	return true;
 }
 
 
