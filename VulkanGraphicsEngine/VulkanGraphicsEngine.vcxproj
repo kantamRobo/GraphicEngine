@@ -145,6 +145,7 @@
     <ClInclude Include="VkRaytracingInstance.h" />
     <ClInclude Include="VulkanGraphicsEngine.h" />
     <ClInclude Include="VulkanIndexBuffer.h" />
+    <ClInclude Include="VulkanPipelineState.h" />
     <ClInclude Include="VulkanTexture.h" />
     <ClInclude Include="VulkanVertexBuffer.h" />
   </ItemGroup>
@@ -157,6 +158,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
     <ClCompile Include="VulkanIndexBuffer.cpp" />
+    <ClCompile Include="VulkanPipelineState.cpp" />
     <ClCompile Include="VulkanTexture.cpp" />
     <ClCompile Include="VulkanVertexBuffer.cpp" />
   </ItemGroup>

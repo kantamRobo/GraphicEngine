@@ -126,16 +126,13 @@ bool FrameBuffer::CreateImageView(VulkanGraphicsEngine& ge, VkDevice device)
 }
 
 
+
 bool FrameBuffer::CreateDepthStencilTexture(VulkanGraphicsEngine& ge,
 	const VkDevice& Device,
 	int w,
 	int h,
 	VkFormat format)
 {
-
-	
-	
-	
 
 	VkBufferCreateInfo ci{};
 	ci.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;

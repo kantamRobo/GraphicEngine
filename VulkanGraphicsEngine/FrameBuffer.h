@@ -24,6 +24,15 @@ class FrameBuffer
 		return m_FramebufferTexture;
 	}
 
+
+
+	bool CreateDepthStencilTexture(VulkanGraphicsEngine& ge,
+		const VkDevice& Device,
+		int w,
+		int h,
+		VkFormat format);
+
+
 	//デプスステンシルバッファが存在しているか判定
 	bool IsExistDepthStencilBuffer()const
 	{
@@ -80,12 +89,7 @@ private:
 		int h,
 		VkFormat format);
 
-	/// <summary>
-	/// ディスクリプタの作成。
-	/// </summary>
-	/// <param name="d3dDevice">D3Dデバイス</param>
-	/// <returns>trueが返ってｋチアら成功。</returns>
-	void CreateDescriptor(VkDevice& d3dDevice);
+	
 private:
 	VulkanTexture m_FramebufferTexture;
 	VkBuffer m_framebuffertextureVulkan = nullptr;
