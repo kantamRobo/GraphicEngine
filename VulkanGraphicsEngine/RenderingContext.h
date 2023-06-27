@@ -113,13 +113,31 @@ class RenderingContext
 	//※この関数ではビューポートの設定を行わない
 	//ユーザー側で適切なビューポートを指定する必要がある
 
-	void SetFrameBuffer(std::shared_ptr<FrameBuffer> framebuffer);
+	void SetFrameBuffer(FrameBuffer& framebuffer)
+	{
+		FrameBuffer* fbarray[] = { &framebuffer };
+		SetFrameBuffer(1, fbarray);
 
+	}
+
+	void SetFrameBufferAndViewport(FrameBuffer& framebuffer);
+
+	void SetFramebuffersAndViewport(unsigned int numFB, FrameBuffer* framebuffers[]);
+
+	//複数枚のフレームバッファをクリア
+	//クリアカラーはフレームバッファの初期化時に指定したカラー
+
+	void ClearFrameBuffers(int numFB, FrameBuffer* framebuffers[]);
+
+	void BeginRenderPass(VkRenderPassBeginInfo renderPassBI)
+	{
+		vkCmdBeginRenderPass(m_commandBuffer,&renderPassBI,  VK_SUBPASS_CONTENTS_INLINE)
+	}
 private:
 	enum { MAX_DESCRIPTOR_POOL = 4 };	//
 	enum { MAX_UNIFORM_BUFFER = 8 };
 	enum { MAX_IMAGE_RESOURCE = 16 };	//シェーダーリソースの最大数。足りなくなったら増やしてね。
-
+	
 	VkCommandBuffer m_commandBuffer;
 	VkPipeline m_pipeline;
 	VkViewport m_currentViewport;
