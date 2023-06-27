@@ -1,19 +1,29 @@
 #pragma once
+
 class VulkanPipelineState
 {
 public:
+	VulkanPipelineState() {};
+
+	VulkanPipelineState(){ m_graphicsengine = std::make_shared<VulkanGraphicsEngine>(); }
+
 	~VulkanPipelineState()
 	{
-		if (m_pipeline)
+		if (m_graphicpipeline)
 		{
-			m_pipeline = nullptr;
+			m_graphicpipeline = nullptr;
 		}
 	}
-	void InitPipeline();
 	
+	void InitGraphicPipeline(const VkGraphicsPipelineCreateInfo& info);
+	void InitComputePipeline(const VkComputePipelineCreateInfo& info);
 private:
-	VkPipeline m_pipeline = nullptr;
-	std::unique_ptr<VulkanGraphicsEngine> m_graphicsEngine = nullptr;
+
+	VkPipeline m_graphicpipeline = VK_NULL_HANDLE;
+	VkPipeline m_computepipeline = VK_NULL_HANDLE;
+	std::shared_ptr<VulkanGraphicsEngine> m_graphicsEngine = nullptr;
+
 	
+
 };
 
