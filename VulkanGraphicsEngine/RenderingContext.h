@@ -1,4 +1,7 @@
 #pragma once
+#include "UniformBuffer.h"
+#include "VulkanTexture.h"
+#include "FrameBuffer.h"
 class RenderingContext
 {//2023.6.7目標
 //４つ実装
@@ -78,13 +81,67 @@ class RenderingContext
 	
 
 	//ユニフォームバッファを設定
-	void SetUniformBuffer(int registerNo,)
+	void SetUniformBuffer(int registerNo, std::shared_ptr<UniformBuffer> ub)
+	{
+		if (registerNo < MAX_UNIFORM_BUFFER)
+		{
+			m_uniformBuffers[registerNo] = ub;
+		}
+		else
+		{
+
+		}
+	}
 	
+	void SetImageResource(int registerNo, std::shared_ptr<VulkanTexture> texture)
+	{
+		if (registerNo < MAX_IMAGE_RESOURCE)
+		{
+			m_ImageResources[registerNo] = texture;
+		}
+		else
+		{
+			std::abort();
+		}
+
+	}
+
+	//複数枚のレンダリングターゲットを設定する
+	void SetFrameBuffers(unsigned int numFB, std::shared_ptr<FrameBuffer> framebuffers[]);
+
+	//フレームバッファをスロット０に設定する
+	//※この関数ではビューポートの設定を行わない
+	//ユーザー側で適切なビューポートを指定する必要がある
+
+	void SetFrameBuffer(FrameBuffer& framebuffer)
+	{
+		FrameBuffer* fbarray[] = { &framebuffer };
+		SetFrameBuffer(1, fbarray);
+
+	}
+
+	void SetFrameBufferAndViewport(FrameBuffer& framebuffer);
+
+	void SetFramebuffersAndViewport(unsigned int numFB, FrameBuffer* framebuffers[]);
+
+	//複数枚のフレームバッファをクリア
+	//クリアカラーはフレームバッファの初期化時に指定したカラー
+
+	void ClearFrameBuffers(int numFB, FrameBuffer* framebuffers[]);
+
+	void BeginRenderPass(VkRenderPassBeginInfo renderPassBI)
+	{
+		vkCmdBeginRenderPass(m_commandBuffer,&renderPassBI,  VK_SUBPASS_CONTENTS_INLINE)
+	}
 private:
 	enum { MAX_DESCRIPTOR_POOL = 4 };	//
+	enum { MAX_UNIFORM_BUFFER = 8 };
+	enum { MAX_IMAGE_RESOURCE = 16 };	//シェーダーリソースの最大数。足りなくなったら増やしてね。
+	
 	VkCommandBuffer m_commandBuffer;
 	VkPipeline m_pipeline;
 	VkViewport m_currentViewport;
+	std::shared_ptr<VulkanTexture> m_ImageResources[MAX_IMAGE_RESOURCE];
 	VkDescriptorPool m_descriptorpool[MAX_DESCRIPTOR_POOL];
-	
+	std::shared_ptr<UniformBuffer> m_uniformBuffers[MAX_UNIFORM_BUFFER];
 };

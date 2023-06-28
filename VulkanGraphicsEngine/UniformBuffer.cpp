@@ -50,3 +50,9 @@ uint32_t UniformBuffer::getMemoryTypeIndex(uint32_t requestBits, VkMemoryPropert
 	}
 	return result;
 }
+
+void UniformBuffer::CopyToVRAM(void* data)
+{
+	auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+	memcpy(m_uniformBufferCPU[backBufferIndex], data, m_size);
+}
