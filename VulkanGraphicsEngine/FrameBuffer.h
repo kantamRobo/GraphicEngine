@@ -1,7 +1,7 @@
 #pragma once
 class FrameBuffer
 {
-
+public:
 	//デストラクタ
 	~FrameBuffer();
 	unsigned int getTextureMemoryTypeIndex(unsigned int requestBits, VkMemoryPropertyFlags requestProps, VkPhysicalDeviceMemoryProperties physMemProps);

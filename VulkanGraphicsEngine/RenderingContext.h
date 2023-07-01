@@ -122,7 +122,7 @@ class RenderingContext
 
 	}
 
-	void SetFrameBufferAndViewport(FrameBuffer& framebuffer);
+	inline void SetFrameBufferAndViewport(FrameBuffer& framebuffer);
 
 	void SetFramebuffersAndViewport(unsigned int numFB, FrameBuffer* framebuffers[]);
 
@@ -133,13 +133,14 @@ class RenderingContext
 
 	void BeginRenderPass(VkRenderPassBeginInfo renderPassBI)
 	{
-		vkCmdBeginRenderPass(m_commandBuffer,&renderPassBI,  VK_SUBPASS_CONTENTS_INLINE)
+		vkCmdBeginRenderPass(m_commandBuffer, &renderPassBI, VK_SUBPASS_CONTENTS_INLINE);
 	}
 private:
 	enum { MAX_DESCRIPTOR_POOL = 4 };	//
 	enum { MAX_UNIFORM_BUFFER = 8 };
 	enum { MAX_IMAGE_RESOURCE = 16 };	//シェーダーリソースの最大数。足りなくなったら増やしてね。
-	
+	const float MIN_DEPTH = 0.0f;
+	const float MAX_DEPTH = 1.0f;
 	VkCommandBuffer m_commandBuffer;
 	VkPipeline m_pipeline;
 	VkViewport m_currentViewport;

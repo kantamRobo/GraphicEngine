@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="IVulkanShaderResource.h" />
+    <ClInclude Include="RenderingContext_inline.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Raytracing.h" />
@@ -151,8 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameBuffer.cpp" />
-    <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="RenderingContext.cpp" />
+    <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="VkVertexBuffer.cpp" />
     <ClCompile Include="main.cpp" />
