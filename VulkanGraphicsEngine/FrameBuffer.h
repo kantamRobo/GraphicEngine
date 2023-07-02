@@ -100,8 +100,7 @@ private:
 	VkDescriptorPool m_depthstenciltextureDP = nullptr;
 	VkDevice m_device;
 	VkRenderPass      m_renderPass;
-	VkSurfaceKHR        m_surface;
-	VkSurfaceFormatKHR  m_surfaceFormat;
+	
 
 	/*
 		UINT m_rtvDescriptorSize = 0;						//フレームバッファのディスクリプタのサイズ。

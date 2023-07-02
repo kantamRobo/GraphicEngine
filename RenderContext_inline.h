@@ -82,3 +82,16 @@ void RenderContext::SetRenderTargets(UINT numRT, RenderTarget* renderTargets[])
 	}
 
 }
+
+inline void RenderContext::WaitUntilToPossibleSetRenderTargets(int numRt, RenderTarget* renderTargets[])
+{
+	for (int i = 0; i < numRt; i++) {
+		WaitUntilToPossibleSetRenderTarget(*renderTargets[i]);
+	}
+}
+
+
+inline void RenderContext::WaitUntilToPossibleSetRenderTarget(RenderTarget& renderTarget)
+{
+	WaitUntilToPossibleSetRenderTarget(renderTarget.GetRenderTargetTexture().Get());
+}

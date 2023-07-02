@@ -154,7 +154,7 @@ bool FrameBuffer::CreateRenderPass()
 	VkRenderPassCreateInfo ci{};
 	ci.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
 
-	array<VkAttachmentDescription, 2> attachments;
+	std::array<VkAttachmentDescription, 2> attachments;
 	auto& colorTarget = attachments[0];
 	auto& depthTarget = attachments[1];
 
@@ -197,8 +197,7 @@ bool FrameBuffer::CreateRenderPass()
 	ci.pSubpasses = &subpassDesc;
 
 	auto result = vkCreateRenderPass(m_device, &ci, nullptr, &m_renderPass);
-	checkResult(result);
-
+	
 
 	return false;
 }
