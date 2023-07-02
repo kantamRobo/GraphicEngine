@@ -152,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameBuffer.cpp" />
-    <ClCompile Include="RenderingContext.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="VkVertexBuffer.cpp" />

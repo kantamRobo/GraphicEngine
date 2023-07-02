@@ -16,4 +16,5 @@ void RenderingContext::SetFrameBufferAndViewport(FrameBuffer& framebuffer)
 
 
 	SetViewportAndScissor(viewport);
+	
 }

@@ -124,6 +124,23 @@ class RenderingContext
 
 	inline void SetFrameBufferAndViewport(FrameBuffer& framebuffer);
 
+	inline void SetFrameBuffers(unsigned int numFB, FrameBuffer* framebuffers[])
+	{
+
+		VkRenderPassBeginInfo renderPassBI{};
+		renderPassBI.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		renderPassBI.renderPass = m_renderPass;
+		renderPassBI.framebuffer = m_framebuffers[nextImageIndex];
+		renderPassBI.renderArea.offset = VkOffset2D{ 0, 0 };
+		renderPassBI.renderArea.extent = m_swapchainExtent;
+		renderPassBI.pClearValues = clearValue.data();
+		renderPassBI.clearValueCount = uint32_t(clearValue.size());
+
+
+		//深度バッファがある
+		BeginRenderPass(framebuffers[0]->)
+
+	}
 	void SetFramebuffersAndViewport(unsigned int numFB, FrameBuffer* framebuffers[]);
 
 	//複数枚のフレームバッファをクリア

@@ -88,7 +88,7 @@ private:
 		int w,
 		int h,
 		VkFormat format);
-
+	bool CreateRenderPass();
 	
 private:
 	VulkanTexture m_FramebufferTexture;
@@ -99,6 +99,10 @@ private:
 	VkDescriptorPool m_FrameBuffertextureDP = nullptr;
 	VkDescriptorPool m_depthstenciltextureDP = nullptr;
 	VkDevice m_device;
+	VkRenderPass      m_renderPass;
+	VkSurfaceKHR        m_surface;
+	VkSurfaceFormatKHR  m_surfaceFormat;
+
 	/*
 		UINT m_rtvDescriptorSize = 0;						//フレームバッファのディスクリプタのサイズ。
 	UINT m_dsvDescriptorSize = 0;						//深度ステンシルバッファのディスクリプタのサイズ。

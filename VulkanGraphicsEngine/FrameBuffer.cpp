@@ -148,3 +148,57 @@ bool FrameBuffer::CreateDepthStencilTexture(VulkanGraphicsEngine& ge,
 
 	return true;
 }
+
+bool FrameBuffer::CreateRenderPass()
+{
+	VkRenderPassCreateInfo ci{};
+	ci.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+
+	array<VkAttachmentDescription, 2> attachments;
+	auto& colorTarget = attachments[0];
+	auto& depthTarget = attachments[1];
+
+	colorTarget = VkAttachmentDescription{};
+	colorTarget.format = m_surfaceFormat.format;
+	colorTarget.samples = VK_SAMPLE_COUNT_1_BIT;
+	colorTarget.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	colorTarget.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	colorTarget.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	colorTarget.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	colorTarget.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	colorTarget.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+	depthTarget = VkAttachmentDescription{};
+	depthTarget.format = VK_FORMAT_D32_SFLOAT;
+	depthTarget.samples = VK_SAMPLE_COUNT_1_BIT;
+	depthTarget.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	depthTarget.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	depthTarget.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	depthTarget.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	depthTarget.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	depthTarget.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+	VkAttachmentReference colorReference{}, depthReference{};
+	colorReference.attachment = 0;
+	colorReference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+	depthReference.attachment = 1;
+	depthReference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+	VkSubpassDescription subpassDesc{};
+	subpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	subpassDesc.colorAttachmentCount = 1;
+	subpassDesc.pColorAttachments = &colorReference;
+	subpassDesc.pDepthStencilAttachment = &depthReference;
+
+	ci.attachmentCount = uint32_t(attachments.size());
+	ci.pAttachments = attachments.data();
+	ci.subpassCount = 1;
+	ci.pSubpasses = &subpassDesc;
+
+	auto result = vkCreateRenderPass(m_device, &ci, nullptr, &m_renderPass);
+	checkResult(result);
+
+
+	return false;
+}

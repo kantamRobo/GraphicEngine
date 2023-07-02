@@ -130,7 +130,8 @@ private:
 	VkDescriptorPool m_framebufferpool = VK_NULL_HANDLE;
 	VkDescriptorPool m_dsvpool = VK_NULL_HANDLE;
 	VkPipeline m_pipeline = VK_NULL_HANDLE;
-
+	VkSurfaceKHR        m_surface;
+	VkSurfaceFormatKHR  m_surfaceFormat;
 	VkViewport viewport = {};
 
 	VkRect2D vkrect2D = {};
