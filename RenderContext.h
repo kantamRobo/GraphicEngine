@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "PipelineState.h"
 #include "RootSignature.h"
-
+#include "DescriptorHeap.h"
 class ConstantBuffer;
 class Texture;
 class DescriptorHeap;
@@ -157,10 +157,10 @@ public:
 		}
 	}
 
-		void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
-		void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+		inline void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+		inline void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
 
-		void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
+		inline void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
 
 		void SetDescriptorHeaps(int numDescriptorHeap, const ComPtr<DescriptorHeap> descHeaps[])
 		{
@@ -235,13 +235,15 @@ public:
 	/// </remarks>
 	/// <param name="numRT">レンダリングターゲットの数</param>
 	/// <param name="renderTarget">レンダリングターゲットの配列。</param>
-		void SetRenderTargets(UINT numRT, RenderTarget * renderTargets[]);
+		inline void SetRenderTargets(UINT numRT, RenderTarget * renderTargets[]);
 
 
-		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
-		void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
-		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+		inline void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+		inline void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
+		inline void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+		inline void WaitUntilToPossibleSetRenderTargets(int numRt, RenderTarget* renderTargets[]);
 
+		inline void WaitUntilFinishDrawingToRenderTargets(int numRt, RenderTarget* renderTargets[]);
 		
 		void ResourceBarrier(D3D12_RESOURCE_BARRIER & barrier)
 		{

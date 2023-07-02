@@ -159,6 +159,7 @@
     <ClInclude Include="RaytracingWorld.h" />
     <ClInclude Include="RayTracingInstance.h" />
     <ClInclude Include="RenderContext.h" />
+    <ClInclude Include="RenderContext_inline.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RootSignature.h" />
@@ -198,7 +199,6 @@
     <ClCompile Include="RayTracingPSO.cpp" />
     <ClCompile Include="RaytracingWorld.cpp" />
     <ClCompile Include="RayTracingInstance.cpp" />
-    <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
