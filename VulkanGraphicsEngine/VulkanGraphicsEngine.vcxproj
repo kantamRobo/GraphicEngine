@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\include;$(SolutionDir)\VulkanGraphicsEngine\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,9 +132,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="FrameBuffer.h" />
-    <ClInclude Include="IVulkanShaderResource.h" />
-    <ClInclude Include="RenderingContext_inline.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Raytracing.h" />
@@ -142,24 +139,17 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="VkRaytracingInstance.h" />
     <ClInclude Include="VulkanGraphicsEngine.h" />
     <ClInclude Include="VulkanIndexBuffer.h" />
-    <ClInclude Include="VulkanPipelineState.h" />
-    <ClInclude Include="VulkanTexture.h" />
     <ClInclude Include="VulkanVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
-    <ClCompile Include="UniformBuffer.cpp" />
+    <ClCompile Include="RenderingContext.cpp" />
     <ClCompile Include="VkVertexBuffer.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
     <ClCompile Include="VulkanIndexBuffer.cpp" />
-    <ClCompile Include="VulkanPipelineState.cpp" />
-    <ClCompile Include="VulkanTexture.cpp" />
     <ClCompile Include="VulkanVertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,17 +159,7 @@
     <Image Include="small.ico" />
     <Image Include="VulkanGraphicsEngine.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\glfw.3.3.8\build\native\glfw.targets" Condition="Exists('..\packages\glfw.3.3.8\build\native\glfw.targets')" />
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\glfw.3.3.8\build\native\glfw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glfw.3.3.8\build\native\glfw.targets'))" />
-  </Target>
 </Project>

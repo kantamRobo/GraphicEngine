@@ -1,3 +1,0 @@
-[submodule "VulkanGraphicsEngine/stb"]
-	path = VulkanGraphicsEngine/stb
-	url = https://github.com/nothings/stb.git

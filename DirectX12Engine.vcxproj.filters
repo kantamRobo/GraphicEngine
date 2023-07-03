@@ -162,9 +162,6 @@
     <ClInclude Include="MiniEngine.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="RenderContext_inline.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -184,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="RWStructuredBuffer.cpp">
       <Filter>Resourceibinding</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderContext.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="DescriptorHeap.cpp">
       <Filter>Resourceibinding</Filter>

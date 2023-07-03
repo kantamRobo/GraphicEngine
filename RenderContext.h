@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "PipelineState.h"
 #include "RootSignature.h"
-#include "DescriptorHeap.h"
+
 class ConstantBuffer;
 class Texture;
 class DescriptorHeap;
@@ -128,28 +128,6 @@ public:
 	{
 		m_commandList->SetPipelineState(pipelineState->Get().Get());
 	}
-	/// <param name="clearColor">クリアカラー</param>
-	void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, const float* clearColor)
-	{
-		m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	}
-
-	/// <summary>
-/// デプスステンシルビューをクリア
-/// </summary>
-/// <param name="renderTarget">レンダリングターゲット</param>
-/// <param name="clearValue">クリア値</param>
-	void ClearDepthStencilView(D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, float clearValue)
-	{
-		m_commandList->ClearDepthStencilView(
-			dsvHandle,
-			D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
-			clearValue,
-			0,
-			0,
-			nullptr);
-	}
-
 
 	/// <summary>
 	/// ディスクリプタヒープを設定。
@@ -179,10 +157,10 @@ public:
 		}
 	}
 
-		inline void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
-		inline void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+		void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+		void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
 
-		inline void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
+		void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
 
 		void SetDescriptorHeaps(int numDescriptorHeap, const ComPtr<DescriptorHeap> descHeaps[])
 		{
@@ -257,40 +235,13 @@ public:
 	/// </remarks>
 	/// <param name="numRT">レンダリングターゲットの数</param>
 	/// <param name="renderTarget">レンダリングターゲットの配列。</param>
-		inline void SetRenderTargets(UINT numRT, RenderTarget * renderTargets[]);
+		void SetRenderTargets(UINT numRT, RenderTarget * renderTargets[]);
 
-		/// <summary>
-	/// レンダリングターゲットへの描き込み待ち。
-	/// </summary>
-	/// <remarks>
-	/// レンダリングターゲットとして使われているテクスチャをシェーダーリソースビューとして
-	/// 使用したい場合は、この関数を使って描き込み完了待ちを行う必要があります。
-	/// </remarks>
-	/// <param name="renderTarget">レンダリングターゲット</param>
-		inline void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
-		inline void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
-		inline void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
-		inline void WaitUntilToPossibleSetRenderTargets(int numRt, RenderTarget* renderTargets[]);
-		void WaitUntilFinishDrawingToRenderTarget(ID3D12Resource* renderTarget)
-		{
-			CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-				renderTarget,
-				D3D12_RESOURCE_STATE_RENDER_TARGET,
-				D3D12_RESOURCE_STATE_PRESENT);
-			m_commandList->ResourceBarrier(1, &barrier);
-		}
 
-		/// <summary>
-	/// レンダリングターゲットとして使用可能になるまで待つ。
-	/// </summary>
-	/// <remarks>
-	/// レンダリングターゲットとして設定したい場合は、
-	/// 本関数を使って使用可能になるまで待機する必要があります。
-	/// </remarks>
-	    void WaitUntilToPossibleSetRenderTargets(int numRt, RenderTarget* renderTargets[]);
-		void WaitUntilToPossibleSetRenderTarget(RenderTarget& renderTarget);
+		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+		void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
+		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
 
-		inline void WaitUntilFinishDrawingToRenderTargets(int numRt, RenderTarget* renderTargets[]);
 		
 		void ResourceBarrier(D3D12_RESOURCE_BARRIER & barrier)
 		{
@@ -315,7 +266,14 @@ public:
 			m_commandList->Close();
 		}
 
-		
+		/// <summary>
+		/// インデックスつきプリミティブを描画。
+		/// </summary>
+		/// <param name="indexCount">インデックスの数。</param>
+		void DrawIndexed(UINT indexCount)
+		{
+			m_commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+		}
 		/// <summary>
 		/// インスタンシング描画
 		/// </summary>
@@ -366,32 +324,40 @@ public:
 			);
 		}
 
-
-
 		/// <summary>
 	/// レンダリングターゲットのクリア。
 	/// </summary>
 	/// <param name="rtvHandle">CPUのレンダリングターゲットビューのディスクリプタハンドル</param>
-	
+	/// <param name="clearColor">クリアカラー</param>
+		void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, const float* clearColor)
+		{
+			m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+		}
 
-	
 		/// <summary>
-/// コマンドリストを閉じる
-/// </summary>
+	/// デプスステンシルビューをクリア
+	/// </summary>
+	/// <param name="renderTarget">レンダリングターゲット</param>
+	/// <param name="clearValue">クリア値</param>
+		void ClearDepthStencilView(D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, float clearValue)
+		{
+			m_commandList->ClearDepthStencilView(
+				dsvHandle,
+				D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,
+				clearValue,
+				0,
+				0,
+				nullptr);
+		}
+
+		/// <summary>
+	/// コマンドリストを閉じる
+	/// </summary>
 		void Close()
 		{
 			m_commandList->Close();
 		}
 
-
-		/// <summary>
-/// インデックスつきプリミティブを描画。
-/// </summary>
-/// <param name="indexCount">インデックスの数。</param>
-		void DrawIndexed(UINT indexCount)
-		{
-			m_commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
-		}
 		/// <summary>
 		/// ディスクリプタテーブルを設定。
 		/// </summary>

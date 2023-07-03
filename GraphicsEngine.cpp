@@ -95,14 +95,14 @@ ComPtr<IDXGIFactory4> GraphicsEngine::CreateDXGIFactory()
 
 bool GraphicsEngine::InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight)
 {
-	g_graphicsEngine = this;
+	m_graphicsEngine = std::make_shared<GraphicsEngine>();
 
 	frameBufferWidth = frameBufferWidth;
 	frameBufferHeight = frameBufferHeight;
 	//デバイスにアクセスするためのインターフェースを作成。
 	auto dxgiFactory = CreateDXGIFactory();
 
-	if (!CreateD3DDevice(dxgiFactory.Get()))
+	if (!CreateD3DDevice(dxgiFactory))
 	{
 		//D3Dデバイスの作成に失敗した
 		MessageBox(hwnd, TEXT("D3Dデバイスの作成に失敗しました。"), TEXT("エラー"), MB_OK);
@@ -160,7 +160,7 @@ bool GraphicsEngine::InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT f
 	}
 
 	//レンダリングコンテキストの作成
-	m_renderContext.InitRenderingContext(m_commandList);
+	m_renderContext->InitRenderingContext(m_commandList);
 
 	//ビューポートを初期化。
 	m_viewport.TopLeftX = 0;
@@ -299,20 +299,7 @@ bool GraphicsEngine::CreateD3DDevice(ComPtr<IDXGIFactory4> dxgiFactory)
 	return m_d3dDevice != nullptr;
 }
 
-bool GraphicsEngine::CreateRTVForFrameBuffer()
-{
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_rtvHeap->GetCPUDescriptorHandleForHeapStart();
 
-	//フロントバッファをバックバッファ用のRTVを作成。
-	for (UINT n = 0; n < FRAME_BUFFER_COUNT; n++) {
-		m_swapChain->GetBuffer(n, IID_PPV_ARGS(&m_renderTargets[n]));
-		m_d3dDevice->CreateRenderTargetView(
-			m_renderTargets[n].Get(), nullptr, rtvHandle
-		);
-		rtvHandle.ptr += m_rtvDescriptorSize;
-	}
-	return true;
-}
 bool GraphicsEngine::CreateCommandQueue()
 {
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
@@ -332,7 +319,7 @@ bool GraphicsEngine::CreateCommandList()
 {
 	//コマンドリストの作成。
 	m_d3dDevice->CreateCommandList(
-		0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_commandList)
+		0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator, nullptr, IID_PPV_ARGS(&m_commandList)
 	);
 	if (!m_commandList) {
 		return false;
@@ -514,8 +501,8 @@ void GraphicsEngine::BeginRender()
 	m_renderContext->SetRenderTarget(m_currentFrameBufferRTVHandle, m_currentFrameBufferDSVHandle);
 
 	const float clearColor[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	m_renderContext.ClearRenderTargetView(m_currentFrameBufferRTVHandle, clearColor);
-	m_renderContext.ClearDepthStencilView(m_currentFrameBufferDSVHandle, 1.0f);
+	m_renderContext->ClearRenderTargetView(m_currentFrameBufferRTVHandle, clearColor);
+	m_renderContext->ClearDepthStencilView(m_currentFrameBufferDSVHandle, 1.0f);
 
 
 
@@ -525,13 +512,13 @@ void GraphicsEngine::BeginRender()
 void GraphicsEngine::EndRender()
 {
 	// レンダリングターゲットへの描き込み完了待ち
-	m_renderContext.WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex]);
+	m_renderContext->WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex]);
 
 
 	m_directXTKGfxMemory->Commit(m_commandQueue.Get());
 
 	//レンダリングコンテキストを閉じる。
-	m_renderContext.Close();
+	m_renderContext->Close();
 
 	//コマンドを実行。
 	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get()};
@@ -546,9 +533,4 @@ void GraphicsEngine::EndRender()
 	m_directXTKGfxMemory->GarbageCollect();
 	//描画完了待ち。
 	WaitDraw();
-}
-
-void GraphicsEngine::ChangeRenderTargetToFrameBuffer(RenderContext& rc)
-{
-	rc.SetRenderTarget(m_currentFrameBufferRTVHandle, m_currentFrameBufferDSVHandle);
 }

@@ -1,83 +1,86 @@
 #pragma once
+#include "stdafx.h"
 
-
-#include <d3d12.h>
-#include <dxgi.h>
-#include <dxgi1_2.h>
-#include <dxgi1_3.h>
-#include <dxgi1_4.h>
-#include "DDSTextureLoader.h"
-#include "ResourceUploadBatch.h"
 #include "RenderContext.h"
-#include "RaytracingEngine.h"
-#include "Camera.h"
-#include "NullTextureMaps.h"
-#include "font/FontEngine.h"
-
-/// <summary>
-/// DirectX12に依存するグラフィックスエンジン
-/// </summary>
-class GraphicsEngine {
+#include "D:/gamedevelopment_3DCGAPI_GameEngine/DirectX/DirectX12/Rasterizer/hlsl-grimoire-sample/MiniEngine/DirectXTK/Inc/GraphicsMemory.h"
+#include "D:/gamedevelopment_3DCGAPI_GameEngine/DirectX/DirectX12/Rasterizer/hlsl-grimoire-sample/MiniEngine/NullTextureMaps.h"
+#include <dxgi1_4.h>
+class GraphicsEngine
+{
 public:
-	/// <summary>
-	/// デストラクタ。
-	/// </summary>
+	//デストラクタ
 	~GraphicsEngine();
+	void WaitDraw();
+	ComPtr<IDXGIFactory4> CreateDXGIFactory();
+
+
 	/// <summary>
-	/// 初期化
+	/// D3Dデバイスの作成。
 	/// </summary>
-	/// <remarks>
-	/// 本関数を呼び出すことでDirectX12の初期化が行われます。
-	/// </remarks>
-	/// <param name="hwnd">Windowハンドル</param>
-	/// <param name="frameBufferwidth">フレームバッファの幅</param>
-	/// <param name="frameBufferHeight">フレームバッファの高さ</param>
-	/// <returns>falseが返ってきたら作成に失敗。</returns>
-	bool InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight);
+	/// <returns>trueが返ってきたら作成に成功。</returns>
 	bool CreateD3DDevice(ComPtr<IDXGIFactory4> dxgiFactory);
 	/// <summary>
-	/// レンダリング開始。
+	/// コマンドキューの作成。
 	/// </summary>
-	/// <remarks>
-	/// 1フレームのレンダリングの開始時に呼び出してください。
-	/// </remarks>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+	bool CreateCommandQueue();
+	
+	/// <summary>
+	/// スワップチェインの作成
+	/// </summary>
+	/// <param name="hwnd">Windowハンドル</param>
+	/// <param name="frameBufferWidth">フレームバッファの幅</param>
+	/// <param name="frameBufferHeight">フレームバッファの高さ</param>
+	/// <param name="dxgiFactory">DirectX グラフィックス インフラストラクチャー</param>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+	bool CreateSwapChain(
+		HWND hwnd,
+		UINT frameBufferWidth,
+		UINT frameBufferHeight,
+		IDXGIFactory4* dxgiFactory
+	);
+	
+	bool CreateDSVForFrameBuffer(UINT frameBufferWidth, UINT frameBufferHeight);
+
+
+
+	//初期化
+		/// 本関数を呼び出すことでDirectX12の初期化が行われます。
+	bool InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight);
+
+	//レンダリング開始
+
+	//1フレームのレンダリングの開始時に呼び出す
 	void BeginRender();
-	/// <summary>
-	/// レンダリング終了。
-	/// </summary>
-	/// <remarks>
-	/// 1フレームのレンダリングの終了時に呼び出してください。
-	/// </remarks>
+
+	//レンダリング終了
+
+	//1フレームのレンダリングの終了時に呼び出す
+
 	void EndRender();
-	/// <summary>
-	/// D3Dデバイスを取得。
-	/// </summary>
-	/// <returns></returns>
-	ID3D12Device5* GetD3DDevice()
+
+	//D3Dデバイスを取得
+
+
+	ComPtr<ID3D12Device5> GetD3DDevice()
 	{
 		return m_d3dDevice;
 	}
-	/// <summary>
-	/// バックバッファの番号を取得。
-	/// </summary>
-	/// <returns>バックバッファの番号。</returns>
-	UINT GetBackBufferIndex() const
+
+	//バックバッファの番号を取得
+	UINT m_frameIndex;
+	//バックバッファの番号
+	UINT GetBackBufferIndex()const
 	{
 		return m_frameIndex;
 	}
-	/// <summary>
-	/// コマンドキューを取得。
-	/// </summary>
-	/// <returns></returns>
-	ID3D12CommandQueue* GetCommandQueue() const
+
+	//コマンドキューを取得
+	ComPtr<ID3D12CommandQueue> GetCommandQueue()const
 	{
 		return m_commandQueue;
 	}
-	/// <summary>
-	/// コマンドリストを取得。
-	/// </summary>
-	/// <returns></returns>
-	ID3D12GraphicsCommandList4* GetCommandList() const
+	ComPtr<ID3D12GraphicsCommandList4> GetCommandList()const
 	{
 		return m_commandList;
 	}
@@ -85,26 +88,29 @@ public:
 	/// CBR_SRVのディスクリプタのサイズを取得。
 	/// </summary>
 	/// <returns></returns>
-	UINT GetCbrSrvDescriptorSize() const
+	/// 
+	UINT GetCbrSrvDescriptorSize()const
 	{
 		return m_cbrSrvDescriptorSize;
 	}
-	/// <summary>
-	/// サンプラのディスクリプタヒープサイズを取得。
-	/// </summary>
-	/// <returns></returns>
-	UINT GetSapmerDescriptorSize() const
+
+
+	//サンプラのディスクリプタヒープサイズを取得
+	UINT GetSamplerDescriptorSize()const
 	{
 		return m_samplerDescriptorSize;
 	}
-	/// <summary>
-	/// レンダリングコンテキストを取得。
-	/// </summary>
-	/// <returns></returns>
-	RenderContext& GetRenderContext()
+
+
+	bool CreateCommandList();
+
+	//レンダリングコンテキストを取得
+	std::shared_ptr<RenderContext> GetRenderContext()
 	{
 		return m_renderContext;
 	}
+
+	//フレームバッファの幅を取得
 	/// <summary>
 	/// フレームバッファの幅を取得。
 	/// </summary>
@@ -122,129 +128,6 @@ public:
 		return m_frameBufferHeight;
 	}
 	/// <summary>
-	/// レンダリングターゲットをフレームバッファに変更する。
-	/// </summary>
-	/// <param name="rc"></param>
-	void ChangeRenderTargetToFrameBuffer(RenderContext& rc);
-	/// <summary>
-	/// 現在のフレームバッファのレンダリングターゲットビューを取得。
-	/// </summary>
-	/// <returns></returns>
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentFrameBuffuerRTV() const
-	{
-		return m_currentFrameBufferRTVHandle;
-	}
-	/// <summary>
-	/// フレームバッファへの描画時に使用されているデプスステンシルビューを取得。
-	/// </summary>
-	/// <returns></returns>
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentFrameBuffuerDSV() const
-	{
-		return m_currentFrameBufferDSVHandle;
-	}
-	/// <summary>
-	/// 3DModelをレイトレワールドに登録。
-	/// </summary>
-	/// <param name="model"></param>
-	void RegistModelToRaytracingWorld(Model& model)
-	{
-		m_raytracingEngine.RegistGeometry(model);
-	}
-	/// <summary>
-	/// ここまで登録されたモデルを使ってレイトレワールドを構築。
-	/// </summary>
-	void BuildRaytracingWorld(std::shared_ptr<RenderContext> rc)
-	{
-		m_raytracingEngine.CommitRegistGeometry(rc);
-	}
-	/// <summary>
-	/// レイトレーシングをディスパッチ。
-	/// </summary>
-	/// <param name="rc"></param>
-	void DispatchRaytracing(std::shared_ptr<RenderContext> rc)
-	{
-		m_raytracingEngine.Dispatch(rc);
-	}
-	/// <summary>
-	/// フレームバッファにコピー。
-	/// </summary>
-	/// <param name="pDst"></param>
-	void CopyToFrameBuffer(RenderContext& rc, ID3D12Resource* pSrc)
-	{
-		D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-			m_renderTargets[m_frameIndex],
-			D3D12_RESOURCE_STATE_RENDER_TARGET,
-			D3D12_RESOURCE_STATE_COPY_DEST);
-		rc.ResourceBarrier(barrier);
-		rc.CopyResource(m_renderTargets[m_frameIndex], pSrc);
-
-		D3D12_RESOURCE_BARRIER barrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
-			m_renderTargets[m_frameIndex],
-			D3D12_RESOURCE_STATE_COPY_DEST,
-			D3D12_RESOURCE_STATE_RENDER_TARGET);
-		rc.ResourceBarrier(barrier2);
-	}
-	/// <summary>
-	/// ヌルテクスチャマップを取得。
-	/// </summary>
-	/// <returns></returns>
-	const NullTextureMaps& GetNullTextureMaps() const
-	{
-		return m_nullTextureMaps;
-	}
-	/// <summary>
-	/// フォントエンジンを取得。
-	/// </summary>
-	/// <returns></returns>
-	FontEngine& GetFontEngine()
-	{
-		return m_fontEngine;
-	}
-	/// <summary>
-	/// フレームバッファに描画するときのビューポートを取得。
-	/// </summary>
-	/// <returns></returns>
-	D3D12_VIEWPORT& GetFrameBufferViewport()
-	{
-		return m_viewport;
-	}
-
-	bool CreateRTVForFrameBuffer()
-private:
-	/// <summary>
-	/// D3Dデバイスの作成。
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateD3DDevice(IDXGIFactory4* dxgiFactory);
-	/// <summary>
-	/// コマンドキューの作成。
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateCommandQueue();
-	/// <summary>
-	/// スワップチェインの作成
-	/// </summary>
-	/// <param name="hwnd">Windowハンドル</param>
-	/// <param name="frameBufferWidth">フレームバッファの幅</param>
-	/// <param name="frameBufferHeight">フレームバッファの高さ</param>
-	/// <param name="dxgiFactory">DirectX グラフィックス インフラストラクチャー</param>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateSwapChain(
-		HWND hwnd,
-		UINT frameBufferWidth,
-		UINT frameBufferHeight,
-		IDXGIFactory4* dxgiFactory
-	);
-	/// <summary>
-	/// DirectX グラフィックス インフラストラクチャーの作成。
-	/// </summary>
-	/// <remarks>
-	/// DirectX グラフィックス インフラストラクチャーは
-	/// カーネル モード ドライバーおよびシステム ハードウェアと通信するためのインターフェースです。 
-	/// </remarks>
-	/// <returns>作成されたDXGI</returns>
-	ComPtr<IDXGIFactory4> CreateDXGIFactory();
-	/// <summary>
 	/// フレームバッファ用のディスクリプタヒープを作成。
 	/// </summary>
 	/// <returns>trueが返ってきたら作成に成功。</returns>
@@ -253,74 +136,91 @@ private:
 	/// フレームバッファ用のレンダリングターゲットビューを作成。
 	/// </summary>
 	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateRTVForFameBuffer();
+	bool CreateRTVForFrameBuffer();
+
 	/// <summary>
-	/// フレームバッファ用の深度ステンシルビューを作成。
+	/// レンダリングターゲットをフレームバッファに変更する。
 	/// </summary>
-	/// <param name="frameBufferWidth">フレームバッファの幅</param>
-	/// <param name="frameBufferHeight">フレームバッファの高さ</param>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateDSVForFrameBuffer(UINT frameBufferWidth, UINT frameBufferHeight);
+	/// <param name="rc"></param>
+	void ChangeRenderTargetToFrameBuffer(std::shared_ptr<RenderContext> rc);
+
 	/// <summary>
-	/// コマンドリストの作成。
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateCommandList();
-	/// <summary>
-	/// GPUとの同期オブジェクト作成
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
+		/// 現在のフレームバッファのレンダリングターゲットビューを取得。
+		/// </summary>
+		/// <returns></returns>
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentFrameBuffuerRTV() const
+	{
+		return m_currentFrameBufferRTVHandle;
+	}
+
 	bool CreateSynchronizationWithGPUObject();
+
 	/// <summary>
-	/// 描画の完了待ち。
+	/// フレームバッファにコピー。
 	/// </summary>
-	void WaitDraw();
+	/// <param name="pDst"></param>
+	void CopyToFrameBuffer(std::shared_ptr<RenderContext> rc, ID3D12Resource* pSrc)
+	{
+		D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+			m_renderTargets[m_frameIndex].Get(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET,
+			D3D12_RESOURCE_STATE_COPY_DEST);
+		rc->ResourceBarrier(barrier);
+		rc->CopyResource(m_renderTargets[m_frameIndex].Get(), pSrc);
+
+		D3D12_RESOURCE_BARRIER barrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
+			m_renderTargets[m_frameIndex].Get(),
+			D3D12_RESOURCE_STATE_COPY_DEST,
+			D3D12_RESOURCE_STATE_RENDER_TARGET);
+		rc->ResourceBarrier(barrier2);
+	}
+
+	//ヌルテクスチャマップを取得
+
+
+	const std::shared_ptr<NullTextureMaps>GetNullTextureMaps() const
+	{
+		return m_nullTextureMaps;
+	}
+	private:
+		//GPUベンダー定義。
+		enum GPU_Vender {
+			GPU_VenderNvidia,	//NVIDIA
+			GPU_VenderAMD,		//Intel
+			GPU_VenderIntel,	//AMD
+			Num_GPUVender,
+		};
 
 public:
-	enum { FRAME_BUFFER_COUNT = 2 };						//フレームバッファの数。
+	enum { FRAME_BUFFER_COUNT = 2 };
 private:
-	//GPUベンダー定義。
-	enum GPU_Vender {
-		GPU_VenderNvidia,	//NVIDIA
-		GPU_VenderAMD,		//Intel
-		GPU_VenderIntel,	//AMD
-		Num_GPUVender,
-	};
-
-	ComPtr<ID3D12Device5> m_d3dDevice = nullptr;					//D3Dデバイス。
-	ComPtr < ID3D12CommandQueue>m_commandQueue = nullptr;			//コマンドキュー。
-	ComPtr<IDXGISwapChain3> m_swapChain = nullptr;					//スワップチェイン。
-	ComPtr <ID3D12DescriptorHeap> m_rtvHeap = nullptr;				//レンダリングターゲットビューのディスクリプタヒープ。
-	ComPtr < ID3D12DescriptorHeap> m_dsvHeap = nullptr;				//深度ステンシルビューのディスクリプタヒープ。
-	ComPtr<ID3D12CommandAllocator> m_commandAllocator = nullptr;	//コマンドアロケータ。
-	ComPtr<ID3D12GraphicsCommandList4> m_commandList = nullptr;		//コマンドリスト。
-	ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;			//パイプラインステート。
-	int m_currentBackBufferIndex = 0;						//現在のバックバッファの番号。
-	UINT m_rtvDescriptorSize = 0;							//フレームバッファのディスクリプタのサイズ。
-	UINT m_dsvDescriptorSize = 0;							//深度ステンシルバッファのディスクリプタのサイズ。
-	UINT m_cbrSrvDescriptorSize = 0;						//CBR_SRVのディスクリプタのサイズ。
-	UINT m_samplerDescriptorSize = 0;					//サンプラのディスクリプタのサイズ。			
+	std::shared_ptr<GraphicsEngine> m_graphicsEngine = nullptr;	//グラフィックスエンジン
+	ComPtr<ID3D12GraphicsCommandList4> m_commandList;
+	ComPtr<ID3D12CommandQueue> m_commandQueue;
+	ComPtr<ID3D12Device5> m_d3dDevice;
+	ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
 	ComPtr<ID3D12Resource> m_renderTargets[FRAME_BUFFER_COUNT] = { nullptr };	//フレームバッファ用のレンダリングターゲット。
-	ComPtr<ID3D12Resource> m_depthStencilBuffer = nullptr;	//深度ステンシルバッファ。
-	D3D12_VIEWPORT m_viewport;			//ビューポート。
-	D3D12_RECT m_scissorRect;			//シザリング矩形。
-	RenderContext m_renderContext;		//レンダリングコンテキスト。
+	ComPtr<ID3D12Resource>  m_depthStencilBuffer = nullptr;	//深度ステンシルバッファ。
+	ComPtr<ID3D12DescriptorHeap> m_dsvHeap = nullptr;
+	ComPtr<ID3D12Fence> m_fence;
+	ComPtr<ID3D12CommandAllocator> m_commandAllocator;
+	ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;
+	UINT m_cbrSrvDescriptorSize = 0;
+	UINT m_samplerDescriptorSize = 0;
+	UINT m_rtvDescriptorSize = 0;
+	UINT m_frameBufferWidth = 0;				//フレームバッファの幅。
+	UINT m_frameBufferHeight = 0;
+	UINT m_dsvDescriptorSize = 0;
+	UINT64 m_fenceValue = 0;
+	HANDLE m_fenceEvent = nullptr;
+	D3D12_VIEWPORT m_viewport;
+	int m_currentBackBufferIndex = 0;
+	std::shared_ptr<RenderContext> m_renderContext;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferRTVHandle;		//現在書き込み中のフレームバッファのレンダリングターゲットビューのハンドル。
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferDSVHandle;		//現在書き込み中のフレームバッファの深度ステンシルビューの
-	// GPUとの同期で使用する変数。
-	UINT m_frameIndex = 0;
-	HANDLE m_fenceEvent = nullptr;
-	ComPtr<ID3D12Fence> m_fence = nullptr;
-	UINT64 m_fenceValue = 0;
-	UINT m_frameBufferWidth = 0;				//フレームバッファの幅。
-	UINT m_frameBufferHeight = 0;				//フレームバッファの高さ。
-	Camera m_camera2D;							//2Dカメラ。
-	Camera m_camera3D;							//3Dカメラ。
-	raytracing::Engine m_raytracingEngine;		//レイトレエンジン。
-	NullTextureMaps m_nullTextureMaps;			//ヌルテクスチャマップ。
-	FontEngine m_fontEngine;					//フォントエンジン。
-	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemroy;	//DirectXTKのグラフィックメモリシステム。
+	ComPtr<ID3D12Resource> m_renderTargets[FRAME_BUFFER_COUNT] = { nullptr };	//フレームバッファ用のレンダリングターゲット。
+	std::shared_ptr<NullTextureMaps> m_nullTextureMaps;
+	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemory;
+	ComPtr<IDXGISwapChain3> m_swapChain = nullptr;
 };
-extern GraphicsEngine* g_graphicsEngine;	//グラフィックスエンジン
-extern Camera* g_camera2D;					//2Dカメラ。
-extern Camera* g_camera3D;					//3Dカメラ。
+
