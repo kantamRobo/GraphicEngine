@@ -23,11 +23,37 @@ public:
 		r.m_uniformBufferCPU[0] = nullptr;
 		r.m_uniformBufferCPU[1] = nullptr;
 	}
+
+	void InitUniformBuffer(int size, void* srcData = nullptr);
+
+	void RegistUniformBufferView(int bufferNo);
+
+	bool IsValid()const
+	{
+		return m_isValid;
+	}
+
+	void CopyToVRAM(void* data);
+
+template<class T>
+void CopyToVRAM(T& data)
+{
+	CopyToVRAM(&data);
+}
+
+/// <summary>
+	/// ディスクリプタヒープにConstantBufferViewを登録。
+	/// </summary>
+	/// <param name="descriptorHandle"></param>
+void RegistUniformBufferView();
+void RegistConstantBufferView( int bufferNo);
+
+
 private:
 	VkBuffer m_uniformbuffer[2] = { nullptr };
 	void* m_uniformBufferCPU[2] = { nullptr };
 	int m_size = 0;
-	int m_allocsSize = 0;
+	int m_allocSize = 0;
 	bool m_isValid = false;
 
 };
