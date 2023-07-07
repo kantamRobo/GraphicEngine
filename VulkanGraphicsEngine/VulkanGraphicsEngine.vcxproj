@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CoreGraphicsEngine.h" />
     <ClInclude Include="DescriptorSet.h" />
     <ClInclude Include="IVulkanShaderResource.h" />
     <ClInclude Include="IVulkanUnorderedResource.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="VulkanVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CoreGraphicsEngine.cpp" />
     <ClCompile Include="DescriptorSet.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="RenderingContext.cpp" />

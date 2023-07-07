@@ -26,8 +26,7 @@ public:
 
 	void InitUniformBuffer(int size, void* srcData = nullptr);
 
-	void RegistUniformBufferView(int bufferNo);
-
+	
 	bool IsValid()const
 	{
 		return m_isValid;
