@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DescriptorSet.h" />
+    <ClInclude Include="IVulkanShaderResource.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Raytracing.h" />

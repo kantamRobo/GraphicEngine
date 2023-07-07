@@ -1,4 +1,5 @@
 #pragma once
+
 class DescriptorSet
 {
 	//コンストラクタ
@@ -10,7 +11,9 @@ class DescriptorSet
 	
 private:
 
+	VkDescriptorSet m_descriptorSet[2] = {};
 	
+	std::vector<IShaderResource*> m_ShaderResources;
 
 };
 

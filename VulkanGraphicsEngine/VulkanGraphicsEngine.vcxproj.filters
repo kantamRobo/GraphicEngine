@@ -54,6 +54,9 @@
     <ClInclude Include="DescriptorSet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="IVulkanShaderResource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VulkanGraphicsEngine.cpp">
