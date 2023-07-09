@@ -13,6 +13,16 @@ enum { MAX_SHADER_RESOURCE = 16 };	//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ÌÅ‘å”B‘«‚è‚È‚­‚È‚Á‚½‚
 class RenderContext
 {
 public:
+
+	/// <summary>
+	/// ƒŠƒ\[ƒX‚ğƒRƒs[B
+	/// </summary>
+	/// <param name="pDst">ƒRƒs[æ‚ÌƒŠƒ\[ƒX</param>
+	/// <param name="pSrc">ƒRƒs[Œ³‚ÌƒŠƒ\[ƒX</param>
+	void CopyResource(ID3D12Resource* pDst, ID3D12Resource* pSrc)
+	{
+		m_commandList->CopyResource(pDst, pSrc);
+	}
 	void InitRenderingContext(ComPtr<ID3D12GraphicsCommandList4> commandList)
 	{
 		m_commandList = commandList;
@@ -300,17 +310,8 @@ public:
 			m_commandList->Dispatch(ThreadGroupCountX, ThreadGroupCountY, ThreadGroupCountZ);
 		}
 
-		/// <summary>
-		/// ƒŠƒ\[ƒX‚ğƒRƒs[B
-		/// </summary>
-		/// <param name="pDst">ƒRƒs[æ‚ÌƒŠƒ\[ƒX</param>
-		/// <param name="pSrc">ƒRƒs[Œ³‚ÌƒŠƒ\[ƒX</param>
-		void CopyResource(ID3D12Resource * pDst, ID3D12Resource * pSrc)
-		{
-			m_commandList->CopyResource(pDst, pSrc);
-		}
 
-	private:
+
 
 		/// <summary>
 		/// ƒfƒBƒXƒNƒŠƒvƒ^ƒe[ƒuƒ‹‚ğİ’èB

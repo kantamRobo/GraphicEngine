@@ -153,8 +153,45 @@ public:
 		return m_currentFrameBufferRTVHandle;
 	}
 
+	/// <summary>
+	/// フレームバッファへの描画時に使用されているデプスステンシルビューを取得。
+	/// </summary>
+	/// <returns></returns>
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentFrameBuffuerDSV() const
+	{
+		return m_currentFrameBufferDSVHandle;
+	}
+
+
+	/// <summary>
+	/// 3DModelをレイトレワールドに登録。
+	/// </summary>
+	/// <param name="model"></param>
+	void RegistModelToRaytracingWorld(Model& model)
+	{
+		m_raytracingEngine.RegistGeometry(model);
+	}
+
+	/// <summary>
+/// ここまで登録されたモデルを使ってレイトレワールドを構築。
+/// </summary>
+	void BuildRaytracingWorld(RenderContext& rc)
+	{
+		m_raytracingEngine.CommitRegistGeometry(rc);
+	}
+
 	bool CreateSynchronizationWithGPUObject();
 
+
+
+	/// <summary>
+	/// レイトレーシングをディスパッチ。
+	/// </summary>
+	/// <param name="rc"></param>
+	void DispatchRaytracing(RenderContext& rc)
+	{
+		m_raytracingEngine.Dispatch(rc);
+	}
 	/// <summary>
 	/// フレームバッファにコピー。
 	/// </summary>
@@ -173,6 +210,15 @@ public:
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			D3D12_RESOURCE_STATE_RENDER_TARGET);
 		rc->ResourceBarrier(barrier2);
+	}
+
+	/// <summary>
+	/// フォントエンジンを取得。
+	/// </summary>
+	/// <returns></returns>
+	FontEngine& GetFontEngine()
+	{
+		return m_fontEngine;
 	}
 
 	//ヌルテクスチャマップを取得
@@ -214,11 +260,13 @@ private:
 	UINT64 m_fenceValue = 0;
 	HANDLE m_fenceEvent = nullptr;
 	D3D12_VIEWPORT m_viewport;
+	D3D12_RECT m_scissorRect;			//シザリング矩形。
 	int m_currentBackBufferIndex = 0;
 	std::shared_ptr<RenderContext> m_renderContext;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferRTVHandle;		//現在書き込み中のフレームバッファのレンダリングターゲットビューのハンドル。
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferDSVHandle;		//現在書き込み中のフレームバッファの深度ステンシルビューの
 	ComPtr<ID3D12Resource> m_renderTargets[FRAME_BUFFER_COUNT] = { nullptr };	//フレームバッファ用のレンダリングターゲット。
+	ComPtr<ID3D12Resource> m_depthStencilBuffer = nullptr;
 	std::shared_ptr<NullTextureMaps> m_nullTextureMaps;
 	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemory;
 	ComPtr<IDXGISwapChain3> m_swapChain = nullptr;
