@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "PipelineState.h"
 #include "RootSignature.h"
-
+#include "PipelineState.h"
 class ConstantBuffer;
 class Texture;
 class DescriptorHeap;
@@ -70,16 +70,7 @@ public:
 		m_currentViewport = viewport;
 	}
 
-	/// <summary>
-/// コマンドリストをリセット。
-/// </summary>
-/// <param name="commandAllocator"></param>
-/// <param name="pipelineState"></param>
-	void Reset(ID3D12CommandAllocator* commandAllocator, ID3D12PipelineState* pipelineState)
-	{
-		m_commandList->Reset(commandAllocator, pipelineState);
 	
-	}
 
 	/// <summary>
 	/// ビューポートを取得。
@@ -137,13 +128,13 @@ public:
 		m_descriptorHeaps[0] = descHeap;
 
 		
-		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps);
+		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps->GetAddressOf());
 
 	}
 	inline void SetDescriptorHeap(DescriptorHeap& descHeap)
 	{
 		m_descriptorHeaps[0] = descHeap.get();
-		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps);
+		m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps->GetAddressOf());
 
 		//ディスクリプタテーブルに登録する。
 		if (descHeap.IsRegistConstantBuffer()) {
@@ -170,7 +161,7 @@ public:
 
 			}
 			m_commandList->SetDescriptorHeaps(numDescriptorHeap
-				, m_descriptorHeaps);
+				, m_descriptorHeaps->GetAddressOf());
 		}
 
 		void SetConstantBuffer(int registerNo, std::shared_ptr<ConstantBuffer> cb)
@@ -226,7 +217,19 @@ public:
 		/// <param name="renderTargets">レンダリングターゲットの配列。</param>
 		void SetRenderTargetsAndViewport(UINT numRT, RenderTarget * renderTargets[]);
 
-
+		/// <summary>
+	/// 複数枚のレンダリングターゲットをクリア。
+	/// </summary>
+	/// <remarks>
+	/// クリアカラーはレンダリングターゲットの初期化時に指定したカラーです。
+	/// </remarks>
+	/// <param name="numRt">レンダリングターゲットの数</param>
+	/// <param name="renderTargets">レンダリングターゲットの数</param>
+		void ClearRenderTargetViews(
+			int numRt,
+			RenderTarget* renderTargets[]
+		);
+		void SetPipelineState(PSO& pso);
 		/// <summary>
 	/// 複数枚のレンダリングターゲットを設定する。
 	/// </summary>
@@ -359,6 +362,17 @@ public:
 		}
 
 		/// <summary>
+/// コマンドリストをリセット。
+/// </summary>
+/// <param name="commandAllocator"></param>
+/// <param name="pipelineState"></param>
+		void Reset(ID3D12CommandAllocator* commandAllocator, ID3D12PipelineState* pipelineState)
+		{
+			m_commandList->Reset(commandAllocator, pipelineState);
+
+		}
+
+		/// <summary>
 		/// ディスクリプタテーブルを設定。
 		/// </summary>
 		/// <param name="RootParameterIndex"></param>
@@ -373,13 +387,101 @@ public:
 			);
 		}
 
+		/// <summary>
+	/// インデックスつきプリミティブを描画。
+	/// </summary>
+	/// <param name="indexCount">インデックスの数。</param>
+		void DrawIndexed(UINT indexCount)
+		{
+			m_commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+		}
 
+		/// <summary>
+	/// インスタンシング描画
+	/// </summary>
+	/// <param name="indexCount">インデックス数</param>
+	/// <param name="numInstance">インスタンス数</param>
+		void DrawIndexedInstanced(UINT indexCount, UINT numInstance)
+		{
+			m_commandList->DrawIndexedInstanced(indexCount, numInstance, 0, 0, 0);
+		}
 
+		/// <summary>
+	/// コンピュートシェーダーをディスパッチ。
+	/// </summary>
+	/// <param name="ThreadGroupCountX"></param>
+	/// <param name="ThreadGroupCountY"></param>
+	/// <param name="ThreadGroupCountZ"></param>
+		void Dispatch(
+			UINT ThreadGroupCountX,
+			UINT ThreadGroupCountY,
+			UINT ThreadGroupCountZ)
+		{
+			m_commandList->Dispatch(ThreadGroupCountX, ThreadGroupCountY, ThreadGroupCountZ);
+		}
+
+		/// <summary>
+	/// GPUでレイトレーシングアクセラレーション構造のビルドを行います。
+	/// </summary>
+		void BuildRaytracingAccelerationStructure(D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC desc)
+		{
+			m_commandList->BuildRaytracingAccelerationStructure(&desc, 0, nullptr);
+		}
+		/// <summary>
+		/// レイをディスパッチ
+		/// </summary>
+		/// <param name="rayDesc"></param>
+		void DispatchRays(D3D12_DISPATCH_RAYS_DESC& rayDesc)
+		{
+			m_commandList->DispatchRays(&rayDesc);
+		}
+		/// <summary>
+		/// リソースをコピー。
+		/// </summary>
+		/// <param name="pDst">コピー先のリソース</param>
+		/// <param name="pSrc">コピー元のリソース</param>
+		void CopyResource(ID3D12Resource* pDst, ID3D12Resource* pSrc)
+		{
+			m_commandList->CopyResource(pDst, pSrc);
+		}
+		private:
+
+			/// <summary>
+	/// ディスクリプタテーブルを設定。
+	/// </summary>
+	/// <param name="RootParameterIndex"></param>
+	/// <param name="BaseDescriptor"></param>
+			void SetGraphicsRootDescriptorTable(
+				UINT RootParameterIndex,
+				D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
+			{
+				m_commandList->SetGraphicsRootDescriptorTable(
+					RootParameterIndex,
+					BaseDescriptor
+				);
+			}
 	
+			/// <summary>
+	/// ディスクリプタテーブルを設定。
+	/// </summary>
+	/// <param name="RootParameterIndex"></param>
+	/// <param name="BaseDescriptor"></param>
+			void SetComputeRootDescriptorTable(
+				UINT RootParameterIndex,
+				D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
+			{
+				m_commandList->SetComputeRootDescriptorTable(
+					RootParameterIndex,
+					BaseDescriptor
+				);
+			}
+
+		private:
 		ComPtr<ID3D12GraphicsCommandList4> m_commandList;
-		ID3D12DescriptorHeap* m_descriptorHeaps[MAX_DESCRIPTOR_HEAP];
+		ComPtr<ID3D12DescriptorHeap> m_descriptorHeaps[MAX_DESCRIPTOR_HEAP];
 		std::shared_ptr<ConstantBuffer>m_constantBuffers[MAX_CONSTANT_BUFFER];
 		std::shared_ptr<Texture> m_shaderResources[MAX_SHADER_RESOURCE];
+		std::vector < ComPtr<ID3D12Resource>> m_scratchResourceList;
 		D3D12_VIEWPORT m_currentViewport;
 	
 };

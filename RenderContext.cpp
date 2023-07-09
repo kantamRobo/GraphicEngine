@@ -42,6 +42,20 @@ void RenderContext::SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> ren
 
 }
 
+void RenderContext::SetRenderTargetAndViewport(RenderTarget& renderTarget)
+{
+	D3D12_VIEWPORT viewport;
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = static_cast<float>(renderTarget.GetWidth());
+	viewport.Height = static_cast<float>(renderTarget.GetHeight());
+	viewport.MinDepth = D3D12_MIN_DEPTH;
+	viewport.MaxDepth = D3D12_MAX_DEPTH;
+	SetViewportAndScissor(viewport);
+
+	SetRenderTarget(renderTarget);
+}
+
 void RenderContext::SetRenderTargetsAndViewport(UINT numRT, RenderTarget* renderTargets[])
 {
 	//d
@@ -61,6 +75,18 @@ void RenderContext::SetRenderTargetsAndViewport(UINT numRT, RenderTarget* render
 		//深度バッファがない。
 		m_commandList->OMSetRenderTargets(numRT, rtDSHandleTbl, FALSE, nullptr);
 	}
+}
+
+void RenderContext::ClearRenderTargetViews(int numRt, RenderTarget* renderTargets[])
+{
+	if (renderTargets[0]->IsExistDepthStencilBuffer()) {
+		//深度バッファがある。
+		ClearDepthStencilView(renderTargets[0]->GetDSVCpuDescriptorHandle(), renderTargets[0]->GetDSVClearValue());
+	}
+	for (int i = 0; i < numRt; i++) {
+		ClearRenderTargetView(renderTargets[i]->GetRTVCpuDescriptorHandle(), renderTargets[i]->GetRTVClearColor());
+	}
+
 }
 
 void RenderContext::SetRenderTargets(UINT numRT, RenderTarget* renderTargets[])
