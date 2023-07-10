@@ -3,6 +3,7 @@
 #include "Skeleton.h"
 #include "Vector.h"
 #include "Matrix.h"
+#include "Camera.h"
 class IShaderResource;
 
 //モデルの上方向
@@ -69,7 +70,7 @@ public:
 	/// <param name="renderContext">レンダリングコンテキスト</param>
 	/// <param name="viewMatrix">ビュー行列</param>
 	/// <param name="projMatrix">プロジェクション行列</param>
-	void Draw(RenderContext& renderContext, const Matrix& viewMatrix, const Matrix& projMatrix);
+	void Draw(RenderContext& renderContext, const EngineMath::Matrix& viewMatrix, const EngineMath::Matrix& projMatrix);
 	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance);
 	/// <summary>
 	/// インスタンシング描画
@@ -81,7 +82,7 @@ public:
 	/// ワールド行列を取得。
 	/// </summary>
 	/// <returns></returns>
-	const Matrix& GetWorldMatrix() const
+	const EngineMath::Matrix& GetWorldMatrix() const
 	{
 		return m_world;
 	}

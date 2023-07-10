@@ -159,6 +159,7 @@
     <ClInclude Include="RaytracingWorld.h" />
     <ClInclude Include="RayTracingInstance.h" />
     <ClInclude Include="RenderContext.h" />
+    <ClInclude Include="RenderContext_inline.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RootSignature.h" />

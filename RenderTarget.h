@@ -115,6 +115,8 @@ private:
 		int h,
 		DXGI_FORMAT format);
 
+	void CreateDescriptor(ComPtr<ID3D12Device5> d3dDevice);
+
 	private:
 		std::shared_ptr<Texture> m_renderTargetTexture;
 		ComPtr<ID3D12Resource> m_renderTargetTextureDx12 = nullptr;

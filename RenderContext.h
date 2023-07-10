@@ -190,6 +190,8 @@ public:
 			m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
 		}
 
+
+
 		/// <summary>
 		/// レンダリングターゲットをスロット0に設定する。
 		/// </summary>
@@ -240,6 +242,13 @@ public:
 			RenderTarget* renderTargets[]
 		);
 		void SetPipelineState(PSO& pso);
+		void SetComputeDescriptorHeap(std::shared_ptr<DescriptorHeap> descHeap);
+		void WaitUntilFinishDrawingToRenderTarget(std::shared_ptr<RenderTarget> renderTarget);
+		void WaitUntilToPossibleSetRenderTarget(std::shared_ptr<RenderTarget> renderTarget);
+		void WaitUntilToPossibleSetRenderTargets(int numRt, std::shared_ptr<RenderTarget> renderTargets[]);
+		void WaitUntilToPossibleSetRenderTargets(int numRt, RenderTarget* renderTargets[]);
+		
+		void WaitUntilFinishDrawingToRenderTargets(int numRt, std::shared_ptr<RenderTarget> renderTargets[]);
 		/// <summary>
 	/// 複数枚のレンダリングターゲットを設定する。
 	/// </summary>

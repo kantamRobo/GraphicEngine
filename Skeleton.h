@@ -8,8 +8,8 @@ class Bone {
 public:
 	//コンストラクタ
 	Bone(const wchar_t* boneName,
-		const Matrix& bindPose,
-		const Matrix& invBindPose,
+		const EngineMath::Matrix& bindPose,
+		const EngineMath::Matrix& invBindPose,
 		int parentBoneNo,
 		int boneId) :
 		m_boneName(boneName),
@@ -22,31 +22,31 @@ public:
 
 	}
 		
-	void SetLocalMatrix(const Matrix& m)
+	void SetLocalMatrix(const EngineMath::Matrix& m)
 	{
 		m_localMatrix = m;
 	}
 
 	//ローカル行列を取得
-	const Matrix& GetLocalMatrix()const
+	const EngineMath::Matrix& GetLocalMatrix()const
 	{
 		return m_localMatrix;
 
 	}
 	//ワールド行列を取得
-	const Matrix& GetWorldMatrix()const
+	const EngineMath::Matrix& GetWorldMatrix()const
 	{
 		return m_worldMatrix;
 	}
 
 	//バインドポーズの行列を取得
-	const Matrix& GetBindPoseMatrix()const
+	const EngineMath::Matrix& GetBindPoseMatrix()const
 	{
 		return m_bindPose;
 	}
 
 	//バインドポーズの逆行列を取得
-	const Matrix& GetInvBindPoseMatrix()const
+	const EngineMath::Matrix& GetInvBindPoseMatrix()const
 	{
 		return m_invBindPose;
 
@@ -79,7 +79,7 @@ public:
 		return m_children;
 	}
 
-	const Matrix& GetOffsetLocalMatrix()const
+	const EngineMath::Matrix& GetOffsetLocalMatrix()const
 	{
 		return m_offsetLocalMatrix;
 	}
@@ -115,15 +115,15 @@ private:
 	std::wstring	m_boneName;
 	int		     m_parentBoneNo = -1;
 	int			 m_boneId = -1;
-	Matrix       m_bindPose;
-	Matrix       m_invBindPose;
-	Matrix       m_localMatrix;
-	Matrix       m_worldMatrix;
-	Matrix       m_offsetMatrix;
-	Matrix			m_offsetLocalMatrix;
-	Vector3      m_position;
-	Vector3      m_scale;
-	Quaternion   m_rotation;
+	EngineMath::Matrix       m_bindPose;
+	EngineMath::Matrix       m_invBindPose;
+	EngineMath::Matrix       m_localMatrix;
+	EngineMath::Matrix       m_worldMatrix;
+	EngineMath::Matrix       m_offsetMatrix;
+	EngineMath::Matrix			m_offsetLocalMatrix;
+	EngineMath::Vector3      m_position;
+	EngineMath::Vector3      m_scale;
+	EngineMath::Quaternion   m_rotation;
 	std::list<Bone*> m_children;
 };
 
@@ -192,7 +192,7 @@ public:
 	/// ボーン行列の先頭アドレスを取得。
 	/// </summary>
 	/// <returns></returns>
-	Matrix* GetBoneMatricesTopAddress() const
+	EngineMath::Matrix* GetBoneMatricesTopAddress() const
 	{
 		return m_boneMatrixs.get();
 	}
@@ -217,7 +217,7 @@ public:
 		static const int BONE_MAX = 512;
 		using BonePtr = std::unique_ptr<Bone>;
 		std::vector<BonePtr> m_bones;
-		std::unique_ptr<Matrix[]>	m_boneMatrixs;
+		std::unique_ptr<EngineMath::Matrix[]>	m_boneMatrixs;
 		bool m_isInited = false;
 		bool m_isPlayAnimation = false;
 	};

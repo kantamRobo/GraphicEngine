@@ -162,6 +162,9 @@
     <ClInclude Include="MiniEngine.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="RenderContext_inline.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
