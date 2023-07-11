@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="CoreGraphicsEngine.h" />
     <ClInclude Include="DescriptorSet.h" />
+    <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="IVulkanShaderResource.h" />
     <ClInclude Include="IVulkanUnorderedResource.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="CoreGraphicsEngine.cpp" />
     <ClCompile Include="DescriptorSet.cpp" />
+    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="RenderingContext.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
