@@ -129,5 +129,7 @@ private:
 		int m_height = 0;
 		float m_rtvClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };	//レンダリングターゲットビューのクリアカラー。
 		float m_dsvClearValue = 1.0f;
+		
 };
+
 

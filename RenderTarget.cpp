@@ -39,7 +39,7 @@ bool RenderTarget::CreateRenderTarget(int w, int h, int mipLevel, int arraySize,
 		}
 	}
 
-	if (!CreateDescriptorHeap(*g_graphicsEngine, d3dDevice)) {
+	if (!CreateDescriptorHeap(*m_graphicsEngine, d3dDevice)) {
 		//ディスクリプタヒープの作成に失敗した。
 		MessageBoxA(nullptr, "レンダリングターゲットとなるテクスチャの作成に失敗しました。", "エラー", MB_OK);
 		return false;
@@ -116,7 +116,7 @@ bool RenderTarget::CreateRenderTargetTexture(GraphicsEngine& ge, ID3D12Device5*&
 		//作成に失敗。
 		return false;
 	}
-	m_renderTargetTexture.InitFromD3DResource(m_renderTargetTextureDx12);
+	m_renderTargetTexture->InitFromD3DResource(m_renderTargetTextureDx12);
 	return true;
 
 }
@@ -163,7 +163,7 @@ void RenderTarget::CreateDescriptor(ComPtr<ID3D12Device5> d3dDevice)
 {
 	//カラーテクスチャのディスクリプタを作成。
 	auto rtvHandle = m_rtvHeap->GetCPUDescriptorHandleForHeapStart();
-	d3dDevice->CreateRenderTargetView(m_renderTargetTexture.get(), nullptr, rtvHandle);
+	d3dDevice->CreateRenderTargetView(m_renderTargetTexture->, nullptr, rtvHandle);
 	if (m_depthStencilTexture) {
 		//深度テクスチャのディスクリプタを作成
 		auto dsvHandle = m_dsvHeap->GetCPUDescriptorHandleForHeapStart();
