@@ -1,7 +1,7 @@
 #pragma once
 class CoreGraphicsEngine
 {
-
+public:
 	VkDevice  Device = nullptr;
 	VkPhysicalDevice PDevice = nullptr;
 	VkDeviceMemory DeviceMemory = nullptr;
@@ -28,7 +28,7 @@ class CoreGraphicsEngine
 	RenderingContext renderingcontext;
 	//Renderpass
 
-	VkRenderPass renderpass = nullptr;
+	VkRenderPass m_renderpass = nullptr;
 	 
    
 	VkDescriptorSet fbheap = nullptr;
