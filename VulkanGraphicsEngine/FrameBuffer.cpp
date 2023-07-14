@@ -144,3 +144,11 @@ bool FrameBuffer::CreateDepthStencilTexture(CoreGraphicsEngine* ge, const unsign
 	depthStencilAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
 }
+
+void FrameBuffer::CreateDescriptorPool()
+{
+}
+
+void FrameBuffer::CreateDescriptorSet()
+{
+}

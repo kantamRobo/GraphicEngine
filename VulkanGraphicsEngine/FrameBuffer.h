@@ -15,7 +15,8 @@ public:
 
 	bool CreateDepthStencilTexture(CoreGraphicsEngine* ge, const unsigned int width, const unsigned int height, VkFormat format);
 
-	
+	void CreateDescriptorPool();
+	void CreateDescriptorSet();
 	
 	
 private:
