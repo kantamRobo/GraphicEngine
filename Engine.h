@@ -19,7 +19,7 @@ public:
 
 
 	//バンクからテクスチャを取得
-	Texture* GetTextureFromBank(const char* filePath)
+	std::shared_ptr<Texture> GetTextureFromBank(const char* filePath)
 	{
 		return m_textureBank.Get(filePath);
 	}
@@ -40,7 +40,7 @@ public:
 		m_textureBank.Regist(filePath, texture);
 	}
 
-	Shader* GetShaderFromBank(const char* filePath, const char* entryPointFuncName)
+	std::shared_ptr<Shader> GetShaderFromBank(const char* filePath, const char* entryPointFuncName)
 	{
 		std::string programName = filePath;
 		programName += entryPointFuncName;

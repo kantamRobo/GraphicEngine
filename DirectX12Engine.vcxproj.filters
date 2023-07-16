@@ -165,9 +165,6 @@
     <ClInclude Include="RenderContext_inline.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="tkEngine.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -218,7 +215,7 @@
     <ClCompile Include="Material.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="NullTexture.cpp">
+    <ClCompile Include="NullTextureMaps.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
@@ -270,9 +267,6 @@
       <Filter>raytracing</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="tkEngine.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

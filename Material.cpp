@@ -1,12 +1,13 @@
 #include "Material.h"
-
-
+#include "Engine.h"
+#include "NullTextureMaps.h"
 enum {
 	enDescriptorHeap_CB,
 	enDescriptorHeap_SRV,
 	enNumDescriptorHeap
 };
-
+extern Engine* g_engine;
+extern GraphicsEngine* g_graphicsEngine;
 void Material::BeginRender(std::shared_ptr<RenderContext> rc, int hasSkin)
 {
 	rc->SetRootSignature(m_rootSignature.Get().Get());
@@ -37,8 +38,8 @@ void Material::InitPipelineState(const std::array<DXGI_FORMAT, D3D12_SIMULTANEOU
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = { 0 };
 	psoDesc.InputLayout = { inputElementDescs,_countof(inputElementDescs) };
 	psoDesc.pRootSignature = m_rootSignature.Get().Get();
-	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsSkinModel->GetCompiledBlob());
-	psoDesc.PS = CD3DX12_SHADER_BYTECODE(m_psModel->GetCompiledBlob());
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsSkinModel->GetCompiledBlob().Get());
+	psoDesc.PS = CD3DX12_SHADER_BYTECODE(m_psModel->GetCompiledBlob().Get());
 	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 
 
@@ -70,11 +71,11 @@ void Material::InitPipelineState(const std::array<DXGI_FORMAT, D3D12_SIMULTANEOU
 	m_skinModelPipelineState.InitGraphicPipelineState(psoDesc);
 
 	//続いてスキン無しモデル用を作成
-	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsNonSkinModel->GetCompiledBlob());
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsNonSkinModel->GetCompiledBlob().Get());
 	m_nonSkinModelPipelineState.InitGraphicPipelineState(psoDesc);
 
 	//続いて半透明マテリアル用
-	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsSkinModel->GetCompiledBlob());
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsSkinModel->GetCompiledBlob().Get());
 	psoDesc.BlendState.IndependentBlendEnable = TRUE;
 	psoDesc.BlendState.RenderTarget[0].BlendEnable = TRUE;
 	psoDesc.BlendState.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
@@ -83,7 +84,7 @@ void Material::InitPipelineState(const std::array<DXGI_FORMAT, D3D12_SIMULTANEOU
 
 	m_transSkinModelPipelineState.InitGraphicPipelineState(psoDesc);
 
-	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsNonSkinModel->GetCompiledBlob());
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsNonSkinModel->GetCompiledBlob().Get());
 	m_transNonSkinModelPipelineState.InitGraphicPipelineState(psoDesc);
 
 }
@@ -95,20 +96,20 @@ void Material::InitShaders(
 	const char* psEntryPointFunc)
 {
 	//スキン無しモデル用のシェーダーをロードする
-	m_vsNonSkinModel = g_engine->GetShaderFromBank(fxFilePath, vsEntryPointFunc);
+	m_vsNonSkinModel = g_engine->GetShaderFromBank(fxFilePath, vsEntrypointFunc);
 	if (m_vsNonSkinModel == nullptr)
 	{
 		m_vsNonSkinModel = std::make_shared<Shader>();
 		m_vsNonSkinModel->LoadVS(fxFilePath, vsEntrypointFunc);
-		g_engine->RegistShaderToBank(fxFilePath, vsEntryPointFunc, m_vsNonSkinModel);
+		g_engine->RegistShaderToBank(fxFilePath, vsEntrypointFunc, m_vsNonSkinModel.get());
 	}
 	//スキンありモデル用のシェーダーをロードする
-	m_vsSkinModel = g_engine->GetShaderFromBank(fxFilePath, vsSkinEntriyPointFunc);
+	m_vsSkinModel = g_engine->GetShaderFromBank(fxFilePath, vsSkinEntrypointFunc);
 	if (m_vsSkinModel == nullptr)
 	{
 		m_vsSkinModel = std::make_shared<Shader>();
-		m_vsSkinModel->LoadVS(fxFilePath, vsSkinEntriyPointFunc);
-		g_engine->RegistShaderToBank(fxFilePath, vsSkinEntriyPointFunc, m_vsSkinModel);
+		m_vsSkinModel->LoadVS(fxFilePath, vsSkinEntrypointFunc);
+		g_engine->RegistShaderToBank(fxFilePath, vsSkinEntrypointFunc, m_vsSkinModel.get());
 	}
 
 	m_psModel = g_engine->GetShaderFromBank(fxFilePath, psEntryPointFunc);
@@ -117,7 +118,7 @@ void Material::InitShaders(
 	{
 		m_psModel = std::make_shared<Shader>();
 		m_psModel->LoadPS(fxFilePath, psEntryPointFunc);
-		g_engine->RegistShaderToBank(fxFilePath, psEntryPointFunc, m_psModel);
+		g_engine->RegistShaderToBank(fxFilePath, psEntryPointFunc, m_psModel.get());
 	}
 
 }
@@ -203,9 +204,9 @@ void Material::InitTexture(const aiMaterial* aiMat)
 		}
 		else
 		{
-			filePath = nullTextureMaps.GetAlbedoMapFilePath();
-			map = nullTextureMaps.GetAlbedoMap().get();
-			mapSize = nullTextureMaps.GetAlbedoMapSize();
+			filePath = nullTextureMaps->GetAlbedoMapFilePath();
+			map = nullTextureMaps->GetAlbedoMap().get();
+			mapSize = nullTextureMaps->GetAlbedoMapSize();
 		}
 
 		auto albedoMap = g_engine->GetTextureFromBank(filePath);
@@ -214,7 +215,7 @@ void Material::InitTexture(const aiMaterial* aiMat)
 		{
 			albedoMap = std::make_shared<Texture>();
 			albedoMap->InitFromMemory(map, mapSize);
-			g_engine->RegistTextureToBank(filePath, albedoMap);
+			g_engine->RegistTextureToBank(filePath, albedoMap.get());
 		}
 		m_albedoMap = albedoMap;
 	}
@@ -232,9 +233,9 @@ void Material::InitTexture(const aiMaterial* aiMat)
 		auto normalMap = g_engine->GetTextureFromBank(filePath);
 		if (normalMap == nullptr)
 		{
-			normalMap = new Texture();
+			normalMap = std::make_shared<Texture>();
 			normalMap->InitFromMemory(map, mapSize);
-			g_engine->RegistTextureToBank(filePath, normalMap);
+			g_engine->RegistTextureToBank(filePath, normalMap.get());
 		}
 		m_normalMap = normalMap;
 
@@ -253,11 +254,11 @@ void Material::InitTexture(const aiMaterial* aiMat)
 			aiMat->Get(AI_MATKEY_TEXTURE_REFLECTION, mapSize);
 		}
 		auto specularmap = g_engine->GetTextureFromBank(filePath);
-		if (normalMap == nullptr)
+		if (specularmap == nullptr)
 		{
-			normalMap = new Texture();
-			normalMap->InitFromMemory(map, mapSize);
-			g_engine->RegistTextureToBank(filePath, normalMap);
+			specularmap = std::make_shared<Texture>();
+			specularmap->InitFromMemory(map, mapSize);
+			g_engine->RegistTextureToBank(filePath, specularmap.get());
 		}
 	 m_specularMap = specularmap;
 
