@@ -137,7 +137,7 @@ public:
 	~Skeleton();
 
 	//ボーンのローカル行列を設定
-	void SetBoneLocalMatrix(int boneNo, const Matrix& m)
+	void SetBoneLocalMatrix(int boneNo, const EngineMath::Matrix& m)
 	{
 		if (boneNo > (int)m_bones.size() - 1)
 		{
@@ -208,11 +208,11 @@ public:
 
 public:
 	//更新
-	void Update(const Matrix& mWorld);
+	void Update(const EngineMath::Matrix& mWorld);
 
 	//ボーンのワールド行列の更新関数
 
-	static void UpdateBoneWorldMatrix(Bone& bone, const Matrix& parentMatrix);
+	static void UpdateBoneWorldMatrix(Bone& bone, const EngineMath::Matrix& parentMatrix);
 
 	private:
 		static const int BONE_MAX = 512;

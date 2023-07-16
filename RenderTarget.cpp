@@ -52,7 +52,7 @@ bool RenderTarget::CreateRenderTarget(int w, int h, int mipLevel, int arraySize,
 
 }
 
-bool RenderTarget::CreateDescriptorHeap(std::shared_ptr<GraphicEngine> ge, ID3D12Device5* d3dDevice)
+bool RenderTarget::CreateDescriptorHeap(std::shared_ptr<GraphicsEngine> ge, ID3D12Device5* d3dDevice)
 {
 	//RTV用のディスクリプタヒープを作成する
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
@@ -163,11 +163,11 @@ void RenderTarget::CreateDescriptor(ComPtr<ID3D12Device5> d3dDevice)
 {
 	//カラーテクスチャのディスクリプタを作成。
 	auto rtvHandle = m_rtvHeap->GetCPUDescriptorHandleForHeapStart();
-	d3dDevice->CreateRenderTargetView(m_renderTargetTexture->, nullptr, rtvHandle);
+	d3dDevice->CreateRenderTargetView(m_renderTargetTexture, nullptr, rtvHandle);
 	if (m_depthStencilTexture) {
 		//深度テクスチャのディスクリプタを作成
 		auto dsvHandle = m_dsvHeap->GetCPUDescriptorHandleForHeapStart();
-		d3dDevice->CreateDepthStencilView(m_depthStencilTexture, nullptr, dsvHandle);
+		d3dDevice->CreateDepthStencilView(m_depthStencilTexture.Get(), nullptr, dsvHandle);
 	}
 }
 

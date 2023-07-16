@@ -77,7 +77,7 @@ public:
 private:
 	//ディスクリプタヒープを作成
 
-	bool CreateDescriptorHeap(std::shared_ptr<GraphicEngine> ge, ID3D12Device5* d3dDevice);
+	bool CreateDescriptorHeap(std::shared_ptr<GraphicsEngine> ge, ID3D12Device5* d3dDevice);
 		/// <summary>
 		/// レンダリングターゲットとなるテクスチャを作成。
 		/// </summary>

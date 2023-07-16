@@ -4,7 +4,7 @@
 void RenderContext::SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap)
 {
 	m_descriptorHeaps[0] = descHeap.Get();
-	m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps.data()->GetAddressOf());
+	m_commandList->SetDescriptorHeaps(1, m_descriptorHeaps[0].GetAddressOf());
 	//ディスクリプタテーブルに登録する。
 	if (descHeap->IsRegistConstantBuffer()) {
 		SetGraphicsRootDescriptorTable(0, 
@@ -42,13 +42,13 @@ void RenderContext::SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> ren
 
 }
 
-void RenderContext::SetRenderTargetAndViewport(RenderTarget& renderTarget)
+void RenderContext::SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget)
 {
 	D3D12_VIEWPORT viewport;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
-	viewport.Width = static_cast<float>(renderTarget.GetWidth());
-	viewport.Height = static_cast<float>(renderTarget.GetHeight());
+	viewport.Width = static_cast<float>(renderTarget->GetWidth());
+	viewport.Height = static_cast<float>(renderTarget->GetHeight());
 	viewport.MinDepth = D3D12_MIN_DEPTH;
 	viewport.MaxDepth = D3D12_MAX_DEPTH;
 	SetViewportAndScissor(viewport);

@@ -270,5 +270,7 @@ private:
 	std::shared_ptr<NullTextureMaps> m_nullTextureMaps;
 	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemory;
 	ComPtr<IDXGISwapChain3> m_swapChain = nullptr;
+
+	Camera m_camera3D;
 };
 

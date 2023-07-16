@@ -29,6 +29,8 @@ public:
 
 	void ChangeAnimationClip(std::shared_ptr<AnimationClip> clip);
 
+	void UpdateSAnimationplayController(float deltaTime, Animation* animation);
+
 	
 	void SetInterpolateTime(float interpolateTime)
 	{
@@ -52,7 +54,7 @@ public:
 
 	void UpdateAnimationplayController(float deltaTime, Animation* animation);
 
-	const std::vector<Matrix>& GetBoneLocalMatrix()const
+	const std::vector<EngineMath::Matrix>& GetBoneLocalMatrix()const
 	{
 		return m_boneMatrix;
 	}
@@ -70,7 +72,7 @@ public:
 	/// Update関数を呼び出したときの、footstepボーンの移動量を取得。
 	/// </summary>
 	/// <returns></returns>
-	Vector3 GetFootStepDeltaValueOnUpdate() const
+	EngineMath::Vector3 GetFootStepDeltaValueOnUpdate() const
 	{
 		return m_footstepDeltaValue;
 	}
@@ -98,7 +100,7 @@ private:
 	/// </summary>
 	/// <param name="bone">計算する骨</param>
 	/// <param name="parentMatrix">親の行列</param>
-	void CalcBoneMatrixInRootBoneSpace(Bone& bone, Matrix parentMatrix);
+	void CalcBoneMatrixInRootBoneSpace(Bone& bone, EngineMath::Matrix parentMatrix);
 	/// <summary>
 	/// ボーン行列をアニメーションクリップからサンプリングする。
 	/// </summary>
@@ -127,19 +129,19 @@ private:
 	void StartLoop();
 
 	//ルートのボーン空間でのボーン行列を計算する
-	void CalcBoneMatrixInRootBoneSpace(Bone& bone, Matrix parentMatrix);
+	void CalcBoneMatrixInRootBoneSpace(Bone& bone, EngineMath::Matrix parentMatrix);
 private:
 	std::shared_ptr<AnimationClip> m_animationClip = nullptr;
 	int							   m_currentKeyFrameNoLastFrame = 0;
 	int							   m_currentKeyFrameNo = 0;
 	float						   m_time = 0.0f;
-	std::vector<Matrix>			   m_boneMatrix;
+	std::vector<EngineMath::Matrix>			   m_boneMatrix;
 	float						   m_interpolateTime;
 	float						   m_interpolateEndTime;
 	bool						   m_isPlaying = false;
 	std::shared_ptr<Skeleton>	   m_skeleton = nullptr;
-	Vector3					m_footstepDeltaValue = g_vec3Zero;	//フットステップの移動ベクトル。
-	Vector3						   m_footstepPos = g_vec3Zero;
+	EngineMath::Vector3					m_footstepDeltaValue = g_vec3Zero;	//フットステップの移動ベクトル。
+	EngineMath::Vector3						   m_footstepPos = g_vec3Zero;
 	int							   m_footstepBoneNo = -1;
 
 };

@@ -1,5 +1,7 @@
 #include "GraphicsEngine.h"
+#include  "Camera.h"
 
+Camera* g_camera3D;
 GraphicsEngine::~GraphicsEngine()
 {
 
@@ -51,6 +53,11 @@ GraphicsEngine::~GraphicsEngine()
 	if (m_d3dDevice)
 	{
 		m_d3dDevice->Release();
+	}
+
+	if (g_camera3D)
+	{
+		delete g_camera3D;
 	}
 	CloseHandle(m_fenceEvent);
 
@@ -319,7 +326,7 @@ bool GraphicsEngine::CreateCommandList()
 {
 	//コマンドリストの作成。
 	m_d3dDevice->CreateCommandList(
-		0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator, nullptr, IID_PPV_ARGS(&m_commandList)
+		0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_commandList)
 	);
 	if (!m_commandList) {
 		return false;
@@ -512,7 +519,7 @@ void GraphicsEngine::BeginRender()
 void GraphicsEngine::EndRender()
 {
 	// レンダリングターゲットへの描き込み完了待ち
-	m_renderContext->WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex]);
+	m_renderContext->WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex].Get());
 
 
 	m_directXTKGfxMemory->Commit(m_commandQueue.Get());
