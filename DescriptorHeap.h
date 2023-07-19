@@ -26,8 +26,8 @@ public:
 	{
 		RegistResource(
 			registerNo,
-			&sr,
-			&m_shaderResources.front(),
+			sr,
+			m_shaderResources.front(),
 			m_numShaderResource,
 			MAX_SHADER_RESOURCE,
 			L"DescriptorHeap::RegistShaderResource() レジスタ番号が範囲外です。"
@@ -55,8 +55,8 @@ public:
 	{
 		RegistResource(
 			registerNo,
-			&sr,
-			&m_uavResources.front(),
+			sr,
+			m_uavResources.front(),
 			m_numUavResource,
 			MAX_SHADER_RESOURCE,
 			L"DescriptorHeap::RegistUnorderAccessResource() レジスタ番号が範囲外です。"
@@ -73,8 +73,8 @@ public:
 	{
 		RegistResource(
 			registerNo,
-			&cb,
-			&m_constantBuffers.front(),
+			cb,
+			m_constantBuffers.front(),
 			m_numConstantBuffer,
 			MAX_CONSTANT_BUFFER,
 			L"DescriptorHeap::RegistConstantBuffer() レジスタ番号が範囲外です。"
@@ -134,22 +134,22 @@ public:
 
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetConstantBufferGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
 		return m_cbGpuDescriptorStart[backBufferIndex];
 	}
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetShaderResourceGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
 		return m_srGpuDescriptorStart[backBufferIndex];
 	}
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetUavResourceGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
 		return m_uavGpuDescriptorStart[backBufferIndex];
 	}
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetSamplerResourceGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
 		return m_samplerGpuDescriptorStart[backBufferIndex];
 	}
 
@@ -168,7 +168,7 @@ public:
 		template<class T>
 		void RegistResource(
 			int registerNo,
-			T& res,
+			std::shared_ptr<T>  res,
 			std::shared_ptr<T> resTbl[],
 			int& numRes,
 			const int MAX_RESOURCE,
@@ -204,6 +204,8 @@ public:
 		int m_numSamplerDesc = 0;
 		int m_numDescriptorHeap = 0;
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_descriptorHeap[2] = { nullptr };
+		std::vector<std::shared_ptr<IShaderResource>> m_shaderResources;		//シェーダーリソース。
+
 		std::vector<std::shared_ptr<IUnorderAccessResrouce>> m_UAVResources;
 		std::vector < std::shared_ptr<IUnorderAccessResrouce>> m_uavResources;
 		std::vector<std::shared_ptr<ConstantBuffer>> m_constantBuffers;

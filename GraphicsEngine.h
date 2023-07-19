@@ -5,6 +5,7 @@
 #include "D:/gamedevelopment_3DCGAPI_GameEngine/DirectX/DirectX12/Rasterizer/hlsl-grimoire-sample/MiniEngine/DirectXTK/Inc/GraphicsMemory.h"
 #include "D:/gamedevelopment_3DCGAPI_GameEngine/DirectX/DirectX12/Rasterizer/hlsl-grimoire-sample/MiniEngine/NullTextureMaps.h"
 #include <dxgi1_4.h>
+
 class GraphicsEngine
 {
 public:
@@ -240,7 +241,6 @@ public:
 public:
 	enum { FRAME_BUFFER_COUNT = 2 };
 private:
-	std::shared_ptr<GraphicsEngine> m_graphicsEngine = nullptr;	//グラフィックスエンジン
 	ComPtr<ID3D12GraphicsCommandList4> m_commandList;
 	ComPtr<ID3D12CommandQueue> m_commandQueue;
 	ComPtr<ID3D12Device5> m_d3dDevice;
@@ -274,3 +274,4 @@ private:
 	Camera m_camera3D;
 };
 
+GraphicsEngine* m_graphicsEngine = nullptr;	//グラフィックスエンジン

@@ -1,6 +1,6 @@
 #include "GraphicsEngine.h"
 #include  "Camera.h"
-
+#include "Raytracing.h"
 Camera* g_camera3D;
 GraphicsEngine::~GraphicsEngine()
 {
@@ -102,7 +102,7 @@ ComPtr<IDXGIFactory4> GraphicsEngine::CreateDXGIFactory()
 
 bool GraphicsEngine::InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight)
 {
-	m_graphicsEngine = std::make_shared<GraphicsEngine>();
+	m_graphicsEngine = this;
 
 	frameBufferWidth = frameBufferWidth;
 	frameBufferHeight = frameBufferHeight;
@@ -502,7 +502,7 @@ void GraphicsEngine::BeginRender()
 	//深度ステンシルバッファのディスクリプタヒープの開始アドレスを取得。
 	m_currentFrameBufferDSVHandle = m_dsvHeap->GetCPUDescriptorHandleForHeapStart();
 	//バックバッファがレンダリングターゲットとして設定可能になるまで待つ。
-	m_renderContext->WaitUntilToPossibleSetRenderTarget(m_renderTargets[m_frameIndex].Get();
+	m_renderContext->WaitUntilToPossibleSetRenderTarget(m_renderTargets[m_frameIndex].Get());
 
 	//レンダリングターゲットを設定。
 	m_renderContext->SetRenderTarget(m_currentFrameBufferRTVHandle, m_currentFrameBufferDSVHandle);

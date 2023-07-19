@@ -1,4 +1,6 @@
 #include "RenderTarget.h"
+#include "GraphicsEngine.h"
+
 
 RenderTarget::~RenderTarget()
 {
@@ -22,7 +24,7 @@ bool RenderTarget::CreateRenderTarget(int w, int h, int mipLevel, int arraySize,
 	m_width = w;
 	m_height = h;
 	//レンダリングターゲットとなるテクスチャを作成する
-	if (!CreateRenderTargetTexture(m_graphicsEngine, d3dDevice, w, h,
+	if (!CreateRenderTargetTexture(*m_graphicsEngine, d3dDevice, w, h,
 		mipLevel, arraySize, colorFormat, clearColor))
 	{
 		MessageBoxA(nullptr, "レンダリングターゲットとなるテクスチャの作成に失敗しました。", "エラー", MB_OK);
@@ -163,7 +165,7 @@ void RenderTarget::CreateDescriptor(ComPtr<ID3D12Device5> d3dDevice)
 {
 	//カラーテクスチャのディスクリプタを作成。
 	auto rtvHandle = m_rtvHeap->GetCPUDescriptorHandleForHeapStart();
-	d3dDevice->CreateRenderTargetView(m_renderTargetTexture, nullptr, rtvHandle);
+	d3dDevice->CreateRenderTargetView(m_renderTargetTexture->Get().Get(), nullptr, rtvHandle);
 	if (m_depthStencilTexture) {
 		//深度テクスチャのディスクリプタを作成
 		auto dsvHandle = m_dsvHeap->GetCPUDescriptorHandleForHeapStart();

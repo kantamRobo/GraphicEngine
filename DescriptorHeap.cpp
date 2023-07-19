@@ -1,12 +1,12 @@
 #include "DescriptorHeap.h"
 #include "stdafx.h"
-
+#include "GraphicsEngine.h"
 
 
 
 void DescriptorHeap::Commit()
 {
-	const auto& d3dDevice = g_graphicsEngine->GetD3DDevice();
+	const auto& d3dDevice = m_graphicsEngine->GetD3DDevice();
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 
 	srvHeapDesc.NumDescriptors = m_numShaderResource;
@@ -41,7 +41,7 @@ void DescriptorHeap::Commit()
 					m_constantBuffers[i]->RegistConstantBufferView(cpuHandle, bufferNo);
 				}
 				//次に進める。
-				cpuHandle.ptr += g_graphicsEngine->GetCbrSrvDescriptorSize();
+				cpuHandle.ptr += m_graphicsEngine->GetCbrSrvDescriptorSize();
 			}
 
 			//続いてシェーダーリソース。
@@ -50,7 +50,7 @@ void DescriptorHeap::Commit()
 					m_shaderResources[i]->RegistShaderResourceView(cpuHandle, bufferNo);
 				}
 				//次に進める。
-				cpuHandle.ptr += g_graphicsEngine->GetCbrSrvDescriptorSize();
+				cpuHandle.ptr += m_graphicsEngine->GetCbrSrvDescriptorSize();
 			}
 
 			//続いてUAV。
@@ -59,31 +59,31 @@ void DescriptorHeap::Commit()
 					m_uavResources[i]->RegistUnorderAccessView(cpuHandle, bufferNo);
 				}
 				//次に進める。
-				cpuHandle.ptr += g_graphicsEngine->GetCbrSrvDescriptorSize();
+				cpuHandle.ptr += m_graphicsEngine->GetCbrSrvDescriptorSize();
 			}
 
+			//定数バッファのディスクリプタヒープの開始ハンドルを計算。
+			m_cbGpuDescriptorStart[bufferNo] = gpuHandle;
+			//シェーダーリソースのディスクリプタヒープの開始ハンドルを計算。
+			m_srGpuDescriptorStart[bufferNo] = gpuHandle;
+			m_srGpuDescriptorStart[bufferNo].ptr += (UINT64)m_graphicsEngine->GetCbrSrvDescriptorSize() * m_numConstantBuffer;
+			//UAVリソースのディスクリプタヒープの開始ハンドルを計算。
+			m_uavGpuDescriptorStart[bufferNo] = gpuHandle;
+			m_uavGpuDescriptorStart[bufferNo].ptr += (UINT64)m_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer);
+
+			gpuHandle.ptr += (UINT64)m_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer + m_numUavResource);
+
+			bufferNo++;
 
 
 		}
 	
-		//定数バッファのディスクリプタヒープの開始ハンドルを計算。
-		m_cbGpuDescriptorStart[bufferNo] = gpuHandle;
-		//シェーダーリソースのディスクリプタヒープの開始ハンドルを計算。
-		m_srGpuDescriptorStart[bufferNo] = gpuHandle;
-		m_srGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * m_numConstantBuffer;
-		//UAVリソースのディスクリプタヒープの開始ハンドルを計算。
-		m_uavGpuDescriptorStart[bufferNo] = gpuHandle;
-		m_uavGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer);
-
-		gpuHandle.ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer + m_numUavResource);
-
-		bufferNo++;
 	}
 }
 
 void DescriptorHeap::CommitSamplerHeap()
 {
-	const auto& d3dDevice = g_graphicsEngine->GetD3DDevice();
+	const auto& d3dDevice = m_graphicsEngine->GetD3DDevice();
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 
 	srvHeapDesc.NumDescriptors = m_numSamplerDesc;
@@ -109,7 +109,7 @@ void DescriptorHeap::CommitSamplerHeap()
 		for (int i = 0; i < m_numSamplerDesc; i++) {
 			//サンプラステートをディスクリプタヒープに登録していく。
 			d3dDevice->CreateSampler(&m_samplerDescs[i], cpuHandle);
-			cpuHandle.ptr += g_graphicsEngine->GetSapmerDescriptorSize();
+			cpuHandle.ptr += m_graphicsEngine->GetSamplerDescriptorSize();
 		}
 		m_samplerGpuDescriptorStart[bufferNo] = gpuHandle;
 		bufferNo++;

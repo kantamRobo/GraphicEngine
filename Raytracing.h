@@ -88,11 +88,11 @@ namespace raytracing
 	};
 	static_assert(ARRAYSIZE(shaderDatas) == eShader_Num, "shaderDatas arraySize is invalid!! shaderDatas arraySize must be equal to eShader_Num");
 
-	struct SHitGroup{
+	struct SHitGroup {
 		const wchar_t* name;				//ヒットグループの名前。
 		const wchar_t* chsHitShaderName;	//最も近いポリゴンにヒットしたときに呼ばれるシェーダーの名前。
 		const wchar_t* anyHitShaderName;	//any shader???
-	}
+	};
 
 	//ヒットグループの名前の配列。
 	const SHitGroup hitGroups[] = {
