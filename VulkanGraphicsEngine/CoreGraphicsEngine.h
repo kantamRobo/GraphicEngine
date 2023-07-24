@@ -8,10 +8,12 @@ public:
 	bool InitializeEngine(GLFWwindow* window, unsigned int frameBufferWidth, unsigned int frameBufferHeight);
 
 	bool CreateDevice();
-
+	void CreateSurfaceFormat(VkFormat format);
+	
 	bool CreateCommandPool();
+	bool CreateSwapChain(GLFWwindow* window);
 	bool CreateCommandBuffer();
-	bool CreateSwapChain();
+	
 	VkDevice  m_Device = nullptr;
 	VkPhysicalDevice PDevice = nullptr;
 	VkDeviceMemory DeviceMemory = nullptr;
@@ -23,7 +25,10 @@ public:
 
 	//Surface
 	//SwapChain
+	VkExtent2D    swapchainExtent;
+	VkSurfaceCapabilitiesKHR  surfaceCaps;
 	VkSurfaceKHR surface;
+	VkSurfaceFormatKHR surfaceFormat;
 	VkSurfaceFormatKHR presentMode;
 	VkSwapchainKHR swapchain;
 	VkPresentModeKHR presentMode;

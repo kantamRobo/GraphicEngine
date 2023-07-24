@@ -1,7 +1,8 @@
 #include <GLFW/glfw3.h>
+#include "stdafx.h"
 #include "CoreGraphicsEngine.h"
 
-#include "stdafx.h"
+
 #include <vector>
 #include "RenderingContext.h"
 
@@ -61,7 +62,78 @@ bool CoreGraphicsEngine::CreateDevice()
 		 }
 
 		//デバイスキューの取得
-		vkGetDeviceQueue(m_Device, m\m_graphicsQueueIndex, 0, &devicequeue);
+		vkGetDeviceQueue(m_Device, m_graphicsQueueIndex, 0, &devicequeue);
 	}
+	return true;
+}
+
+void CoreGraphicsEngine::CreateSurfaceFormat(VkFormat format)
+{
+	uint32_t surfaceFormatCount = 0;
+	vkGetPhysicalDeviceSurfaceFormatsKHR(PDevice, surface, &surfaceFormatCount, nullptr);
+	std::vector<VkSurfaceFormatKHR>formats(surfaceFormatCount);
+	vkGetPhysicalDeviceSurfaceFormatsKHR(PDevice, surface, &surfaceFormatCount,formats.data() );
+	for (const auto& f : formats)
+	{
+		if (f.format == format) {
+			surfaceFormat = f;
+		}
+	}
+
+	
+}
+
+bool CoreGraphicsEngine::CreateCommandPool()
+{
+	VkCommandPoolCreateInfo ci{};
+	ci.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	ci.queueFamilyIndex = m_graphicsQueueIndex;
+	ci.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+	VkResult result = vkCreateCommandPool(m_Device, &ci, nullptr, &commandpool);
+	if (!result != VK_SUCCESS)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool CoreGraphicsEngine::CreateSwapChain(GLFWwindow* window)
+{
+	auto imageCount = (std::max)(2u, surfaceCaps.minImageCount);
+	auto extent = surfaceCaps.currentExtent;
+	if (extent.width == ~0u)
+	{
+		// 値が無効なのでウィンドウサイズを使用する.
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
+		extent.width = uint32_t(width);
+		extent.height = uint32_t(height);
+	}
+
+	uint32_t queueFamilyIndices[] = { m_graphicsQueueIndex };
+	VkSwapchainCreateInfoKHR ci{};
+	ci.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+	ci.surface = surface;
+	ci.minImageCount = imageCount;
+	ci.imageFormat = surfaceFormat.format;
+	ci.imageColorSpace = surfaceFormat.colorSpace;
+	ci.imageExtent = extent;
+	ci.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+	ci.preTransform = surfaceCaps.currentTransform;
+	ci.imageArrayLayers = 1;
+	ci.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	ci.queueFamilyIndexCount = 0;
+	ci.presentMode = presentMode;
+	ci.oldSwapchain = VK_NULL_HANDLE;
+	ci.clipped = VK_TRUE;
+	ci.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+
+	auto result = vkCreateSwapchainKHR(m_Device, &ci, nullptr, &swapchain);
+	if (result != VK_SUCCESS)
+	{
+		return false;
+}
+	swapchainExtent = extent;
 	return false;
 }
+
