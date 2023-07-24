@@ -2,7 +2,17 @@
 class CoreGraphicsEngine
 {
 public:
-	VkDevice  Device = nullptr;
+
+
+
+	bool InitializeEngine(GLFWwindow* window, unsigned int frameBufferWidth, unsigned int frameBufferHeight);
+
+	bool CreateDevice();
+
+	bool CreateCommandPool();
+	bool CreateCommandBuffer();
+	bool CreateSwapChain();
+	VkDevice  m_Device = nullptr;
 	VkPhysicalDevice PDevice = nullptr;
 	VkDeviceMemory DeviceMemory = nullptr;
 	
@@ -33,6 +43,7 @@ public:
    
 	VkDescriptorSet fbheap = nullptr;
 	VkDescriptorSet dsvheap = nullptr;
-
+	VkSemaphore     m_semaphore = nullptr;
+	VkFence         m_fence = nullptr;
 };
 
