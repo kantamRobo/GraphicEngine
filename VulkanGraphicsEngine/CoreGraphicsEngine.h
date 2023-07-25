@@ -9,7 +9,7 @@ public:
 
 	bool CreateDevice();
 	void CreateSurfaceFormat(VkFormat format);
-	
+	bool CreateRenderPass();
 	bool CreateCommandPool();
 	bool CreateSwapChain(GLFWwindow* window);
 	bool CreateCommandBuffer();
@@ -20,7 +20,7 @@ public:
 	
 	//Command
 	VkCommandPool   commandpool = nullptr;
-	VkCommandBuffer commandbuffer = nullptr;
+	std::vector<VkCommandBuffer> commandbuffer = {};
 	VkQueue devicequeue = nullptr;
 
 	//Surface
@@ -32,8 +32,8 @@ public:
 	VkSurfaceFormatKHR presentMode;
 	VkSwapchainKHR swapchain;
 	VkPresentModeKHR presentMode;
-	std::vector<VkImage> m_swapchainImages;
-	std::vector<VkImageView> m_swapchainViews;
+	std::vector<VkImage> swapchainImages;
+	std::vector<VkImageView> swapchainViews;
 	VkBuffer depthstencilbuffer = nullptr;
 
 	uint32_t m_graphicsQueueIndex;

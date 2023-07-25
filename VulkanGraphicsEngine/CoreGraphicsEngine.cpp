@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include <array>
 #include "stdafx.h"
 #include "CoreGraphicsEngine.h"
 
@@ -83,6 +84,24 @@ void CoreGraphicsEngine::CreateSurfaceFormat(VkFormat format)
 	
 }
 
+bool CoreGraphicsEngine::CreateRenderPass()
+{
+	VkRenderPassCreateInfo ci{};
+	ci.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+
+	std::array<VkAttachmentDescription, 2> attachments;
+	auto& colorTarget = attachments[0];
+	auto& depthTarget = attachments[1];
+
+	colorTarget = VkAttachmentDescription{};
+	colorTarget.format = surfaceFormat.format;
+	colorTarget.samples = VK_SAMPLE_COUNT_1_BIT;
+
+
+
+	return false;
+}
+
 bool CoreGraphicsEngine::CreateCommandPool()
 {
 	VkCommandPoolCreateInfo ci{};
@@ -134,6 +153,29 @@ bool CoreGraphicsEngine::CreateSwapChain(GLFWwindow* window)
 		return false;
 }
 	swapchainExtent = extent;
+	return false;
+}
+
+bool CoreGraphicsEngine::CreateCommandBuffer()
+{
+	VkCommandBufferAllocateInfo ai{};
+	ai.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	ai.commandPool = commandpool;
+	ai.commandBufferCount = uint32_t(swapchainViews.size());
+	ai.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	commandbuffer.resize(ai.commandBufferCount);
+	auto result = vkAllocateCommandBuffers(m_Device,&ai, commandbuffer.data());
+
+	if (result != VK_SUCCESS)
+	{
+
+		return false;
+	}
+	return true;
+}
+
+bool CoreGraphicsEngine::CreateFence()
+{
 	return false;
 }
 
