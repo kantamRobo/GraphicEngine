@@ -1,10 +1,11 @@
 #include <GLFW/glfw3.h>
 #include <array>
 #include "stdafx.h"
+#include <vector>
 #include "CoreGraphicsEngine.h"
 
 
-#include <vector>
+
 #include "RenderingContext.h"
 
 
@@ -96,10 +97,48 @@ bool CoreGraphicsEngine::CreateRenderPass()
 	colorTarget = VkAttachmentDescription{};
 	colorTarget.format = surfaceFormat.format;
 	colorTarget.samples = VK_SAMPLE_COUNT_1_BIT;
+	colorTarget.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	colorTarget.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	colorTarget.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	colorTarget.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	colorTarget.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	colorTarget.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
+	depthTarget = VkAttachmentDescription{};
+	depthTarget.format = VK_FORMAT_D32_SFLOAT;
+	depthTarget.samples = VK_SAMPLE_COUNT_1_BIT;
+	depthTarget.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	depthTarget.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	depthTarget.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	depthTarget.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	depthTarget.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	depthTarget.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
+	VkAttachmentReference colorReference{}, depthReference{};
+  colorReference.attachment = 0;
+  colorReference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
-	return false;
+  depthReference.attachment = 1;
+  depthReference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+  VkSubpassDescription subpassDesc{};
+  subpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+  subpassDesc.colorAttachmentCount = 1;
+  subpassDesc.pColorAttachments = &colorReference;
+  subpassDesc.pDepthStencilAttachment = &depthReference;
+
+  ci.attachmentCount = uint32_t(attachments.size());
+  ci.pAttachments = attachments.data();
+  ci.subpassCount = 1;
+  ci.pSubpasses = &subpassDesc;
+
+  auto result = vkCreateRenderPass(m_Device, &ci, nullptr, &m_renderpass);
+	
+  if (result != VK_SUCCESS)
+  {
+	  return false;
+  }
+  return true;
 }
 
 bool CoreGraphicsEngine::CreateCommandPool()
@@ -153,7 +192,7 @@ bool CoreGraphicsEngine::CreateSwapChain(GLFWwindow* window)
 		return false;
 }
 	swapchainExtent = extent;
-	return false;
+	return true;
 }
 
 bool CoreGraphicsEngine::CreateCommandBuffer()
@@ -171,11 +210,31 @@ bool CoreGraphicsEngine::CreateCommandBuffer()
 
 		return false;
 	}
+
+	//フェンスを作成
+	 // コマンドバッファのフェンスも同数用意する.
+	m_fences.resize(ai.commandBufferCount);
+	VkFenceCreateInfo ci{};
+	ci.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	ci.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+	for (auto& v : m_fences)
+	{
+		result = vkCreateFence(m_Device, &ci, nullptr, &v);
+		checkResult(result);
+	}
+
 	return true;
 }
 
-bool CoreGraphicsEngine::CreateFence()
+bool CoreGraphicsEngine::CreateSemaphore()
 {
-	return false;
+	
+	//セマフォを作成
+	VkSemaphoreCreateInfo ci{};
+	ci.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	vkCreateSemaphore(m_Device, &ci, nullptr, &m_renderCompletedSem);
+	vkCreateSemaphore(m_Device, &ci, nullptr, &m_presentCompletedSem);
+
+	return true;
 }
 

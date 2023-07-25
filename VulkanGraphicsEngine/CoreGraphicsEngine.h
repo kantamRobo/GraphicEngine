@@ -13,7 +13,7 @@ public:
 	bool CreateCommandPool();
 	bool CreateSwapChain(GLFWwindow* window);
 	bool CreateCommandBuffer();
-	
+	bool CreateSemaphore();
 	VkDevice  m_Device = nullptr;
 	VkPhysicalDevice PDevice = nullptr;
 	VkDeviceMemory DeviceMemory = nullptr;
@@ -44,11 +44,12 @@ public:
 	//Renderpass
 
 	VkRenderPass m_renderpass = nullptr;
-	 
-   
+	
+	std::vector<VkFence>  m_fences = {};
 	VkDescriptorSet fbheap = nullptr;
 	VkDescriptorSet dsvheap = nullptr;
-	VkSemaphore     m_semaphore = nullptr;
-	VkFence         m_fence = nullptr;
+	VkSemaphore   m_renderCompletedSem, m_presentCompletedSem;
+
+	
 };
 
