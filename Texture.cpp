@@ -26,7 +26,7 @@ void Texture::InitFromMemory(const char* memory, unsigned int size)
 
 }
 
-void Texture::InitFromD3DResource(ComPtr<ID3D12Resource> texture)
+void Texture::InitFromD3DResource(ID3D12Resource* texture)
 {
 	if (m_texture)
 	{

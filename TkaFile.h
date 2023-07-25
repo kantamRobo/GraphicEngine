@@ -16,7 +16,7 @@ class TkaFile
 	struct KeyFrame {
 		std::uint32_t boneIndex;
 		float time;
-		Vector3 transform[4];
+		EngineMath::Vector3 transform[4];
 
 	};
 

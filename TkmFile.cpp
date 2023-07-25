@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TkmFile.h"
 #include "Vector.h"
-
+#include "Animation.h"
 
 //法線スムージング。
 class NormalSmoothing {

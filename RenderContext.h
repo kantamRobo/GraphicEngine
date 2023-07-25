@@ -23,7 +23,7 @@ public:
 	{
 		m_commandList->CopyResource(pDst, pSrc);
 	}
-	void InitRenderingContext(ComPtr<ID3D12GraphicsCommandList4> commandList)
+	void InitRenderingContext(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList4> commandList)
 	{
 		m_commandList = commandList;
 	}
@@ -158,8 +158,8 @@ public:
 		}
 	}
 
-		void SetDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
-		void SetComputeDescriptorHeap(ComPtr<DescriptorHeap> descHeap);
+		void SetDescriptorHeap(Microsoft::WRL::ComPtr<DescriptorHeap> descHeap);
+		void SetComputeDescriptorHeap(Microsoft::WRL::ComPtr<DescriptorHeap> descHeap);
 
 		void SetRenderTargetAndViewport(std::shared_ptr<RenderTarget> renderTarget);
 
@@ -260,9 +260,9 @@ public:
 		void SetRenderTargets(UINT numRT, RenderTarget * renderTargets[]);
 
 
-		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
-		void WaitUntilToPossibleSetRenderTarget(ComPtr<RenderTarget> renderTarget);
-		void WaitUntilFinishDrawingToRenderTarget(ComPtr<RenderTarget> renderTarget);
+		void WaitUntilFinishDrawingToRenderTarget(Microsoft::WRL::ComPtr<RenderTarget> renderTarget);
+		void WaitUntilToPossibleSetRenderTarget(Microsoft::WRL::ComPtr<RenderTarget> renderTarget);
+		void WaitUntilFinishDrawingToRenderTarget(Microsoft::WRL::ComPtr<RenderTarget> renderTarget);
 
 		
 		void ResourceBarrier(D3D12_RESOURCE_BARRIER & barrier)
@@ -487,11 +487,11 @@ public:
 			}
 
 		private:
-		ComPtr<ID3D12GraphicsCommandList4> m_commandList;
-		ComPtr<ID3D12DescriptorHeap> m_descriptorHeaps[MAX_DESCRIPTOR_HEAP];
+		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList4> m_commandList;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_descriptorHeaps[MAX_DESCRIPTOR_HEAP];
 		std::shared_ptr<ConstantBuffer>m_constantBuffers[MAX_CONSTANT_BUFFER];
 		std::shared_ptr<Texture> m_shaderResources[MAX_SHADER_RESOURCE];
-		std::vector < ComPtr<ID3D12Resource>> m_scratchResourceList;
+		std::vector < 	Microsoft::WRL::ComPtr<ID3D12Resource>> m_scratchResourceList;
 		D3D12_VIEWPORT m_currentViewport;
 	
 };

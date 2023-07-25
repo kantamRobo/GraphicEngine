@@ -26,7 +26,8 @@ public:
 	/// <param name="memory">テクスチャデータが格納されているメモリの先頭アドレス</param>
 	/// <param name="size">テクスチャのサイズ。</param>
 	void InitFromMemory(const char* memory, unsigned int size);
-	void InitFromD3DResource(ComPtr<ID3D12Resource> texture);
+	void InitFromD3DResource(ID3D12Resource* texture);
+	
 	/// <summary>
 	/// D3Dリソースからテクスチャを初期化する。
 	/// </summary>

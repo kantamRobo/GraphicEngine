@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <istream>
 #include <fstream>
-
+#include "Animation.h"
 void TkaFile::Load(const char* filePath)
 {
 	//FILEの代わりってなんだっけ・・・・

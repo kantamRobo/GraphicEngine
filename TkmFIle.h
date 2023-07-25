@@ -46,13 +46,13 @@ public:
 	/// ここを編集したら、レイトレのシェーダーで定義されている頂点構造体も変更する必要がある。
 	/// </remarks>
 	struct SVertex {
-		Vector3 pos;			//座標。
-		Vector3 normal;			//法線。
-		Vector3 tangent;		//接ベクトル。
-		Vector3 binormal;		//従ベクトル。
-		Vector2 uv;				//UV座標。
+		EngineMath:: Vector3 pos;			//座標。
+		EngineMath::Vector3 normal;			//法線。
+		EngineMath::Vector3 tangent;		//接ベクトル。
+		EngineMath::Vector3 binormal;		//従ベクトル。
+		EngineMath::Vector2 uv;				//UV座標。
 		int indices[4];			//スキンインデックス。
-		Vector4 skinWeights;	//スキンウェイト。
+		EngineMath::Vector4 skinWeights;	//スキンウェイト。
 	};
 	/// <summary>
 	/// 32ビットのインデックスバッファ。

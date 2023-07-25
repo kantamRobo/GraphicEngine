@@ -224,7 +224,7 @@ void Material::InitTexture(const aiMaterial* aiMat)
 	{
 		if (aiMat != nullptr)
 		{
-			
+			//TODO
 			aiMat->Get(AI_MATKEY_TEXTURE_NORMALS, filePath);
 			aiMat->Get(AI_MATKEY_TEXTURE_NORMALS, map);
 

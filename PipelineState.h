@@ -19,14 +19,14 @@ public:
 
 	void InitComputePipelineState(D3D12_COMPUTE_PIPELINE_STATE_DESC desc);
 
-	ComPtr<ID3D12PipelineState> Get()
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> Get()
 	{
 		return m_pipelineState;
 	}
 
 private:
 
-	ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;
 
 	
 	

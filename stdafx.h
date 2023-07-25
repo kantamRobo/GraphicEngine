@@ -1,7 +1,7 @@
 #pragma once
 #pragma comment( lib, "xinput.lib")
 #pragma comment(lib, "dxcompiler.lib")
-
+#include <d3d12.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory>
@@ -10,7 +10,7 @@
 #include <list>
 #include <D3Dcompiler.h>
 #include <Windows.h>
-#include <d3d12.h>
+
 #include <map>
 #include <functional>
 #include <algorithm>
@@ -33,6 +33,3 @@
 #include <atlbase.h>
 #include "Raytracing.h"
 #include "GPUBuffer.h"
-template <class T>
-using ComPtr = Microsoft::WRL::ComPtr<T>;
-

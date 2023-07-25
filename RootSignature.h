@@ -41,10 +41,10 @@ public:
 				UINT offsetInDescriptorsFromTableStartSRV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND,
 				UINT offsetInDescriptorsFromTableStartUAV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
 			);
-		ComPtr<ID3D12RootSignature> Get() {
+		Microsoft::WRL::ComPtr<ID3D12RootSignature> Get() {
 			return m_rootSignature;
 		}
 private:
-	ComPtr<ID3D12RootSignature> m_rootSignature;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_rootSignature;
 };
 

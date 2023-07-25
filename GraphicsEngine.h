@@ -2,8 +2,8 @@
 #include "stdafx.h"
 
 #include "RenderContext.h"
-#include "D:/gamedevelopment_3DCGAPI_GameEngine/DirectX/DirectX12/Rasterizer/hlsl-grimoire-sample/MiniEngine/DirectXTK/Inc/GraphicsMemory.h"
-#include "D:/gamedevelopment_3DCGAPI_GameEngine/DirectX/DirectX12/Rasterizer/hlsl-grimoire-sample/MiniEngine/NullTextureMaps.h"
+#include "GraphicsMemory.h"
+#include "NullTextureMaps.h"
 #include <dxgi1_4.h>
 
 class GraphicsEngine
@@ -12,14 +12,14 @@ public:
 	//デストラクタ
 	~GraphicsEngine();
 	void WaitDraw();
-	ComPtr<IDXGIFactory4> CreateDXGIFactory();
+	Microsoft::WRL::ComPtr<IDXGIFactory4> CreateDXGIFactory();
 
 
 	/// <summary>
 	/// D3Dデバイスの作成。
 	/// </summary>
 	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateD3DDevice(ComPtr<IDXGIFactory4> dxgiFactory);
+	bool CreateD3DDevice(Microsoft::WRL::ComPtr<IDXGIFactory4> dxgiFactory);
 	/// <summary>
 	/// コマンドキューの作成。
 	/// </summary>
@@ -63,7 +63,7 @@ public:
 	//D3Dデバイスを取得
 
 
-	ComPtr<ID3D12Device5> GetD3DDevice()
+	Microsoft::WRL::ComPtr<ID3D12Device5> GetD3DDevice()
 	{
 		return m_d3dDevice;
 	}
@@ -81,7 +81,7 @@ public:
 	{
 		return m_commandQueue;
 	}
-	ComPtr<ID3D12GraphicsCommandList4> GetCommandList()const
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList4> GetCommandList()const
 	{
 		return m_commandList;
 	}
@@ -241,16 +241,16 @@ public:
 public:
 	enum { FRAME_BUFFER_COUNT = 2 };
 private:
-	ComPtr<ID3D12GraphicsCommandList4> m_commandList;
-	ComPtr<ID3D12CommandQueue> m_commandQueue;
-	ComPtr<ID3D12Device5> m_d3dDevice;
-	ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
-	ComPtr<ID3D12Resource> m_renderTargets[FRAME_BUFFER_COUNT] = { nullptr };	//フレームバッファ用のレンダリングターゲット。
-	ComPtr<ID3D12Resource>  m_depthStencilBuffer = nullptr;	//深度ステンシルバッファ。
-	ComPtr<ID3D12DescriptorHeap> m_dsvHeap = nullptr;
-	ComPtr<ID3D12Fence> m_fence;
-	ComPtr<ID3D12CommandAllocator> m_commandAllocator;
-	ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList4> m_commandList;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_commandQueue;
+	Microsoft::WRL::ComPtr<ID3D12Device5> m_d3dDevice;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
+	Microsoft::WRL::ComPtr<ID3D12Resource> m_renderTargets[FRAME_BUFFER_COUNT] = { nullptr };	//フレームバッファ用のレンダリングターゲット。
+	Microsoft::WRL::ComPtr<ID3D12Resource>  m_depthStencilBuffer = nullptr;	//深度ステンシルバッファ。
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_dsvHeap = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Fence> m_fence;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_commandAllocator;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;
 	UINT m_cbrSrvDescriptorSize = 0;
 	UINT m_samplerDescriptorSize = 0;
 	UINT m_rtvDescriptorSize = 0;
