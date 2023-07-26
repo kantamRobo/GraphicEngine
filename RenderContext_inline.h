@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "RenderContext.h"
 
 inline void RenderContext::SetDescriptorHeap(DescriptorHeap& descHeap)
 {
@@ -38,7 +39,7 @@ inline void RenderContext::WaitUntilFinishDrawingToRenderTarget(std::shared_ptr<
 {
 	WaitUntilFinishDrawingToRenderTarget(renderTarget);
 }
-inline void RenderContext::WaitUntilToPossibleSetRenderTarget(std::shared_ptr<RenderTarget> renderTarget)
+inline void RenderContext::WaitUntilToPossibleSetRenderTarget(ID3D12Resource* renderTarget)
 {
 	WaitUntilToPossibleSetRenderTarget(renderTarget);
 }

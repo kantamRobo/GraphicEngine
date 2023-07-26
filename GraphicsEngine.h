@@ -1,50 +1,25 @@
 #pragma once
-#include "stdafx.h"
 
-#include "RenderContext.h"
-#include "GraphicsMemory.h"
+#include <d3d12.h>
+#include <dxgi.h>
+#include <dxgi1_2.h>
+#include <dxgi1_3.h>
+#include <dxgi1_4.h>
 #include "NullTextureMaps.h"
 #include <dxgi1_4.h>
 
+#include "DDSTextureLoader.h"
+#include "ResourceUploadBatch.h"
+#include "RenderContext.h"
+#include "Camera.h"
+#include "NullTextureMaps.h"
 class GraphicsEngine
 {
 public:
 	//デストラクタ
 	~GraphicsEngine();
-	void WaitDraw();
-	Microsoft::WRL::ComPtr<IDXGIFactory4> CreateDXGIFactory();
-
-
-	/// <summary>
-	/// D3Dデバイスの作成。
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateD3DDevice(Microsoft::WRL::ComPtr<IDXGIFactory4> dxgiFactory);
-	/// <summary>
-	/// コマンドキューの作成。
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateCommandQueue();
 	
-	/// <summary>
-	/// スワップチェインの作成
-	/// </summary>
-	/// <param name="hwnd">Windowハンドル</param>
-	/// <param name="frameBufferWidth">フレームバッファの幅</param>
-	/// <param name="frameBufferHeight">フレームバッファの高さ</param>
-	/// <param name="dxgiFactory">DirectX グラフィックス インフラストラクチャー</param>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateSwapChain(
-		HWND hwnd,
-		UINT frameBufferWidth,
-		UINT frameBufferHeight,
-		IDXGIFactory4* dxgiFactory
-	);
 	
-	bool CreateDSVForFrameBuffer(UINT frameBufferWidth, UINT frameBufferHeight);
-
-
-
 	//初期化
 		/// 本関数を呼び出すことでDirectX12の初期化が行われます。
 	bool InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight);
@@ -67,7 +42,6 @@ public:
 	{
 		return m_d3dDevice;
 	}
-
 	//バックバッファの番号を取得
 	UINT m_frameIndex;
 	//バックバッファの番号
@@ -81,10 +55,14 @@ public:
 	{
 		return m_commandQueue;
 	}
+
+
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList4> GetCommandList()const
 	{
 		return m_commandList;
 	}
+
+
 	/// <summary>
 	/// CBR_SRVのディスクリプタのサイズを取得。
 	/// </summary>
@@ -102,8 +80,6 @@ public:
 		return m_samplerDescriptorSize;
 	}
 
-
-	bool CreateCommandList();
 
 	//レンダリングコンテキストを取得
 	std::shared_ptr<RenderContext> GetRenderContext()
@@ -128,22 +104,13 @@ public:
 	{
 		return m_frameBufferHeight;
 	}
-	/// <summary>
-	/// フレームバッファ用のディスクリプタヒープを作成。
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateDescriptorHeapForFrameBuffer();
-	/// <summary>
-	/// フレームバッファ用のレンダリングターゲットビューを作成。
-	/// </summary>
-	/// <returns>trueが返ってきたら作成に成功。</returns>
-	bool CreateRTVForFrameBuffer();
 
 	/// <summary>
 	/// レンダリングターゲットをフレームバッファに変更する。
 	/// </summary>
 	/// <param name="rc"></param>
 	void ChangeRenderTargetToFrameBuffer(std::shared_ptr<RenderContext> rc);
+
 
 	/// <summary>
 		/// 現在のフレームバッファのレンダリングターゲットビューを取得。
@@ -153,6 +120,12 @@ public:
 	{
 		return m_currentFrameBufferRTVHandle;
 	}
+
+	
+	
+	
+
+
 
 	/// <summary>
 	/// フレームバッファへの描画時に使用されているデプスステンシルビューを取得。
@@ -164,6 +137,7 @@ public:
 	}
 
 
+
 	/// <summary>
 	/// 3DModelをレイトレワールドに登録。
 	/// </summary>
@@ -173,6 +147,8 @@ public:
 		m_raytracingEngine.RegistGeometry(model);
 	}
 
+
+
 	/// <summary>
 /// ここまで登録されたモデルを使ってレイトレワールドを構築。
 /// </summary>
@@ -180,10 +156,6 @@ public:
 	{
 		m_raytracingEngine.CommitRegistGeometry(rc);
 	}
-
-	bool CreateSynchronizationWithGPUObject();
-
-
 
 	/// <summary>
 	/// レイトレーシングをディスパッチ。
@@ -193,6 +165,7 @@ public:
 	{
 		m_raytracingEngine.Dispatch(rc);
 	}
+
 	/// <summary>
 	/// フレームバッファにコピー。
 	/// </summary>
@@ -213,6 +186,32 @@ public:
 		rc->ResourceBarrier(barrier2);
 	}
 
+
+	//ヌルテクスチャマップを取得
+
+
+	const std::shared_ptr<NullTextureMaps>GetNullTextureMaps() const
+	{
+		return m_nullTextureMaps;
+	}
+
+	
+
+	
+	
+
+	
+	
+
+	
+
+
+
+
+
+	
+	
+
 	/// <summary>
 	/// フォントエンジンを取得。
 	/// </summary>
@@ -222,13 +221,6 @@ public:
 		return m_fontEngine;
 	}
 
-	//ヌルテクスチャマップを取得
-
-
-	const std::shared_ptr<NullTextureMaps>GetNullTextureMaps() const
-	{
-		return m_nullTextureMaps;
-	}
 	private:
 		//GPUベンダー定義。
 		enum GPU_Vender {
@@ -237,6 +229,73 @@ public:
 			GPU_VenderIntel,	//AMD
 			Num_GPUVender,
 		};
+
+		/// <summary>
+	/// D3Dデバイスの作成。
+	/// </summary>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+		bool CreateD3DDevice(Microsoft::WRL::ComPtr<IDXGIFactory4> dxgiFactory);
+		/// <summary>
+		/// コマンドキューの作成。
+		/// </summary>
+		/// <returns>trueが返ってきたら作成に成功。</returns>
+		bool CreateCommandQueue();
+
+		/// <summary>
+	/// スワップチェインの作成
+	/// </summary>
+	/// <param name="hwnd">Windowハンドル</param>
+	/// <param name="frameBufferWidth">フレームバッファの幅</param>
+	/// <param name="frameBufferHeight">フレームバッファの高さ</param>
+	/// <param name="dxgiFactory">DirectX グラフィックス インフラストラクチャー</param>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+		bool CreateSwapChain(
+			HWND hwnd,
+			UINT frameBufferWidth,
+			UINT frameBufferHeight,
+			IDXGIFactory4* dxgiFactory
+		);
+
+		Microsoft::WRL::ComPtr<IDXGIFactory4> CreateDXGIFactory();
+
+
+		/// <summary>
+	/// フレームバッファ用のディスクリプタヒープを作成。
+	/// </summary>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+		bool CreateDescriptorHeapForFrameBuffer();
+		/// <summary>
+		/// フレームバッファ用のレンダリングターゲットビューを作成。
+		/// </summary>
+		/// <returns>trueが返ってきたら作成に成功。</returns>
+		bool CreateRTVForFrameBuffer();
+
+		/// <summary>
+	/// フレームバッファ用の深度ステンシルビューを作成。
+	/// </summary>
+	/// <param name="frameBufferWidth">フレームバッファの幅</param>
+	/// <param name="frameBufferHeight">フレームバッファの高さ</param>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+		bool CreateDSVForFrameBuffer(UINT frameBufferWidth, UINT frameBufferHeight);
+
+		/// <summary>
+	/// コマンドリストの作成。
+	/// </summary>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+
+		bool CreateCommandList();
+
+
+		/// <summary>
+	/// GPUとの同期オブジェクト作成
+	/// </summary>
+	/// <returns>trueが返ってきたら作成に成功。</returns>
+		bool CreateSynchronizationWithGPUObject();
+
+		/// <summary>
+	/// 描画の完了待ち。
+	/// </summary>
+		void WaitDraw();
 
 public:
 	enum { FRAME_BUFFER_COUNT = 2 };

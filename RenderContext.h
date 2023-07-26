@@ -294,7 +294,7 @@ public:
 		void SetDescriptorHeap(DescriptorHeap& descHeap);
 		void SetComputeDescriptorHeap(std::shared_ptr<DescriptorHeap> descHeap);
 		void WaitUntilFinishDrawingToRenderTarget(std::shared_ptr<RenderTarget>  renderTarget);
-		void WaitUntilToPossibleSetRenderTarget(std::shared_ptr<RenderTarget> renderTarget);
+		void WaitUntilToPossibleSetRenderTarget(ID3D12Resource* renderTarget);
 		void WaitUntilToPossibleSetRenderTargets(int numRt, std::shared_ptr<RenderTarget> renderTargets[]);
 		void WaitUntilFinishDrawingToRenderTarget(ID3D12Resource* renderTarget)
 		{

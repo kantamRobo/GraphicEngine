@@ -1,6 +1,7 @@
+
+#include "stdafx.h"
+
 #include "GraphicsEngine.h"
-#include  "Camera.h"
-#include "Raytracing.h"
 Camera* g_camera3D;
 GraphicsEngine::~GraphicsEngine()
 {
