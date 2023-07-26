@@ -212,9 +212,6 @@
     <ClCompile Include="DescriptorHeap.cpp">
       <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
-    <ClCompile Include="RootSignature.cpp">
-      <Filter>Graphics\Resourcebinding</Filter>
-    </ClCompile>
     <ClCompile Include="PipelineState.cpp">
       <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
@@ -281,9 +278,6 @@
     <ClCompile Include="NullTextureMaps.cpp">
       <Filter>Graphics\GPUResources</Filter>
     </ClCompile>
-    <ClCompile Include="RenderContext.cpp">
-      <Filter>Graphics\Core</Filter>
-    </ClCompile>
     <ClCompile Include="MeshParts.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -295,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Graphics\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RootSignature.cpp">
+      <Filter>Graphics\Pipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

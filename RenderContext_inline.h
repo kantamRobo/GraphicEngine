@@ -1,7 +1,6 @@
 #pragma once
 
-#include "RenderContext.h"
-#include "DescriptorHeap.h"
+#include "stdafx.h"
 inline void RenderContext::SetDescriptorHeap(DescriptorHeap& descHeap)
 {
 	m_descriptorHeaps[0] = descHeap.Get();

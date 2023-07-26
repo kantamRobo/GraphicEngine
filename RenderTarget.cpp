@@ -25,7 +25,13 @@ RenderTarget::~RenderTarget()
 	}
 }
 
-bool RenderTarget::CreateRenderTarget(int w, int h, int mipLevel, int arraySize, DXGI_FORMAT colorFormat, DXGI_FORMAT depthStencilFormat, float clearColor[4])
+bool RenderTarget::CreateRenderTarget(int w,
+	int h, 
+	int mipLevel,
+	int arraySize,
+	DXGI_FORMAT colorFormat, 
+	DXGI_FORMAT depthStencilFormat, 
+	float clearColor[4])
 {
 	auto d3dDevice = m_graphicsEngine->GetD3DDevice();
 	m_width = w;
@@ -58,7 +64,7 @@ bool RenderTarget::CreateRenderTarget(int w, int h, int mipLevel, int arraySize,
 	if (clearColor) {
 		memcpy(m_rtvClearColor, clearColor, sizeof(m_rtvClearColor));
 	}
-
+	return true;
 }
 
 bool RenderTarget::CreateDescriptorHeap(GraphicsEngine* ge, ID3D12Device5* d3dDevice)
@@ -75,11 +81,33 @@ bool RenderTarget::CreateDescriptorHeap(GraphicsEngine* ge, ID3D12Device5* d3dDe
 	}
 	//ディスクリプタのサイズを取得。
 	m_rtvDescriptorSize = d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	if (m_depthStencilTexture)
+	{
+		//DSV用のディスクリプタヒープを作成する
+		desc.NumDescriptors = 1;
+		desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+		d3dDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_dsvHeap));
+		if (m_dsvHeap == nullptr)
+		{
+			//DSV用のディスクリプタヒープの作成に失敗した
+			return false;
+		}
 
+		//ディスクリプタのサイズを取得。
+		m_dsvDescriptorSize = d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+
+	}
 return true;
 }
 
-bool RenderTarget::CreateRenderTargetTexture(GraphicsEngine* ge, ID3D12Device5* d3dDevice, int w, int h, int mipLevel, int arraySize, DXGI_FORMAT format, float clearColor[4])
+bool RenderTarget::CreateRenderTargetTexture(GraphicsEngine* ge,
+	ID3D12Device5* d3dDevice,
+	int w, 
+	int h, 
+	int mipLevel,
+	int arraySize, 
+	DXGI_FORMAT format, 
+	float clearColor[4])
 {
 	CD3DX12_RESOURCE_DESC desc(
 		D3D12_RESOURCE_DIMENSION_TEXTURE2D,
@@ -94,7 +122,7 @@ bool RenderTarget::CreateRenderTargetTexture(GraphicsEngine* ge, ID3D12Device5* 
 		D3D12_TEXTURE_LAYOUT_UNKNOWN,
 		D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
-	//レンダー＾パス
+	
 	D3D12_CLEAR_VALUE clearValue = {};
 	clearValue.Format = format;
 	if (clearColor != nullptr)

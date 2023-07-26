@@ -200,7 +200,6 @@
     <ClCompile Include="RayTracingPSO.cpp" />
     <ClCompile Include="RaytracingWorld.cpp" />
     <ClCompile Include="RayTracingInstance.cpp" />
-    <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />

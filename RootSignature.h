@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+
 
 class Shader;
 class RootSignature
@@ -41,7 +41,7 @@ public:
 				UINT offsetInDescriptorsFromTableStartSRV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND,
 				UINT offsetInDescriptorsFromTableStartUAV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
 			);
-		Microsoft::WRL::ComPtr<ID3D12RootSignature> Get() {
+		Microsoft::WRL::ComPtr<ID3D12RootSignature> GetR() {
 			return m_rootSignature;
 		}
 private:
