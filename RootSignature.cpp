@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "RootSignature.h"
-#include <array
+#include <array>
 #include "d3dx12.h"
 enum {
     enDescriptorHeap_CB,
