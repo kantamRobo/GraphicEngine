@@ -1,8 +1,6 @@
 #include "Skeleton.h"
 #include "Matrix.h"
 #include "Vector.h"
-#include "TkaFile.h"
-#include "TkmFIle.h"
 void Skeleton::Update(const EngineMath::Matrix& mWorld)
 {
 }
