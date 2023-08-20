@@ -1,7 +1,7 @@
 #pragma once
-#include "IUnorderAccessResrouce.h"
+
 #include <vector>
-#include "IUnorderAccessResrouce.h"
+
 
 
 class DescriptorHeap
@@ -134,22 +134,22 @@ public:
 
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetConstantBufferGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_cbGpuDescriptorStart[backBufferIndex];
 	}
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetShaderResourceGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_srGpuDescriptorStart[backBufferIndex];
 	}
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetUavResourceGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_uavGpuDescriptorStart[backBufferIndex];
 	}
 	inline D3D12_GPU_DESCRIPTOR_HANDLE GetSamplerResourceGpuDescriptorStartHandle() const
 	{
-		auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
+		auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 		return m_samplerGpuDescriptorStart[backBufferIndex];
 	}
 

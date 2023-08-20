@@ -1,5 +1,7 @@
-#include "VertexBuffer.h"
+#include <wrl.h>
 #include "stdafx.h"
+#include "VertexBuffer.h"
+
 VertexBuffer::~VertexBuffer()
 {
 	if (m_vertexBuffer)

@@ -13,7 +13,6 @@
 #include "RenderContext.h"
 #include "Camera.h"
 #include "NullTextureMaps.h"
-GraphicsEngine* g_graphicsEngine = nullptr;	//グラフィックスエンジン
 class GraphicsEngine
 {
 public:
@@ -325,8 +324,7 @@ private:
 	std::shared_ptr<RenderContext> m_renderContext;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferRTVHandle;		//現在書き込み中のフレームバッファのレンダリングターゲットビューのハンドル。
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferDSVHandle;		//現在書き込み中のフレームバッファの深度ステンシルビューの
-	ComPtr<ID3D12Resource> m_renderTargets[FRAME_BUFFER_COUNT] = { nullptr };	//フレームバッファ用のレンダリングターゲット。
-	ComPtr<ID3D12Resource> m_depthStencilBuffer = nullptr;
+	
 	std::shared_ptr<NullTextureMaps> m_nullTextureMaps;
 	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemory;
 	ComPtr<IDXGISwapChain3> m_swapChain = nullptr;
@@ -335,3 +333,5 @@ private:
 };
 
 GraphicsEngine* m_graphicsEngine = nullptr;	//グラフィックスエンジン
+
+GraphicsEngine* g_graphicsEngine = nullptr;	//グラフィックスエンジン

@@ -1,5 +1,7 @@
-#include "IndexBuffer.h"
+#include <wrl.h>
 #include "stdafx.h"
+#include "IndexBuffer.h"
+
 
 
 IndexBuffer::IndexBuffer()
