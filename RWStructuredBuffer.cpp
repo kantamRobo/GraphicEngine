@@ -1,5 +1,6 @@
+#include "stdafx.h"
 #include "RWStructuredBuffer.h"
-
+#include "VertexBuffer.h"
 RWStructuredBuffer::~RWStructuredBuffer()
 {
 	//アンマーップ

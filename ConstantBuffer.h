@@ -50,7 +50,7 @@ public:
 	/// </summary>
 	/// <param name="descriptorHandle"></param>
 	void RegistConstantBufferView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
-	void RegistConstantBufferView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
+	
 	/// <summary>
 	/// VRAM上の仮想アドレスを取得する。
 	/// </summary>

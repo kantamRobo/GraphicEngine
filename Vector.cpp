@@ -2,8 +2,13 @@
  * @brief	ベクトルクラス。
  */
 
+
+#include "Math.h"
+#include "Matrix.h"
 #include "stdafx.h"
+
 #include "Vector.h"
+
 
 
 
@@ -31,7 +36,7 @@ const EngineMath::Quaternion EngineMath::Quaternion::Identity = { 0.0f,  0.0f, 0
 /*!
 *@brief	行列からクォータニオンを作成。
 */
-void EngineMath::Quaternion::SetRotation(const Matrix& m)
+void EngineMath::Quaternion::SetRotation(const EngineMath::Matrix& m)
 {
 	DirectX::XMStoreFloat4(&vec, DirectX::XMQuaternionRotationMatrix(m));
 }
@@ -42,7 +47,7 @@ void EngineMath::Quaternion::SetRotation(EngineMath::Vector3 from, EngineMath::V
 {
 	from.Normalize();
 	to.Normalize();
-	auto t = Dot(from, to);
+	auto t = VectorDot(from, to);
 	EngineMath::Vector3 rotAxis;
 	if (t > 0.998f) {
 		//ほぼ同じ向きなので単位クォータニオンにする。

@@ -13,6 +13,7 @@
 #include "RenderContext.h"
 #include "Camera.h"
 #include "NullTextureMaps.h"
+GraphicsEngine* g_graphicsEngine = nullptr;	//グラフィックスエンジン
 class GraphicsEngine
 {
 public:

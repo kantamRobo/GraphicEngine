@@ -1,7 +1,5 @@
 #pragma once
-#include "stdafx.h"
-class RWStructuredBuffer
-{
+class RWStructuredBuffer:public IUnorderAccessResrouce{
 public:
 	~RWStructuredBuffer();
 

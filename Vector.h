@@ -1,7 +1,7 @@
 #pragma once
 
 class Matrix;
-
+#include <DirectXMath.h>
 namespace EngineMath {
 	/// <summary>
 	/// 2次元ベクトルクラス。
@@ -773,7 +773,7 @@ namespace EngineMath {
 		/// 行列からクォータニオンを作成。
 		/// </summary>
 		/// <param name="m">行列</param>
-		void SetRotation(const Matrix& m);
+		void SetRotation(const EngineMath::Matrix& m);
 		/// <summary>
 		/// fromベクトルからtoベクトルに回転させるクォータニオンを作成。
 		/// </summary>
@@ -927,7 +927,7 @@ namespace EngineMath {
 	/// <summary>
 	/// 内積を計算。
 	/// </summary>
-	static inline float Dot(const Vector3& v0, const Vector3& v1)
+	static inline float VectorDot(const Vector3& v0, const Vector3& v1)
 	{
 		return v0.Dot(v1);
 	}

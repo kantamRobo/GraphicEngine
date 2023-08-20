@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RaytracingPSO.h"
 #include "RaytracingDescriptorHeaps.h"
+#include "Raytracing.h"
 using namespace raytracing::PSO;
 
 namespace raytracing {
