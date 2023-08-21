@@ -35,41 +35,7 @@ const int MAX_RENDERING_TARGET = D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT;	//ƒŒƒ“ƒ
 
 using namespace Microsoft::WRL;
 
-#include "MyAssert.h"
 
-
-#include "Math.h"
-#include "Vector.h"
-#include "Matrix.h"
-
-#include "Engine.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "IShaderResource.h"
-#include "IUnorderAccessResrouce.h"
-#include "GPUBuffer.h"
-#include "Texture.h"
-#include "RWStructuredBuffer.h"
-#include "StructuredBuffer.h"
-#include "Shader.h"
-#include "PipelineState.h"
-#include "ConstantBuffer.h"
-#include "RootSignature.h"
-//#include "raytracing/Raytracing.h"
-#include "GraphicsEngine.h"
-#include "DescriptorHeap.h"
-#include "RenderTarget.h"
-#include "Animation.h"
-//#include "font/Font.h"
-
-#include "RenderContext_inline.h"
-//#include "DescriptorHeap_inline.h"
-
-//#include "Sprite.h"
-#include "Model.h"
-//#include "HID/GamePad.h"
-
-//#include "GaussianBlur.h"
 
 const UINT FRAME_BUFFER_W = 1280;				//ƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚Ì•B
 const UINT FRAME_BUFFER_H = 720;				//ƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚Ì‚‚³B

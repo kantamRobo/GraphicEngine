@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#pragma once
+#include <d3d12.h>
 class IShaderResource {
 public:
 	virtual ~IShaderResource()

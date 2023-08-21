@@ -1,3 +1,4 @@
+#pragma once
 #include "IShaderResource.h"
 
 class IUnorderAccessResrouce : public IShaderResource {

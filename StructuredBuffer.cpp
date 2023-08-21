@@ -1,3 +1,4 @@
+#include "GraphicsEngine.h"
 #include "StructuredBuffer.h"
 
 StructuredBuffer::~StructuredBuffer()

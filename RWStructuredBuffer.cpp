@@ -1,6 +1,15 @@
-#include "stdafx.h"
-#include "RWStructuredBuffer.h"
+
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "GraphicsEngine.h"
+#include "stdafx.h"
+
+#include "RWStructuredBuffer.h"
+
+
+
+
+
 RWStructuredBuffer::~RWStructuredBuffer()
 {
 	//アンマーップ
@@ -120,7 +129,7 @@ void RWStructuredBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE de
 	srvDesc.Buffer.StructureByteStride = m_sizeOfElement;
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	device->CreateShaderResourceView(
-		m_buffersOnGPU[bufferNo],
+		m_buffersOnGPU[bufferNo].Get(),
 		&srvDesc,
 		descriptorHandle
 	);

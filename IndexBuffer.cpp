@@ -1,5 +1,6 @@
-#include <wrl.h>
+
 #include "stdafx.h"
+#include "GraphicsEngine.h"
 #include "IndexBuffer.h"
 
 
