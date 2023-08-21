@@ -1,7 +1,7 @@
 /*!
  * @brief	s—ñB
  */
-#include "Vector.h"
+
 #include "stdafx.h"
 #include "Matrix.h"
 

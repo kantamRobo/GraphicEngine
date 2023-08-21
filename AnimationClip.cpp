@@ -1,7 +1,9 @@
-#include "AnimationClip.h"
-#include "stdafx.h"
 #include "Matrix.h"
 #include "Vector.h"
+#include "stdafx.h"
+
+#include "AnimationClip.h"
+
 
 
 AnimationClip::~AnimationClip()

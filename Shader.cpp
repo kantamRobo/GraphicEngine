@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "stdafx.h"
 #include <stierr.h>
 #include <sstream>
 #include <fstream>

@@ -1,10 +1,19 @@
-#include "Model.h"
 #include "stdafx.h"
 #include <array>
 #include "Vector.h"
 #include "Matrix.h"
+#include "Texture.h"
 #include "Math.h"
 #include "MyAssert.h"
+#include "RenderContext.h"
+#include "Camera.h"
+#include "MeshParts.h"
+#include "Material.h"
+#include "Model.h"
+
+
+
+
 void Model::InitModel(const ModelInitData& initData)
 {
 	/* レイトレ向けの初期化の時にはm_fxFilePathは指定されていない場合があるのでスルーする。
@@ -60,7 +69,7 @@ void Model::ChangeAlbedoMap(const char* materialName, Texture& albedoMap)
 	m_meshParts.QueryMeshs([&](const SMesh& mesh) {
 		//todo マテリアル名をtkmファイルに出力してなかった。
 		//todo 今は全マテリアル差し替えます
-		for (Material* material : mesh.m_materials) {
+		for (auto& material : mesh.m_materials) {
 			material->GetAlbedoMap().InitFromD3DResource(albedoMap.Get());
 		}
 		});
@@ -82,7 +91,7 @@ void Model::Draw(RenderContext& rc, Camera& camera)
 	Draw(rc, camera.GetViewMatrix(), camera.GetProjectionMatrix());
 }
 
-void Model::Draw(RenderContext& rc, const Matrix& viewMatrix, const Matrix& projMatrix)
+void Model::Draw(RenderContext& rc, const EngineMath::Matrix& viewMatrix, const EngineMath::Matrix& projMatrix)
 {
 	m_meshParts.Draw(
 		rc,

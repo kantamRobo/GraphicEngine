@@ -1,5 +1,5 @@
 
-#include "RenderTarget.h"
+
 #include <d3d12.h>
 
 #include "GraphicsEngine.h"
@@ -9,6 +9,7 @@
 
 #include <wrl/client.h>
 #include <memory>
+#include "RenderTarget.h"
 RenderTarget::~RenderTarget()
 {
 	if (m_renderTargetTextureDx12) {

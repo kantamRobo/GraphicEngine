@@ -1,6 +1,11 @@
-#include "Texture.h"
+#include "IShaderResource.h"
 #include <ResourceUploadBatch.h>
-#include <DDSTextureLoader.h>
+
+#include "GraphicsEngine.h"
+
+#include "stdafx.h"
+#include "Texture.h"
+
 extern GraphicsEngine* g_graphicsEngine = nullptr;
 Texture::~Texture()
 {

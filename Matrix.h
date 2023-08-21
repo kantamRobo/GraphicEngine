@@ -1,7 +1,7 @@
 
 #pragma once
-
-
+#include <DirectXMath.h>
+#include "Vector.h"
 namespace EngineMath {
 	/// <summary>
 	/// 行列クラス。
@@ -17,7 +17,7 @@ namespace EngineMath {
 				float _31, _32, _33, _34;
 				float _41, _42, _43, _44;
 			};
-			Vector4 v[4];
+			EngineMath::Vector4 v[4];
 			float m[4][4];
 		};
 		//単位行列
@@ -91,9 +91,9 @@ namespace EngineMath {
 		/// ベクトルと3x3行列を乗算。
 		/// </summary>
 		/// <param name="vOut">乗算されるベクトル。</param>
-		void Apply3x3(Vector3& vOut) const
+		void Apply3x3(EngineMath::Vector3& vOut) const
 		{
-			Vector3 vTmp = vOut;
+			EngineMath::Vector3 vTmp = vOut;
 			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[1][0] + vTmp.z * m[2][0];
 			vOut.y = vTmp.x * m[0][1] + vTmp.y * m[1][1] + vTmp.z * m[2][1];
 			vOut.z = vTmp.x * m[0][2] + vTmp.y * m[1][2] + vTmp.z * m[2][2];
@@ -103,7 +103,7 @@ namespace EngineMath {
 		/// ベクトルに行列を乗算。
 		/// </summary>
 		/// <param name="vOut">乗算されるベクトル。</param>
-		void Apply(Vector3& vOut) const
+		void Apply(EngineMath::Vector3& vOut) const
 		{
 			DirectX::XMStoreFloat3(
 				&vOut.vec,
@@ -114,7 +114,7 @@ namespace EngineMath {
 		/// ベクトルに行列を乗算。
 		/// </summary>
 		/// <param name="vOut">乗算されるベクトル。</param>
-		void Apply(Vector4& vOut) const
+		void Apply(EngineMath::Vector4& vOut) const
 		{
 			DirectX::XMStoreFloat4(
 				&vOut.vec,
@@ -125,7 +125,7 @@ namespace EngineMath {
 		/// 平行移動行列を作成。
 		/// </summary>
 		/// <param name="trans">平行移動。</param>
-		void MakeTranslation(const Vector3& trans)
+		void MakeTranslation(const EngineMath::Vector3& trans)
 		{
 			DirectX::XMStoreFloat4x4(
 				&mat,

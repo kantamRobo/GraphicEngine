@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 /// <summary>
 /// Nullテクスチャマップを保持しているクラス。
 /// </summary>

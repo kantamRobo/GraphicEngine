@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <wrl.h>
 class Shader;
 class RootSignature
 {

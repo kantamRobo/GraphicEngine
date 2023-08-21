@@ -23,7 +23,7 @@
 #include <dxgi.h>
 #include <dxgitype.h>
 #include <dxgiformat.h>
-
+#include <wrl.h>
 
 #include "CommonStates.h"
 #include "SpriteBatch.h"

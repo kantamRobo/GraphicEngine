@@ -762,7 +762,7 @@ namespace EngineMath {
 		void SetRotationDeg(const Vector3& axis, float angle)
 		{
 			float s;
-			float halfAngle = Math::DegToRad(angle) * 0.5f;
+			float halfAngle = EngineMath::DegToRad(angle) * 0.5f;
 			s = sinf(halfAngle);
 			w = cosf(halfAngle);
 			x = axis.x * s;

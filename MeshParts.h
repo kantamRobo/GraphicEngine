@@ -59,7 +59,7 @@ public:
 		D3D12_FILTER samplerFilter
 	);
 	
-	void DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+	void DrawCommon(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
 	/// 描画。
 	/// </summary>
@@ -69,11 +69,11 @@ public:
 	/// <param name="mProj">プロジェクション行列</param>
 	/// <param name="light">ライト</param>
 	
-	void Draw(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+	void Draw(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 
 	void InitFromAssimpFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
 
-	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
+	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
 	/// インスタンシング描画
 	/// </summary>
@@ -81,7 +81,7 @@ public:
 	/// <param name="numInstance">インスタンス数</param>
 	/// <param name="mView">ビュー行列</param>
 	/// <param name="mProj">プロジェクション行列</param>
-	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
+	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
 	/// スケルトンを関連付ける。
 	/// </summary>
@@ -137,7 +137,7 @@ private:
 	/// <param name="mWorld">ワールド行列</param>
 	/// <param name="mView">ビュー行列</param>
 	/// <param name="mProj">プロジェクション行列</param>
-	void DrawCommon(RenderContext& rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+	void DrawCommon(RenderContext& rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 
 private:
 	//拡張SRVが設定されるレジスタの開始番号。
@@ -153,9 +153,9 @@ private:
 	/// この構造体を変更したら、SimpleModel.fxのCBも変更するように。
 	/// </remarks>
 	struct SConstantBuffer {
-		Matrix mWorld;		//ワールド行列。
-		Matrix mView;		//ビュー行列。
-		Matrix mProj;		//プロジェクション行列。
+		EngineMath::Matrix mWorld;		//ワールド行列。
+		EngineMath::Matrix mView;		//ビュー行列。
+		EngineMath::Matrix mProj;		//プロジェクション行列。
 	};
 	ConstantBuffer m_commonConstantBuffer;					//メッシュ共通の定数バッファ。
 	ConstantBuffer m_expandConstantBuffer;					//ユーザー拡張用の定数バッファ

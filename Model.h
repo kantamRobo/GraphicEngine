@@ -1,9 +1,5 @@
 #pragma once
-#include "MeshParts.h"
-#include "Skeleton.h"
-#include "Vector.h"
-#include "Matrix.h"
-#include "Camera.h"
+
 class IShaderResource;
 
 //モデルの上方向
@@ -50,7 +46,7 @@ public:
 	/// <param name="pos">座標</param>
 	/// <param name="rot">回転</param>
 	/// <param name="scale">拡大率</param>
-	void UpdateWorldMatrix(Vector3 pos, Quaternion rot, Vector3 scale);
+	void UpdateWorldMatrix(EngineMath::Vector3 pos, EngineMath::Quaternion rot, EngineMath::Vector3 scale);
 
 	/// <summary>
 	/// 描画
@@ -138,15 +134,15 @@ public:
 	/// <param name="scale">拡大率。</param>
 	/// <returns></returns>
 	/// 
-	Matrix CalcWorldMatrix(Vector3 pos, Quaternion rot, Vector3 scale)
+	EngineMath::Matrix CalcWorldMatrix(Vector3 pos, Quaternion rot, Vector3 scale)
 	{
-		Matrix mWorld;
-		Matrix mBias;
+		EngineMath::Matrix mWorld;
+		EngineMath::Matrix mBias;
 		if (m_modelUpAxis == enModelUpAxisZ) {
 			//Z-up
 			mBias.MakeRotationX(Math::PI * -0.5f);
 		}
-		Matrix mTrans, mRot, mScale;
+		EngineMath::Matrix mTrans, mRot, mScale;
 		mTrans.MakeTranslation(pos);
 		mRot.MakeRotationFromQuaternion(rot);
 		mScale.MakeScaling(scale);
@@ -160,7 +156,7 @@ public:
 
 private:
 	bool m_isInited = false;						// 初期化されている？
-	Matrix m_world;									// ワールド行列。
+	EngineMath::Matrix m_world;									// ワールド行列。
 	TkmFile* m_tkmFile;								// tkmファイル。
 	Skeleton m_skeleton;							// スケルトン。
 	MeshParts m_meshParts;							// メッシュパーツ。

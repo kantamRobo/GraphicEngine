@@ -1,5 +1,6 @@
 #pragma once
-
+#include <memory>
+#include "TResourceBank.h"
 class Engine
 {
 
@@ -24,11 +25,6 @@ public:
 		return m_textureBank.Get(filePath);
 	}
 
-	//テクスチャをバンクに登録
-	void RegistTextureToBank(const char* filePath, Texture* texture)
-	{
-	  
-	}
 
 	/// <summary>
 	/// テクスチャをバンクに登録。

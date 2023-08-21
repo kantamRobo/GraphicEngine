@@ -1,12 +1,17 @@
 #pragma once
+#include <memory>
+#include <wrl.h>
+#include <vector>
+#include "RootSignature.h"
+#include "PipelineState.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "d3dx12.h"
 class ConstantBuffer;
 class Texture;
 class DescriptorHeap;
 class RenderTarget;
-class PipelineState;
-class RootSignature;
-class VertexBuffer;
-class IndexBuffer;
+
 enum { MAX_DESCRIPTOR_HEAP = 4 };	//ディスクリプタヒープの最大数。
 enum { MAX_CONSTANT_BUFFER = 8 };	//定数バッファの最大数。足りなくなったら増やしてね。
 enum { MAX_SHADER_RESOURCE = 16 };	//シェーダーリソースの最大数。足りなくなったら増やしてね。
@@ -441,7 +446,7 @@ public:
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_descriptorHeaps[MAX_DESCRIPTOR_HEAP];
 		std::shared_ptr<ConstantBuffer>m_constantBuffers[MAX_CONSTANT_BUFFER];
 		std::shared_ptr<Texture> m_shaderResources[MAX_SHADER_RESOURCE];
-		std::vector < 	Microsoft::WRL::ComPtr<ID3D12Resource>> m_scratchResourceList;
+		std::vector <Microsoft::WRL::ComPtr<ID3D12Resource>> m_scratchResourceList;
 		D3D12_VIEWPORT m_currentViewport;
 	
 };

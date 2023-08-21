@@ -1,14 +1,18 @@
+#include <vector>
+
 #include "stdafx.h"
 #include "IUnorderAccessResrouce.h"
+#include "GPUBuffer.h"
+#include "GraphicsEngine.h"
 #include "DescriptorHeap.h"
 
-#include "GraphicsEngine.h"
+
 
 
 
 void DescriptorHeap::Commit()
 {
-	const auto& d3dDevice = m_graphicsEngine->GetD3DDevice();
+	const auto& d3dDevice = g_graphicsEngine->GetD3DDevice();
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 
 	srvHeapDesc.NumDescriptors = m_numShaderResource;

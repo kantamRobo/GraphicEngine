@@ -1,5 +1,5 @@
 #pragma once
-#include <wrl.h>
+
 class IndexBuffer
 {
 public:

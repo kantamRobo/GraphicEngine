@@ -1,5 +1,4 @@
-#pragma once
-#include "stdafx.h"
+#pragma 
 class Shader
 {
 public:
@@ -22,11 +21,11 @@ public:
 	/// <param name="entryFuncName"></param>
 	void LoadCS(const char* filePath, const char* entryFuncName);
 
-	ComPtr<ID3DBlob> GetCompiledBlob()const
+	Microsoft::WRL::ComPtr<ID3DBlob> GetCompiledBlob()const
 	{
 		return m_blob;
 	}
-	ComPtr<IDxcBlob> GetCompiledDxcBlob()
+	Microsoft::WRL::ComPtr<IDxcBlob> GetCompiledDxcBlob()
 	{
 		return m_dxcBlob;
 	}
@@ -41,8 +40,8 @@ public:
 private:
 	void LoadShader(const char* filePath, const char* entryFuncName, const char* shaderModel);
 private:
-	ComPtr<ID3DBlob> m_blob = nullptr;
-	ComPtr <IDxcBlob> m_dxcBlob = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> m_blob = nullptr;
+	Microsoft::WRL::ComPtr <IDxcBlob> m_dxcBlob = nullptr;
 	bool m_isInited = false;
 };
 

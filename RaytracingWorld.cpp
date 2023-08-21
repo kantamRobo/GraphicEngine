@@ -1,5 +1,10 @@
-#include "RaytracingWorld.h"
 #include "stdafx.h"
+#include "Matrix.h"
+#include "Vector.h"
+#include "MeshParts.h"
+#include "Model.h"
+#include "RaytracingWorld.h"
+
 
 void raytracing::World::RegistGeometry(std::shared_ptr<Model> model)
 {

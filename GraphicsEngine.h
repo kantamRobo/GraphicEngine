@@ -51,7 +51,7 @@ public:
 	}
 
 	//コマンドキューを取得
-	ComPtr<ID3D12CommandQueue> GetCommandQueue()const
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetCommandQueue()const
 	{
 		return m_commandQueue;
 	}
@@ -327,7 +327,7 @@ private:
 	
 	std::shared_ptr<NullTextureMaps> m_nullTextureMaps;
 	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemory;
-	ComPtr<IDXGISwapChain3> m_swapChain = nullptr;
+	Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapChain = nullptr;
 
 	Camera m_camera3D;
 };

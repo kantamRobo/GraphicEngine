@@ -1,9 +1,11 @@
 #pragma once
-
+#include <memory>
+#include <vector>
+#include <string>
 struct KeyFrame {
 	uint32_t boneIndex;
 	float time;
-	Matrix transform;
+	EngineMath::Matrix transform;
 
 };
 
@@ -125,5 +127,4 @@ private:
 
 
 };
-
 using AnimationClipPtr = std::unique_ptr<AnimationClip>;

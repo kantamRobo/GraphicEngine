@@ -1,7 +1,10 @@
-#include "stdafx.h"
-#include "RootSignature.h"
 #include <array>
-#include "d3dx12.h"
+#include "Shader.h"
+#include "stdafx.h"
+#include "GraphicsEngine.h"
+#include "RootSignature.h"
+
+
 enum {
     enDescriptorHeap_CB,
     enDescriptorHeap_SRV,

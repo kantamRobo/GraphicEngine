@@ -1,6 +1,8 @@
 #pragma once
 
-#include "stdafx.h"
+
+#include "DescriptorHeap.h"
+#include <d3d12.h>
 #include "RenderContext.h"
 
 inline void RenderContext::SetDescriptorHeap(DescriptorHeap& descHeap)

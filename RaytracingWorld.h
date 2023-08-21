@@ -2,6 +2,7 @@
 class Model;
 class RenderContext;
 #include <functional>
+#include <memory>
 namespace raytracing {
 	class World
 	{
@@ -49,8 +50,8 @@ namespace raytracing {
 		//カメラ
 
 		struct Camera {
-			Matrix mRot;//回転行列
-			Vector3 pos;//視点
+			EngineMath::Matrix mRot;//回転行列
+			EngineMath::Vector3 pos;//視点
 			float aspect;//アスペクト比
 			float fFar;//遠平面
 			float fNear;//近平面

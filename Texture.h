@@ -1,6 +1,5 @@
 #pragma once
 #include "IShaderResource.h"
-#include "stdafx.h"
 class Texture:public IShaderResource
 {
 public:
@@ -9,11 +8,7 @@ public:
 		InitFromDDSFile(filePath);
 	}
 	~Texture();
-	/// <summary>
-		/// ファイルからテクスチャをロードするコンストラクタ
-		/// </summary>
-		/// <param name="filePath">ロードするテクスチャのファイルパス。</param>
-	explicit Texture(const wchar_t* filePath);
+
 
 	/// <summary>
 	/// DDSファイルからテクスチャを初期化する。
@@ -47,12 +42,9 @@ public:
 		return m_texture != nullptr;
 	}
 
-	bool IsValid()const
-	{
-		return m_texture != nullptr;
-	}
+	
 
-	ComPtr<ID3D12Resource> Get()
+	Microsoft::WRL::ComPtr<ID3D12Resource> Get()
 	{
 		return m_texture;
 	}
@@ -73,7 +65,7 @@ private:
 	void LoadTextureFromMemory(const char* memory, unsigned int size);
 
 private:
-	ComPtr<ID3D12Resource> m_texture = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture = nullptr;
 	D3D12_RESOURCE_DESC m_textureDesc;
 };
 
