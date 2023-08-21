@@ -14,6 +14,9 @@ public:
 	bool CreateSwapChain(GLFWwindow* window);
 	bool CreateCommandBuffer();
 	bool CreateSemaphore();
+
+
+	bool CreateDescriptorSetForFrameBuffer();
 	VkDevice  m_Device = nullptr;
 	VkPhysicalDevice PDevice = nullptr;
 	VkDeviceMemory DeviceMemory = nullptr;
@@ -48,6 +51,8 @@ public:
 	std::vector<VkFence>  m_fences = {};
 	VkDescriptorSet fbheap = nullptr;
 	VkDescriptorSet dsvheap = nullptr;
+	VkDescriptorPool descpool = nullptr;
+	VkDescriptorSetLayout desclayout = nullptr;
 	VkSemaphore   m_renderCompletedSem, m_presentCompletedSem;
 
 	

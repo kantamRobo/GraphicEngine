@@ -238,3 +238,22 @@ bool CoreGraphicsEngine::CreateSemaphore()
 	return true;
 }
 
+bool CoreGraphicsEngine::CreateDescriptorSetForFrameBuffer()
+{
+	auto imageCount = swapchainViews.size();
+	VkDescriptorSetAllocateInfo descriptorSetInfo = {};
+		descriptorSetInfo.descriptorPool = descpool;
+		descriptorSetInfo.descriptorSetCount = 1;
+		descriptorSetInfo.pNext = nullptr;
+		descriptorSetInfo.pSetLayouts = &desclayout;
+		descriptorSetInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+
+		for (uint32_t i = 0; i < imageCount; ++i)
+		{
+			
+			auto resultFBset = vkAllocateDescriptorSets(m_Device, &descriptorSetInfo, &fbheap);
+			//ThrowIfFailed(result, "vkAllocateDescriptorSets Failed.");
+			//m_descriptorSets.push_back(descriptorSet);
+		}
+}
+

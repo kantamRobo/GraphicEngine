@@ -37,6 +37,9 @@ class RenderingContext
 
 	}
 
+
+	
+
 private:
 	VkCommandBuffer m_commandBuffer;
 };

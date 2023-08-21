@@ -137,6 +137,7 @@
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="IVulkanShaderResource.h" />
     <ClInclude Include="IVulkanUnorderedResource.h" />
+    <ClInclude Include="PipelineLayout.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Raytracing.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="VkRaytracingInstance.h" />
+    <ClInclude Include="VulkanGPUBuffer.h" />
     <ClInclude Include="VulkanGraphicsEngine.h" />
     <ClInclude Include="VulkanIndexBuffer.h" />
     <ClInclude Include="VulkanVertexBuffer.h" />
@@ -154,10 +156,12 @@
     <ClCompile Include="CoreGraphicsEngine.cpp" />
     <ClCompile Include="DescriptorSet.cpp" />
     <ClCompile Include="FrameBuffer.cpp" />
+    <ClCompile Include="PipelineLayout.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="RenderingContext.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="VkVertexBuffer.cpp" />
+    <ClCompile Include="VulkanGPUBuffer.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
     <ClCompile Include="VulkanIndexBuffer.cpp" />
     <ClCompile Include="VulkanVertexBuffer.cpp" />
