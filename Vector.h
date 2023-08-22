@@ -1,7 +1,10 @@
 #pragma once
 
-class Matrix;
+
 #include <DirectXMath.h>
+
+class Matrix;
+
 namespace EngineMath {
 	/// <summary>
 	/// 2次元ベクトルクラス。
@@ -773,7 +776,7 @@ namespace EngineMath {
 		/// 行列からクォータニオンを作成。
 		/// </summary>
 		/// <param name="m">行列</param>
-		void SetRotation(const EngineMath::Matrix& m);
+		void SetRotation(const Matrix& m);
 		/// <summary>
 		/// fromベクトルからtoベクトルに回転させるクォータニオンを作成。
 		/// </summary>

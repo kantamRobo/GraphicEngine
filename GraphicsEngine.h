@@ -12,6 +12,7 @@
 #include "ResourceUploadBatch.h"
 #include "RenderContext.h"
 #include "Camera.h"
+#include "Model.h"
 #include "NullTextureMaps.h"
 class GraphicsEngine
 {

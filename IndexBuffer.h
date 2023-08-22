@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+#include <wrl.h>
 class IndexBuffer
 {
 public:
@@ -9,7 +11,9 @@ public:
 
 	void Copy(uint16_t* srcIndices);
 
-	void Copy(uint32_t* srcIndices);
+	void Copy(uint32_t* srcIndecies);
+
+	
 
 	/// <summary>
 	/// インデックスバッファビューを取得。

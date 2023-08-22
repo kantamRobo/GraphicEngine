@@ -3,19 +3,25 @@
 /// </summary>
 
 #pragma once
-
-
-#include "StructuredBuffer.h"
-
+class ConstantBuffer;
 class RenderContext;
 class Skeleton;
 class Material;
+class IndexBuffer;
+class VertexBuffer;
 class IShaderResource;
 
+class DescriptorHeap;
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+#include "StructuredBuffer.h"
+#include "ConstantBuffer.h"
+#include "VertexBuffer.h"
 
 
 const int MAX_MODEL_EXPAND_SRV = 6;	//拡張SRVの最大数。
-const int MAX_RENDERING_TARGET = 8;
+
 /// <summary>
 /// メッシュ
 /// </summary>
@@ -36,28 +42,7 @@ public:
 	/// </summary>
 	~MeshParts();
 	void InitFromAssimpFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
-	/// <summary>
-	/// tkmファイルから初期化
-	/// </summary>
-	/// <param name="tkmFile">tkmファイル。</param>
-	/// /// <param name="fxFilePath">fxファイルのファイルパス</param>
-	/// <param name="vsEntryPointFunc">頂点シェーダーのエントリーポイントの関数名</param>
-	/// <param name="vsSkinEntryPointFunc">スキンありマテリアル用の頂点シェーダーのエントリーポイントの関数名</param>
-	/// <param name="psEntryPointFunc">ピクセルシェーダーのエントリーポイントの関数名</param>
-	/// <param name="colorBufferFormat">このモデルをレンダリングするカラーバッファのフォーマット</param>
-	/// <param name="samplerFilter">サンプラフィルタ</param>
-	void InitFromAssimpFile(
-		const aiScene* scene,
-		const char* fxFilePath,
-		const char* vsEntryPointFunc,
-		const char* vsSkinEntryPointFunc,
-		const char* psEntryPointFunc,
-		void* expandData,
-		int expandDataSize,
-		const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView,
-		const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat,
-		D3D12_FILTER samplerFilter
-	);
+	
 	
 	void DrawCommon(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
@@ -75,14 +60,6 @@ public:
 
 	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
-	/// インスタンシング描画
-	/// </summary>
-	/// <param name="rc">レンダリングコンテキスト</param>
-	/// <param name="numInstance">インスタンス数</param>
-	/// <param name="mView">ビュー行列</param>
-	/// <param name="mProj">プロジェクション行列</param>
-	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
-	/// <summary>
 	/// スケルトンを関連付ける。
 	/// </summary>
 	/// <param name="skeleton">スケルトン</param>
@@ -97,12 +74,7 @@ public:
 			queryFunc(*mesh);
 		}
 	}
-	void QueryMeshAndDescriptorHeap(std::function<void(const SMesh& mesh, const DescriptorHeap& ds)> queryFunc)
-	{
-		for (int i = 0; i < m_meshs.size(); i++) {
-			queryFunc(*m_meshs[i], m_descriptorHeap);
-		}
-	}
+	
 	/// <summary>
 	/// ディスクリプタヒープを作成。
 	/// </summary>
@@ -138,7 +110,7 @@ private:
 	/// <param name="mView">ビュー行列</param>
 	/// <param name="mProj">プロジェクション行列</param>
 	void DrawCommon(RenderContext& rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
-
+	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
 private:
 	//拡張SRVが設定されるレジスタの開始番号。
 	const int EXPAND_SRV_REG__START_NO = 10;

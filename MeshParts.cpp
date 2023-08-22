@@ -1,15 +1,14 @@
-#include "MeshParts.h"
 #include "stdafx.h"
+
 #include "Skeleton.h"
 #include "Material.h"
+
 #include "IndexBuffer.h"
 #include "Matrix.h"
 #include "Vector.h"
 #include "DescriptorHeap.h"
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <assimp/Importer.hpp>
 #include <memory>
+#include "MeshParts.h"
 MeshParts::~MeshParts()
 {
 	for (auto& mesh : m_meshs)

@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include "Matrix.h"
 struct KeyFrame {
 	uint32_t boneIndex;
 	float time;

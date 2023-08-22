@@ -1,6 +1,6 @@
-#include "TLASBuffer.h"
+#include "Math.h"
 #include "stdafx.h"
-
+#include "TLASBuffer.h"
 namespace raytracing {
 
 
