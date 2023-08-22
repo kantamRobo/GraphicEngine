@@ -1,8 +1,8 @@
-#include "UniformBuffer.h"
+#include "StorageBuffer.h"
+#include <cstring>
 
-#include "stdafx.h"
-
-void UniformBuffer::InitUniformBuffer(int size, void* srcData)
+#include "CoreGraphicsEngine.h"
+void StorageBuffer::InitStorageBuffer(int size, void* srcData)
 {
 	m_size = size;
 
@@ -14,7 +14,7 @@ void UniformBuffer::InitUniformBuffer(int size, void* srcData)
 	int bufferNo = 0;
 	VkBufferCreateInfo ciinfo = {};
 	ciinfo.flags = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-	ciinfo.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+	ciinfo.usage = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
 	ciinfo.size = size;
 	// メモリ量の算出
 	VkMemoryRequirements reqs;
@@ -24,32 +24,25 @@ void UniformBuffer::InitUniformBuffer(int size, void* srcData)
 	auto devicememory = g_graphicsEngine->DeviceMemory();
 	vkAllocateMemory(device, &info, nullptr, &devicememory);
 
-	for (auto& ub : m_uniformbuffer) {
-		vkCreateBuffer(device, &ciinfo, nullptr, &ub);
-		vkGetBufferMemoryRequirements(device, ub, &reqs);
-		// メモリのバインド
-		vkBindBufferMemory(device, ub, devicememory, 0);
-
-	}
 	
+		vkCreateBuffer(device, &ciinfo, nullptr, &m_storagebuffer);
+		vkGetBufferMemoryRequirements(device, m_storagebuffer, &reqs);
+		// メモリのバインド
+		vkBindBufferMemory(device, m_storagebuffer, devicememory, 0);
+
+	
+
 
 	void* p;
 	vkMapMemory(device, devicememory, 0, VK_WHOLE_SIZE, 0, &p);
-	memcpy(p, srcData, size);
+	std:(p, srcData, size);
 	vkUnmapMemory(device, devicememory);
 	if (srcData != nullptr)
 	{
-		memcpy(m_uniformBufferCPU[bufferNo], srcData, size);
+		std::memcpy(m_storageBufferCPU, srcData, size);
 	}
 	bufferNo++;
-	
+
 	//利用可能にする
 	m_isValid = true;
 }
-
-void UniformBuffer::CopyToVRAM(void* data)
-{
-	auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
-	memcpy(m_uniformBufferCPU[backBufferIndex], data, m_size);
-}
-

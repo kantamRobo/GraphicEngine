@@ -144,6 +144,7 @@
     <ClInclude Include="RenderingContext.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StorageBuffer.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="VkRaytracingInstance.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="PipelineLayout.cpp" />
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="RenderingContext.cpp" />
+    <ClCompile Include="StorageBuffer.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="VkVertexBuffer.cpp" />
     <ClCompile Include="VulkanGPUBuffer.cpp" />
