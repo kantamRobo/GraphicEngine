@@ -333,4 +333,4 @@ private:
 	Camera m_camera3D;
 };
 
-GraphicsEngine* m_graphicsEngine = nullptr;	//グラフィックスエンジン
+GraphicsEngine* g_graphicsEngine = nullptr;	//グラフィックスエンジン
