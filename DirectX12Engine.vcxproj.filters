@@ -189,6 +189,12 @@
     <ClInclude Include="Engine.h">
       <Filter>Graphics\Core</Filter>
     </ClInclude>
+    <ClInclude Include="RaytracingEngine.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RaytracingShaderTable.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
@@ -295,6 +301,12 @@
     </ClCompile>
     <ClCompile Include="RenderContext.cpp">
       <Filter>Graphics\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RaytracingEngine.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RaytracingShaderTable.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

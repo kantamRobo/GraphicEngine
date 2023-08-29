@@ -1,10 +1,6 @@
 #pragma once
 
-//UNIX systems programming
-//https://www.amazon.co.jp/UNIX-Systems-Programming-Communication-Concurrency/dp/0130424110
-
-namespace raytracing
-{
+namespace raytracing {
 	extern 	ID3D12Resource* CreateBuffer(
 		ID3D12Device5* pDevice,
 		uint64_t size,
@@ -19,13 +15,12 @@ namespace raytracing
 		ID3D12Resource* pInstanceDesc = nullptr;
 	};
 
-	//ヒットグループ
+	//ヒットグループ。
 	enum EHitGroup {
-		eHitGroup_Undeg = -1,
-		eHitGroup_PBRCameraRay,
-		eHitGroup_PBRShadowRay,
-		eHitGroup_Num,
-
+		eHitGroup_Undef = -1,
+		eHitGroup_PBRCameraRay,	//PBRマテリアルにカメラレイが衝突するときのヒットグループ。
+		eHitGroup_PBRShadowRay,	//PBRマテリアルにシャドウレイが衝突するときのヒットグループ。
+		eHitGroup_Num,			//ヒットグループの数。
 	};
 
 	const D3D12_HEAP_PROPERTIES kUploadHeapProps =
@@ -46,12 +41,15 @@ namespace raytracing
 		0
 	};
 
+	const int MAX_TRACE_RECURSION_DEPTH = 4;	//レイトレースの再帰呼び出しの最大数。
+	//これがTraceRayを再帰的に呼び出せる最大数です。
+	//
+//ローカルルートシグネチャ
 	enum ELocalRootSignature {
 		eLocalRootSignature_Empty,				//空のローカルルートシグネチャ。
 		eLocalRootSignature_Raygen,				//レイ生成シェーダー用のローカルルートシグネチャ。
 		eLocalRootSignature_PBRMaterialHit,		//PBRマテリアルにヒットしたときのローカルルートシグネチャ。
 	};
-
 	//シェーダー
 	enum EShader {
 		eShader_Raygeneration,		//カメラレイを生成するシェーダー。
@@ -61,7 +59,6 @@ namespace raytracing
 		eShader_ShadowMiss,			//シャドウレイがどこにもぶつからなかった時に呼ばれるシェーダー。
 		eShader_Num,				//シェーダーの数。
 	};
-
 	//シェーダーのカテゴリ。
 	enum EShaderCategory {
 		eShaderCategory_RayGenerator,	//レイを生成するシェーダー。
@@ -86,19 +83,21 @@ namespace raytracing
 		{ L"shadowChs",		eLocalRootSignature_PBRMaterialHit,	eShaderCategory_ClosestHit,		eHitGroup_PBRShadowRay },
 		{ L"shadowMiss",	eLocalRootSignature_Empty,			eShaderCategory_Miss,			eHitGroup_Undef },
 	};
+
 	static_assert(ARRAYSIZE(shaderDatas) == eShader_Num, "shaderDatas arraySize is invalid!! shaderDatas arraySize must be equal to eShader_Num");
+
 
 	struct SHitGroup {
 		const wchar_t* name;				//ヒットグループの名前。
 		const wchar_t* chsHitShaderName;	//最も近いポリゴンにヒットしたときに呼ばれるシェーダーの名前。
 		const wchar_t* anyHitShaderName;	//any shader???
 	};
-
 	//ヒットグループの名前の配列。
 	const SHitGroup hitGroups[] = {
 		{ L"HitGroup",			shaderDatas[eShader_PBRChs].entryPointName,	nullptr },
 		{ L"ShadowHitGroup",	shaderDatas[eShader_ShadowChs].entryPointName, nullptr },
 	};
+
 
 	/// <summary>
 	/// シェーダーテーブルに登録されているSRVの1要素
@@ -109,34 +108,33 @@ namespace raytracing
 	/// この列挙子が各インスタンスに割り当てられているシェーダーリソースを表しています。
 	/// </remarks>
 	enum class ESRV_OneEntry {
-		eStartRayGenerationSRV,
-		eTLAS = eStartRayGenerationSRV,
-		eEndRayGenerationSRV,
-		eAlbedoMap = eEndRayGenerationSRV,
-		eNormalMap,
-		eSpecularMap,
-		eReflectionMap,
-		eRefractionMap,
-		eVertexBuffer,
-		eIndexBuffer,
-		eNum, //SRVの数
+		eStartRayGenerationSRV,				//レイジェネレーションシェーダーで利用するSRVの開始番号。
+		eTLAS = eStartRayGenerationSRV,		//TLAS
+		eEndRayGenerationSRV,					//レイジェネレーションで使用されるSRVの数。
+		eAlbedoMap = eEndRayGenerationSRV,	//アルベドマップ。
+		eNormalMap,							//法線マップ。
+		eSpecularMap,						//スペキュラマップ。
+		eReflectionMap,						//リフレクションマップ。
+		eRefractionMap,						//屈折マップ。
+		eVertexBuffer,						//頂点バッファ。
+		eIndexBuffer,						//インデックスバッファ。
+		eNum,			//SRVの数。
 		eNumRayGenerationSRV = eEndRayGenerationSRV - eStartRayGenerationSRV,	//レイジェネレーションシェーダーで使用するSRVの数。
 	};
-
-	//ヒットシェーダーのディスクリプタテーブル
+	/// <summary>
+	/// ヒットシェーダーのディスクリプタテーブル
+	/// </summary>
 	enum EHitShaderDescriptorTable {
 		eHitShaderDescriptorTable_SRV_CBV,	//SRVとCBV
 		eHitShaderDescriptorTable_Sampler,	//サンプラ
 		eHitShaderDescriptorTable_Num       //テーブルの数。
 	};
-	//todo CCopPtrの実装例を調べてみる
 	struct Instance;
 	using InstancePtr = std::unique_ptr< Instance>;
 	using ID3D12ResourcePtr = CComPtr<ID3D12Resource>;
 	using ID3D12RootSignaturePtr = CComPtr<ID3D12RootSignature>;
 	using ID3DBlobPtr = CComPtr<ID3DBlob>;
 	using ID3D12DescriptorHeapPtr = CComPtr<ID3D12DescriptorHeap>;
-}
-#include "stdafx.h"
+}//namespace raytracing
+
 #include "RaytracingWorld.h"
-#include <d3dcompiler.h>
