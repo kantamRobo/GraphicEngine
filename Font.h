@@ -3,6 +3,9 @@
 */
 
 #pragma once
+#include "Matrix.h"
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
 
 /// <summary>
 /// フォント
@@ -37,11 +40,11 @@ public:
 		*/
 	void Draw(
 		wchar_t const* text,
-		const Vector2& position,
-		const Vector4& color,
+		const EngineMath::Vector2& position,
+		const EngineMath::Vector4& color,
 		float rotation,
 		float scale,
-		Vector2 pivot
+		EngineMath::Vector2 pivot
 	);
 	/*!
 		*@brief	影のパラメータを設定。
@@ -60,6 +63,6 @@ private:
 	DirectX::SpriteFont* m_spriteFont = nullptr;		//スプライトフォント。
 	bool m_isDrawShadow = false;						//影を書く？
 	float m_shadowOffset = 0.0f;						//影を書くときのピクセルのオフセット量。
-	Vector4 m_shadowColor;								//影の色。
-	Matrix m_scaleMat;
+	EngineMath::Vector4 m_shadowColor;								//影の色。
+	EngineMath::Matrix m_scaleMat;
 };
