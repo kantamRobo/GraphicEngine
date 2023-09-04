@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "TResourceBank.h"
+extern Engine* g_engine = nullptr;
 class Engine
 {
 

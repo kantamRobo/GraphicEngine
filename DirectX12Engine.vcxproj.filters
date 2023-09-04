@@ -46,6 +46,9 @@
     <Filter Include="Font">
       <UniqueIdentifier>{23006a1f-85af-4ab4-97f1-3174dce40623}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dbg">
+      <UniqueIdentifier>{79dea24b-fe1f-48e4-bbb6-cc0aff4c9797}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VertexBuffer.h">
@@ -102,9 +105,6 @@
     <ClInclude Include="RaytracingDescriptorHeaps.h">
       <Filter>raytracing</Filter>
     </ClInclude>
-    <ClInclude Include="MyAssert.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Animation</Filter>
     </ClInclude>
@@ -159,9 +159,6 @@
     <ClInclude Include="Material.h">
       <Filter>Graphics\GPUResources</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Graphics\GPUResources</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsEngine.h">
       <Filter>Graphics\Core</Filter>
     </ClInclude>
@@ -206,6 +203,15 @@
     </ClInclude>
     <ClInclude Include="RaytracingShaderTable.h">
       <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="MyAssert.h">
+      <Filter>dbg</Filter>
+    </ClInclude>
+    <ClInclude Include="TksFile.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Graphics\Pipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,12 +320,6 @@
     <ClCompile Include="RenderContext.cpp">
       <Filter>Graphics\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FontEngine.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -328,6 +328,15 @@
     </ClCompile>
     <ClCompile Include="RaytracingShaderTable.cpp">
       <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Font</Filter>
+    </ClCompile>
+    <ClCompile Include="FontEngine.cpp">
+      <Filter>Font</Filter>
+    </ClCompile>
+    <ClCompile Include="TksFile.cpp">
+      <Filter>IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

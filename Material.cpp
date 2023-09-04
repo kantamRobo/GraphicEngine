@@ -2,24 +2,25 @@
 #include "Engine.h"
 #include "NullTextureMaps.h"
 #include "ConstantBuffer.h"
+#include "GraphicsEngine.h"
+#include "Texture.h"
 #include "Material.h"
 enum {
 	enDescriptorHeap_CB,
 	enDescriptorHeap_SRV,
 	enNumDescriptorHeap
 };
-extern Engine* g_engine;
-extern GraphicsEngine* g_graphicsEngine;
+
 void Material::BeginRender(std::shared_ptr<RenderContext> rc, int hasSkin)
 {
-	rc->SetRootSignature(m_rootSignature.Get().Get());
+	rc->SetRootSignature(m_rootSignature.GetR().Get());
 	if (hasSkin)
 	{
-		rc->SetPipelineState(m_transSkinModelPipelineState.Get().Get());
+		rc->SetPipelineState(m_transSkinModelPipelineState.GetP().Get());
 	}
 	else
 	{
-		rc->SetPipelineState(m_transNonSkinModelPipelineState.Get().Get());
+		rc->SetPipelineState(m_transNonSkinModelPipelineState.GetP().Get());
 	}
 }
 
@@ -39,7 +40,7 @@ void Material::InitPipelineState(const std::array<DXGI_FORMAT, D3D12_SIMULTANEOU
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = { 0 };
 	psoDesc.InputLayout = { inputElementDescs,_countof(inputElementDescs) };
-	psoDesc.pRootSignature = m_rootSignature.Get().Get();
+	psoDesc.pRootSignature = m_rootSignature.GetR().Get();
 	psoDesc.VS = CD3DX12_SHADER_BYTECODE(m_vsSkinModel->GetCompiledBlob().Get());
 	psoDesc.PS = CD3DX12_SHADER_BYTECODE(m_psModel->GetCompiledBlob().Get());
 	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
