@@ -1,7 +1,10 @@
 #include "stdafx.h"
-#include "RaytracingDescriptorHeaps.h"
 #include "Material.h"
 #include "DescriptorHeap.h"
+#include "Raytracing.h"
+#include "RayTracingInstance.h"
+#include "RaytracingDescriptorHeaps.h"
+
 namespace raytracing {
 
 
