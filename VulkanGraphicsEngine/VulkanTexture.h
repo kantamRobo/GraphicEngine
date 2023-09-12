@@ -1,8 +1,9 @@
 #pragma once
 #include <vulkan/vulkan.h>
+#include <string>
 class VulkanTexture:public IVulkanShaderResource
 {
-
+public:
 	//コンストラクタ
 	VulkanTexture(){}
 	//デストラクタ
@@ -19,11 +20,7 @@ class VulkanTexture:public IVulkanShaderResource
 	{
 		return m_texture;
 	}
-	//テクスチャの幅を取得
-	int GetWidth()const
-	{
-		m_texture.
-	}
+	
 	//テクスチャの高さを取得
 	int GetHeight()const
 	{
@@ -37,8 +34,13 @@ class VulkanTexture:public IVulkanShaderResource
 	}
 
 private:
+	void LoadTextureFromStorage(VkDevice device, const std::string& filepath, VkFormat& format);
 
+	int width;
+	int height;
 	VkImage m_texture = nullptr;
-	VkImageViewCreateInfo m_textureInfo;
+	VkImageCreateInfo m_textureInfo;
+	//ステージングバッファを入れる？
+	
 };
 

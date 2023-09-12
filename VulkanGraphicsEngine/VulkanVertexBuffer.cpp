@@ -43,4 +43,6 @@ void VulkanVertexBuffer::Copy(void* srcVertices)
 	memcpy(p, srcVertices, sizeof(srcVertices));
 	vkUnmapMemory(device, memory);
 
+
+
 }
