@@ -1,15 +1,16 @@
 #pragma once
 #include "UniformBuffer.h"
-
-class DescriptorSet
+#include <vector>
+class DescriptorPool
 {
+public:
 	//コンストラクタ
-	DescriptorSet();
+	DescriptorPool();
 
 	//デストラクタ
-	~DescriptorSet();
+	~DescriptorPool();
 
-	VkDescriptorSet Get()const;
+	VkDescriptorPool Get()const;
 
 	void RegistShaderResource(int registerNo, IVulkanShaderResource& sr)
 	{
@@ -20,6 +21,10 @@ class DescriptorSet
 	{
 
 	}
+
+
+
+	void Commit();
 private:
 	enum {
 		MAX_SHADER_RESOURCE = 1024 * 10,	//シェーダーリソースの最大数。
@@ -33,11 +38,19 @@ private:
 	int m_numShaderResource = 0;
 	int numUniformBuffer = 0;
 	int m_numUavResource = 0;
-	VkDescriptorSet m_descriptorSet[2] = {};
+	VkDescriptorPool m_descriptorPool[2] = {};
 
+	/*
 	std::vector<IVulkanShaderResource*> m_shaderResource = {};
 	std::vector<IVulkanUnorderdResrouce*> m_uavResource;
 	std::vector<UniformBuffer*> m_uniformbuffer = {};
+	*/
+	このポインタ動的配列は危険なので、別の方法を考える。
+	
+	
 	VkSamplerCreateInfo info;
+	
+	
+
 };
 

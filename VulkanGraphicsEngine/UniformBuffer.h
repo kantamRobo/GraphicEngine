@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 class UniformBuffer
 {
 public:
@@ -40,6 +41,11 @@ void CopyToVRAM(T& data)
 	CopyToVRAM(&data);
 }
 
+std::array<VkBuffer,2> GetBuffer()const
+{
+	return m_uniformbuffer;
+}
+
 /// <summary>
 	/// ディスクリプタヒープにConstantBufferViewを登録。
 	/// </summary>
@@ -49,7 +55,7 @@ void RegistConstantBufferView( int bufferNo);
 
 
 private:
-	VkBuffer m_uniformbuffer[2] = { nullptr };
+	std::array<VkBuffer,2> m_uniformbuffer = { nullptr };
 	void* m_uniformBufferCPU[2] = { nullptr };
 	int m_size = 0;
 	int m_allocSize = 0;
