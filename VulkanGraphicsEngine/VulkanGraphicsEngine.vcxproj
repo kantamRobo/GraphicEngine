@@ -149,6 +149,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="VkRaytracingInstance.h" />
+    <ClInclude Include="VulkanBLASBuffer.h" />
     <ClInclude Include="VulkanGPUBuffer.h" />
     <ClInclude Include="VulkanGraphicsEngine.h" />
     <ClInclude Include="VulkanIndexBuffer.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="StorageBuffer.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="VkVertexBuffer.cpp" />
+    <ClCompile Include="VulkanBLASBuffer.cpp" />
     <ClCompile Include="VulkanGPUBuffer.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
     <ClCompile Include="VulkanIndexBuffer.cpp" />
