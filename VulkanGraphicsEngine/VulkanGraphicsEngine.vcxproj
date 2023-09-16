@@ -153,6 +153,7 @@
     <ClInclude Include="VulkanGPUBuffer.h" />
     <ClInclude Include="VulkanGraphicsEngine.h" />
     <ClInclude Include="VulkanIndexBuffer.h" />
+    <ClInclude Include="VulkanRaytracingEngine.h" />
     <ClInclude Include="VulkanTexture.h" />
     <ClInclude Include="VulkanVertexBuffer.h" />
   </ItemGroup>
@@ -170,6 +171,7 @@
     <ClCompile Include="VulkanGPUBuffer.cpp" />
     <ClCompile Include="VulkanGraphicsEngine.cpp" />
     <ClCompile Include="VulkanIndexBuffer.cpp" />
+    <ClCompile Include="VulkanRaytracingEngine.cpp" />
     <ClCompile Include="VulkanTexture.cpp" />
     <ClCompile Include="VulkanVertexBuffer.cpp" />
   </ItemGroup>
