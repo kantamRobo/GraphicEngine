@@ -24,8 +24,8 @@ namespace raytracing {
 	VkBuffer CreateBuffer(
 		VkDevice Device,
 		uint64_t size,
-		VkBufferCreateFlags flags
-
+		VkBufferCreateFlags flags,
+		VkBufferUsageFlags usage
 	) {
 
 		VkBufferCreateInfo bufferCI
@@ -35,7 +35,7 @@ namespace raytracing {
 		  nullptr
 		};
 		bufferCI.size = size;
-		bufferCI.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+		bufferCI.usage = usage;
 		VkBuffer buffer;
 		vkCreateBuffer(Device, &bufferCI, memory, &buffer);
 		// ÉÅÉÇÉäÇÃämï€.

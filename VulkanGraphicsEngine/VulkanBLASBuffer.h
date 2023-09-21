@@ -19,6 +19,11 @@ namespace raytracing {
 
 	private:
 		std::vector<raytracing::AcclerationStructureBuffers> m_bottomLevelASBuffers;
+	
+		VkBuffer m_instanceBuffer;
+		VkBuffer m_scratchBuffer;
+		VkBuffer m_resultBuffer;
+		VkDeviceMemory m_devicememory;
 	};
 
 
