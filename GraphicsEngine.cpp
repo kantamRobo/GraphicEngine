@@ -103,7 +103,7 @@ ComPtr<IDXGIFactory4> GraphicsEngine::CreateDXGIFactory()
 
 bool GraphicsEngine::InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight)
 {
-	m_graphicsEngine = this;
+	g_graphicsEngine = this;
 
 	frameBufferWidth = frameBufferWidth;
 	frameBufferHeight = frameBufferHeight;

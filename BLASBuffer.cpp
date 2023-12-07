@@ -1,7 +1,8 @@
-#include "BLASBuffer.h"
-#include "RenderContext.h"
+
 #include "stdafx.h"
 #include "Raytracing.h"
+#include "GraphicsEngine.h"
+#include "BLASBuffer.h"
 using namespace raytracing;
 
 void BLASBuffer::InitBLASBuffer(std::shared_ptr<RenderContext> rc, const std::vector<InstancePtr>& instances)

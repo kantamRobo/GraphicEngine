@@ -1,6 +1,11 @@
+
 #include "Math.h"
 #include "stdafx.h"
+#include "Raytracing.h"
+#include "RaytracingEngine.h"
+#include "GraphicsEngine.h"
 #include "TLASBuffer.h"
+
 namespace raytracing {
 
 
@@ -22,7 +27,7 @@ namespace raytracing {
 	{
 		uint64_t tlasSize;
 
-		auto d3dDevice = g_GraphicEngine->GetD3DDevice();
+		auto d3dDevice = g_graphicsEngine->GetD3DDevice();
 
 		int numInstance = static_cast<int>(instances.size());
 
@@ -58,7 +63,7 @@ namespace raytracing {
 		(0, nullptr, (void**)&instanceDescs);
 		ZeroMemory(instanceDescs, sizeof(D3D12_RAYTRACING_INSTANCE_DESC) * numInstance);
 
-		Matrix mRot;
+		EngineMath::Matrix mRot;
 		mRot.MakeRotationX(Math::PI * -0.5f);
 		mRot.Transpose();
 
