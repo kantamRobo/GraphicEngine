@@ -1,9 +1,8 @@
 
 #include "Shader.h"
 #include "stdafx.h"
-
-#include "Engine.h"
 #include "GraphicsEngine.h"
+#include "Engine.h"
 
 Engine::~Engine()
 {

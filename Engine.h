@@ -1,12 +1,12 @@
 #pragma once
-#include <memory>
+
 #include "TResourceBank.h"
-extern Engine* g_engine = nullptr;
+
 class Engine
 {
 
 private:
-	std::unique_ptr<GraphicsEngine> m_graphicsEngine = nullptr;
+	
 	TResourceBank<Shader> m_shaderBank;
 	TResourceBank<Texture> m_textureBank;
 public:
@@ -58,3 +58,4 @@ public:
 
 };
 
+extern Engine* g_engine = nullptr;

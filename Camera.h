@@ -6,7 +6,7 @@
 
 #include "Matrix.h"
 #include "Math.h"
-
+#include <string.h>
 /// <summary>
 /// カメラクラス。
 /// </summary>
@@ -344,15 +344,15 @@ public:
 protected:
 	float		m_targetToPositionLen = 1.0f;			//注視点と視点まで距離。
 	EngineMath::Vector3		m_position = { 0.0f, 0.0f, 1.0f };		//カメラ位置。
-	EngineMath::Vector3		m_up = g_vec3Up;						//カメラの上方向。
+	EngineMath::Vector3		m_up = EngineMath::g_vec3Up;						//カメラの上方向。
 	EngineMath::Vector3		m_target;								//カメラの中止点。
 	EngineMath::Matrix		m_viewMatrix;							//ビュー行列。
 	EngineMath::Matrix		m_projectionMatrix;						//プロジェクション行列。
 	EngineMath::Matrix		m_viewProjectionMatrix;					//ビュープロジェクション行列。
 	EngineMath::Matrix		m_viewMatrixInv;						//ビュー行列の逆行列。
 	EngineMath::Matrix		m_cameraRotation;						//カメラの回転行列。
-	EngineMath::Vector3		m_forward = g_vec3Front;				//カメラの前方。
-	EngineMath::Vector3		m_right = g_vec3Right;					//カメラの右。
+	EngineMath::Vector3		m_forward = EngineMath::g_vec3Front;				//カメラの前方。
+	EngineMath::Vector3		m_right = EngineMath::g_vec3Right;					//カメラの右。
 	float		m_near = 1.0f;							//近平面。
 	float		m_far = 5000.0f;						//遠平面。
 	float		m_viewAngle = Math::DegToRad(60.0f);	//画角(ラジアン)。

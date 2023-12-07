@@ -1,5 +1,6 @@
 #pragma once
 
+
 class IShaderResource;
 
 //ƒ‚ƒfƒ‹‚Ìã•ûŒü
@@ -134,7 +135,7 @@ public:
 	/// <param name="scale">Šg‘å—¦B</param>
 	/// <returns></returns>
 	/// 
-	EngineMath::Matrix CalcWorldMatrix(Vector3 pos, Quaternion rot, Vector3 scale)
+	EngineMath::Matrix CalcWorldMatrix(EngineMath::Vector3 pos, EngineMath::Quaternion rot, EngineMath::Vector3 scale)
 	{
 		EngineMath::Matrix mWorld;
 		EngineMath::Matrix mBias;

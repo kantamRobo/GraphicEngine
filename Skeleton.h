@@ -111,7 +111,7 @@ const wchar_t* GetName() const
 *@param[out]	rot			‰ñ“]—Ê‚ÌŠi”[æB
 *@param[out]	scale		Šg‘å—¦‚ÌŠi”[æB
 */
-void CalcWorldTRS(Vector3& trans, Quaternion& rot, Vector3& scale);
+void CalcWorldTRS(EngineMath::Vector3& trans, EngineMath::Quaternion& rot, EngineMath::Vector3& scale);
 private:
 	std::wstring	m_boneName;
 	int		     m_parentBoneNo = -1;

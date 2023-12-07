@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <array>
+#include "MeshParts.h"
 #include "Vector.h"
 #include "Matrix.h"
 #include "Texture.h"
@@ -7,7 +8,7 @@
 #include "MyAssert.h"
 #include "RenderContext.h"
 #include "Camera.h"
-#include "MeshParts.h"
+
 #include "Material.h"
 #include "Model.h"
 
@@ -54,12 +55,12 @@ void Model::InitModel(const ModelInitData& initData)
 		initData.m_samplerFilter
 	);
 
-	UpdateWorldMatrix(g_vec3Zero, g_quatIdentity, g_vec3One);
+	UpdateWorldMatrix(EngineMath::g_vec3Zero, EngineMath::g_quatIdentity, EngineMath::g_vec3One);
 
 	m_isInited = true;
 }
 
-void Model::UpdateWorldMatrix(Vector3 pos, Quaternion rot, Vector3 scale)
+void Model::UpdateWorldMatrix(EngineMath::Vector3 pos, EngineMath::Quaternion rot, EngineMath::Vector3 scale)
 {
 	m_world = CalcWorldMatrix(pos, rot,scale);
 }

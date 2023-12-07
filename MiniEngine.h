@@ -3,6 +3,7 @@
 #pragma comment( lib, "xinput.lib")
 #pragma comment(lib, "dxcompiler.lib")
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory>
@@ -11,7 +12,6 @@
 #include <list>
 #include <D3Dcompiler.h>
 #include <Windows.h>
-#include <d3d12.h>
 #include <map>
 #include <functional>
 #include <algorithm>
@@ -29,7 +29,7 @@
 #include "SpriteBatch.h"
 #include "SpriteFont.h"
 
-#include "d3dx12.h"
+
 
 const int MAX_RENDERING_TARGET = D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT;	//レンダリングターゲットの最大数。
 

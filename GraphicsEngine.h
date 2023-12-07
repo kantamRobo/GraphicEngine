@@ -1,13 +1,13 @@
 #pragma once
 
-#include <d3d12.h>
-#include <dxgi.h>
+
+
 #include <dxgi1_2.h>
 #include <dxgi1_3.h>
 #include <dxgi1_4.h>
 #include "NullTextureMaps.h"
 #include <dxgi1_4.h>
-
+#include "Texture.h"
 #include "DDSTextureLoader.h"
 #include "ResourceUploadBatch.h"
 #include "RenderContext.h"

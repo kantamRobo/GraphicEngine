@@ -34,11 +34,11 @@ bool RenderTarget::CreateRenderTarget(int w,
 	DXGI_FORMAT depthStencilFormat, 
 	float clearColor[4])
 {
-	auto d3dDevice = m_graphicsEngine->GetD3DDevice();
+	auto d3dDevice = g_graphicsEngine->GetD3DDevice();
 	m_width = w;
 	m_height = h;
 	//レンダリングターゲットとなるテクスチャを作成する
-	if (!CreateRenderTargetTexture(m_graphicsEngine, d3dDevice.Get(), w, h,
+	if (!CreateRenderTargetTexture(g_graphicsEngine, d3dDevice.Get(), w, h,
 		mipLevel, arraySize, colorFormat, clearColor))
 	{
 		MessageBoxA(nullptr, "レンダリングターゲットとなるテクスチャの作成に失敗しました。", "エラー", MB_OK);
@@ -48,14 +48,14 @@ bool RenderTarget::CreateRenderTarget(int w,
 	//深度ステンシルバッファとなるテクスチャを作成する。
 	if (depthStencilFormat != DXGI_FORMAT_UNKNOWN)
 	{
-		if (!CreateDepthStencilTexture(m_graphicsEngine, d3dDevice.Get(), w, h, depthStencilFormat))
+		if (!CreateDepthStencilTexture(g_graphicsEngine, d3dDevice.Get(), w, h, depthStencilFormat))
 		{
 			MessageBoxA(nullptr, "レンダリングターゲットとなるテクスチャの作成に失敗しました。", "エラー", MB_OK);
 			return false;
 		}
 	}
 
-	if (!CreateDescriptorHeap(m_graphicsEngine, d3dDevice.Get())) {
+	if (!CreateDescriptorHeap(g_graphicsEngine, d3dDevice.Get())) {
 		//ディスクリプタヒープの作成に失敗した。
 		MessageBoxA(nullptr, "レンダリングターゲットとなるテクスチャの作成に失敗しました。", "エラー", MB_OK);
 		return false;
