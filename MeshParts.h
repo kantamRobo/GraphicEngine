@@ -18,6 +18,7 @@ class DescriptorHeap;
 #include "StructuredBuffer.h"
 #include "ConstantBuffer.h"
 #include "VertexBuffer.h"
+#include "Matrix.h"
 
 
 const int MAX_MODEL_EXPAND_SRV = 6;	//拡張SRVの最大数。
@@ -110,7 +111,7 @@ private:
 	/// <param name="mView">ビュー行列</param>
 	/// <param name="mProj">プロジェクション行列</param>
 	void DrawCommon(RenderContext& rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
-	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
+	
 private:
 	//拡張SRVが設定されるレジスタの開始番号。
 	const int EXPAND_SRV_REG__START_NO = 10;

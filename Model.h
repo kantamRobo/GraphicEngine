@@ -67,7 +67,7 @@ public:
 	/// <param name="renderContext">レンダリングコンテキスト</param>
 	/// <param name="viewMatrix">ビュー行列</param>
 	/// <param name="projMatrix">プロジェクション行列</param>
-	void Draw(RenderContext& renderContext, const EngineMath::Matrix& viewMatrix, const EngineMath::Matrix& projMatrix);
+	void Draw(RenderContext& renderContext, const::Matrix& viewMatrix, const EngineMath::Matrix& projMatrix);
 	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance);
 	/// <summary>
 	/// インスタンシング描画

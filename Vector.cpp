@@ -2,11 +2,9 @@
  * @brief	ベクトルクラス。
  */
 
-
 #include "Math.h"
-
 #include "stdafx.h"
-
+#include "Matrix.h"
 #include "Vector.h"
 
 

@@ -1,16 +1,17 @@
-#include "stdafx.h"
-#include <array>
+
 #include "MeshParts.h"
-#include "Vector.h"
-#include "Matrix.h"
-#include "Texture.h"
-#include "Math.h"
+
+
+
+
+
 #include "MyAssert.h"
-#include "RenderContext.h"
-#include "Camera.h"
+
+
 
 #include "Material.h"
 #include "Model.h"
+#include <array>
 
 
 

@@ -1,9 +1,9 @@
 #pragma once
-
+class Matrix;
 
 #include <DirectXMath.h>
 
-class Matrix;
+
 
 namespace EngineMath {
 	/// <summary>
@@ -696,6 +696,7 @@ namespace EngineMath {
 		{
 			SetRotation(g_vec3AxisX, angle);
 		}
+		/*
 		/// <summary>
 		/// X軸周りの回転クォータニオンを作成。
 		/// </summary>
@@ -704,6 +705,7 @@ namespace EngineMath {
 		{
 			SetRotationDeg(g_vec3AxisX, angle);
 		}
+		*/
 		/// <summary>
 		/// Y軸周りの回転クォータニオンを作成。
 		/// </summary>
@@ -713,6 +715,8 @@ namespace EngineMath {
 		{
 			SetRotation(g_vec3AxisY, angle);
 		}
+
+		/*
 		/// <summary>
 		/// Y軸周りの回転クォータニオンを作成。
 		/// </summary>
@@ -721,7 +725,7 @@ namespace EngineMath {
 		{
 			SetRotationDeg(g_vec3AxisY, angle);
 		}
-
+		*/
 		/// <summary>
 		/// Z軸周りの回転クォータニオンを作成。
 		/// </summary>
@@ -731,6 +735,7 @@ namespace EngineMath {
 		{
 			SetRotation(g_vec3AxisZ, angle);
 		}
+		/*
 		/// <summary>
 		/// Z軸周りの回転クォータニオンを作成。
 		/// </summary>
@@ -739,7 +744,7 @@ namespace EngineMath {
 		{
 			SetRotationDeg(g_vec3AxisZ, angle);
 		}
-
+		*/
 
 
 		/// <summary>
@@ -757,6 +762,7 @@ namespace EngineMath {
 			y = axis.y * s;
 			z = axis.z * s;
 		}
+		/*
 		/// <summary>
 		/// 任意の軸周りの回転クォータニオンを作成。
 		/// </summary>
@@ -765,13 +771,14 @@ namespace EngineMath {
 		void SetRotationDeg(const Vector3& axis, float angle)
 		{
 			float s;
-			float halfAngle = EngineMath::DegToRad(angle) * 0.5f;
+			//float halfAngle = EngineMath::DegToRad(angle) * 0.5f;
 			s = sinf(halfAngle);
 			w = cosf(halfAngle);
 			x = axis.x * s;
 			y = axis.y * s;
 			z = axis.z * s;
 		}
+		*/
 		/// <summary>
 		/// 行列からクォータニオンを作成。
 		/// </summary>
@@ -804,7 +811,7 @@ namespace EngineMath {
 		/// <returns>加算する回転角度。ラジアン単位。</returns>
 		void AddRotationY(float angle)
 		{
-			Quaternion addRot;
+			EngineMath::Quaternion addRot;
 			addRot.SetRotation(Vector3::AxisY, angle);
 			*this *= addRot;
 		}
@@ -812,7 +819,7 @@ namespace EngineMath {
 		/// クォータニオン同士の乗算
 		/// </summary>
 		/// <param name="rot"></param>
-		void Multiply(const Quaternion& rot)
+		void Multiply(const EngineMath::Quaternion& rot)
 		{
 			float pw, px, py, pz;
 			float qw, qx, qy, qz;
@@ -831,7 +838,7 @@ namespace EngineMath {
 		/// </summary>
 		/// <param name="rot0"></param>
 		/// <param name="rot1"></param>
-		void Multiply(const Quaternion& rot0, const Quaternion& rot1)
+		void Multiply(const EngineMath::Quaternion& rot0, const EngineMath::Quaternion& rot1)
 		{
 			float pw, px, py, pz;
 			float qw, qx, qy, qz;
@@ -855,7 +862,7 @@ namespace EngineMath {
 		/// <summary>
 		/// ベクトルにクォータニオンを適用する。
 		/// </summary>
-		void Apply(Vector4& _v) const
+		void Apply(EngineMath::Vector4& _v) const
 		{
 			DirectX::XMVECTOR xmv = DirectX::XMVector3Rotate(_v, *this);
 			DirectX::XMStoreFloat4(&_v.vec, xmv);

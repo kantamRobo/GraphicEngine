@@ -1,11 +1,13 @@
-#include "stdafx.h"
 
+
+
+
+#include "Vector.h"
 #include "Skeleton.h"
 #include "Material.h"
 
 #include "IndexBuffer.h"
-#include "Matrix.h"
-#include "Vector.h"
+
 #include "DescriptorHeap.h"
 #include <memory>
 #include "MeshParts.h"
@@ -70,7 +72,7 @@ void MeshParts::BindSkeleton(std::shared_ptr<Skeleton> skeleton)
 {
 	m_skeleton = skeleton;
 	m_boneMatricesStructureBuffer->InitStructuredBuffer(
-		sizeof(Matrix),
+		sizeof(EngineMath::Matrix),
 		m_skeleton->GetNumBones(),
 		m_skeleton->GetBoneMatricesTopAddress()
 		);
@@ -78,7 +80,7 @@ void MeshParts::BindSkeleton(std::shared_ptr<Skeleton> skeleton)
 
 }
 
-void MeshParts::DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj)
+void MeshParts::DrawCommon(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj)
 {
 	//メッシュごとにドロー
 	//プリミティブのトポロジーはトライアングルリストのみ。
@@ -101,7 +103,7 @@ void MeshParts::DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWor
 }
 
 
-void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj)
+void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj)
 {
 	//定数バッファの設定、更新など描画の共通処理を実行する。
 	DrawCommon(rc, g_matIdentity, mView, mProj);
@@ -130,9 +132,9 @@ void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstanc
 
 
 void MeshParts::Draw(std::shared_ptr<RenderContext> rc, 
-	const Matrix& mWorld, 
-	const Matrix& mView,
-	const Matrix& mProj)
+	const EngineMath::Matrix& mWorld, 
+	const EngineMath::Matrix& mView,
+	const EngineMath::Matrix& mProj)
 {
 	//定数バッファの設定、更新など描画の共通処理を実行する。
 	DrawCommon(rc, mWorld, mView, mProj);
@@ -154,7 +156,7 @@ void MeshParts::Draw(std::shared_ptr<RenderContext> rc,
 
 }
 
-void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj)
+void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj)
 {
 	//定数バッファの設定、更新など描画の共通処理を実行する。
 	DrawCommon(rc, g_matIdentity, mView, mProj);
@@ -191,9 +193,9 @@ void MeshParts::CreateDescriptorHeaps()
 		for (int matNo = 0; matNo < mesh->m_materials.size(); matNo++) {
 
 			//ディスクリプタヒープにディスクリプタを登録していく。
-			m_descriptorHeap->RegistShaderResource(srvNo, mesh->m_materials[matNo]->GetAlbedoMap());			//アルベドマップ。
-			m_descriptorHeap->RegistShaderResource(srvNo + 1, mesh->m_materials[matNo]->GetNormalMap());		//法線マップ。
-			m_descriptorHeap->RegistShaderResource(srvNo + 2, mesh->m_materials[matNo]->GetSpecularMap());		//スペキュラマップ。
+			m_descriptorHeap->RegistShaderResource(srvNo, mesh->m_materials[matNo]->GetAlbedoMap().get());			//アルベドマップ。
+			m_descriptorHeap->RegistShaderResource(srvNo + 1, mesh->m_materials[matNo]->GetNormalMap().get());		//法線マップ。
+			m_descriptorHeap->RegistShaderResource(srvNo + 2, mesh->m_materials[matNo]->GetSpecularMap().get());		//スペキュラマップ。
 			m_descriptorHeap->RegistShaderResource(srvNo + 3, m_boneMatricesStructureBuffer);					//ボーンのストラクチャードバッファ。
 			for (int i = 0; i < MAX_MODEL_EXPAND_SRV; i++) {
 				if (m_expandShaderResourceView[i]) {
@@ -218,7 +220,7 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 	int vertexStride = sizeof(TkmFile::SVertex);
 	auto mesh = new SMesh;
 	mesh->skinFlags.reserve(tkmMesh.materials.size());
-	mesh->m_vertexBuffer.Init(vertexStride * numVertex, vertexStride);
+	mesh->m_vertexBuffer.InitVertexBuffer(vertexStride * numVertex, vertexStride);
 	mesh->m_vertexBuffer.Copy((void*)&tkmMesh.vertexBuffer[0]);
 
 	auto SetSkinFlag = [&](int index) {
@@ -237,7 +239,7 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 		mesh->m_indexBufferArray.reserve(tkmMesh.indexBuffer16Array.size());
 		for (auto& tkIb : tkmMesh.indexBuffer16Array) {
 			auto ib = new IndexBuffer;
-			ib->Init(static_cast<int>(tkIb.indices.size()) * 2, 2);
+			ib->InitIndexBuffer(static_cast<int>(tkIb.indices.size()) * 2, 2);
 			ib->Copy((uint16_t*)&tkIb.indices.at(0));
 
 			//スキンがあるかどうかを設定する。
@@ -251,7 +253,7 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 		mesh->m_indexBufferArray.reserve(tkmMesh.indexBuffer32Array.size());
 		for (auto& tkIb : tkmMesh.indexBuffer32Array) {
 			auto ib = new IndexBuffer;
-			ib->Init(static_cast<int>(tkIb.indices.size()) * 4, 4);
+			ib->InitIndexBuffer(static_cast<int>(tkIb.indices.size()) * 4, 4);
 			ib->Copy((uint32_t*)&tkIb.indices.at(0));
 
 			//スキンがあるかどうかを設定する。
