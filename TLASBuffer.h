@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "Raytracing.h"
 namespace raytracing
 {
 	class TLASBuffer :public IShaderResource
