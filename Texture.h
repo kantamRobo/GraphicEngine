@@ -1,5 +1,6 @@
 #pragma once
 #include "IShaderResource.h"
+#include <wrl.h>
 class Texture:public IShaderResource
 {
 public:

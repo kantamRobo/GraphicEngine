@@ -1,6 +1,7 @@
 
-#include "MeshParts.h"
+#include <array>
 
+#include "MiniEngine.h"
 
 
 
@@ -10,8 +11,11 @@
 
 
 #include "Material.h"
+#include "Camera.h"
+#include "TkmFIle.h"
+
 #include "Model.h"
-#include <array>
+
 
 
 

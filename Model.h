@@ -1,8 +1,11 @@
 #pragma once
 
-
+#include "MeshParts.h"
 class IShaderResource;
+class MiniEngine;
+class TkmFile;
 
+#include <array>
 //ƒ‚ƒfƒ‹‚Ìã•ûŒü
 enum EnModelUpAxis {
 	enModelUpAxisY,		//ƒ‚ƒfƒ‹‚Ìã•ûŒü‚ªY²B

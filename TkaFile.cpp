@@ -1,9 +1,11 @@
-#include "TkaFile.h"
-#include "stdafx.h"
 #include <errno.h>
 #include <istream>
 #include <fstream>
 #include "Animation.h"
+#include "stdafx.h"
+#include "TkaFile.h"
+
+
 void TkaFile::Load(const char* filePath)
 {
 	//FILEの代わりってなんだっけ・・・・

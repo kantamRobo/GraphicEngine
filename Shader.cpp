@@ -1,9 +1,10 @@
 #include "Shader.h"
-#include "stdafx.h"
+
 #include <stierr.h>
 #include <sstream>
 #include <fstream>
 #include <atlbase.h>
+
 
 namespace {
 	const char* g_vsShaderModelName = "vs_5_0";	//頂点シェーダーのシェーダーモデル名。
@@ -28,7 +29,7 @@ void Shader::LoadCS(const char* filePath, const char* entryFuncName)
 
 void Shader::LoadShader(const char* filePath, const char* entryFuncName, const char* shaderModel)
 {
-	ComPtr<ID3DBlob> errorBlob;
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
 
 #ifdef _DEBUG
 	// Enable better shader debugging with the graphics debugging tools.

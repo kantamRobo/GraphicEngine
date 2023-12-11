@@ -1,10 +1,12 @@
 #pragma once
+#include "Matrix.h"
 #include <list>
 #include <functional>
 #include <vector>
 #include <memory>
 #include <WinUser.h>
-#include "Matrix.h"
+#include "TksFile.h"
+#include <string>
 class Bone {
 public:
 	//コンストラクタ
@@ -126,6 +128,7 @@ private:
 	EngineMath::Vector3      m_scale;
 	EngineMath::Quaternion   m_rotation;
 	std::list<Bone*> m_children;
+	TksFile m_tksFile;
 };
 
 class Skeleton
@@ -221,6 +224,6 @@ public:
 		std::unique_ptr<EngineMath::Matrix[]>	m_boneMatrixs;
 		bool m_isInited = false;
 		bool m_isPlayAnimation = false;
+		
 	};
 
-}

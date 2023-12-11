@@ -1,7 +1,8 @@
 #include "stdafx.h"
-#include "TkmFile.h"
+
 #include "Vector.h"
 #include "Animation.h"
+#include "TkmFile.h"
 
 //法線スムージング。
 class NormalSmoothing {
@@ -35,9 +36,9 @@ public:
 			auto& vert_2 = mesh.vertexBuffer[vertNo_2];
 
 			//法線を計算する。
-			Vector3 v0tov1 = vert_1.pos - vert_0.pos;
-			Vector3 v0tov2 = vert_2.pos - vert_0.pos;
-			Vector3 normal = Cross(v0tov1, v0tov2);
+			EngineMath::Vector3 v0tov1 = vert_1.pos - vert_0.pos;
+			EngineMath::Vector3 v0tov2 = vert_2.pos - vert_0.pos;
+			EngineMath::Vector3 normal = Cross(v0tov1, v0tov2);
 			normal.Normalize();
 			SFace face;
 			face.normal = normal;
@@ -144,26 +145,26 @@ void BuildTangentAndBiNormalImp(TkmFile::SMesh& mesh, const IndexBuffer& indexBu
 		auto& vert_1 = mesh.vertexBuffer[vertNo_1];
 		auto& vert_2 = mesh.vertexBuffer[vertNo_2];
 
-		Vector3 cp0[] = {
+		EngineMath::Vector3 cp0[] = {
 			{ vert_0.pos.x, vert_0.uv.x, vert_0.uv.y},
 			{ vert_0.pos.y, vert_0.uv.x, vert_0.uv.y},
 			{ vert_0.pos.z, vert_0.uv.x, vert_0.uv.y}
 		};
 
-		Vector3 cp1[] = {
+		EngineMath::Vector3 cp1[] = {
 			{ vert_1.pos.x, vert_1.uv.x, vert_1.uv.y},
 			{ vert_1.pos.y, vert_1.uv.x, vert_1.uv.y},
 			{ vert_1.pos.z, vert_1.uv.x, vert_1.uv.y}
 		};
 
-		Vector3 cp2[] = {
+		EngineMath::Vector3 cp2[] = {
 			{ vert_2.pos.x, vert_2.uv.x, vert_2.uv.y},
 			{ vert_2.pos.y, vert_2.uv.x, vert_2.uv.y},
 			{ vert_2.pos.z, vert_2.uv.x, vert_2.uv.y}
 		};
 
 		// 平面パラメータからUV軸座標算出する。
-		Vector3 tangent, binormal;
+		EngineMath::Vector3 tangent, binormal;
 		for (int i = 0; i < 3; ++i) {
 			auto V1 = cp1[i] - cp0[i];
 			auto V2 = cp2[i] - cp1[i];

@@ -6,7 +6,7 @@ void ConstantBuffer::InitConstBuffer(int size, void* srcData)
 {
 	m_size = size;
 
-	auto device = m_graphicsEngine->GetD3DDevice();
+	auto device = g_graphicsEngine->GetD3DDevice();
 
 	m_allocSize = (size + 256) & 0xFFFFFF00;
 
@@ -43,7 +43,7 @@ void ConstantBuffer::InitConstBuffer(int size, void* srcData)
 
 void ConstantBuffer::CopyToVRAM(void* data)
 {
-	auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
+	auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 	memcpy(m_constBufferCPU[backBufferIndex], data, m_size);
 
 
@@ -52,7 +52,7 @@ void ConstantBuffer::CopyToVRAM(void* data)
 void ConstantBuffer::RegistConstantBufferView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)
 {
 
-auto device = m_graphicsEngine->GetD3DDevice();
+auto device = g_graphicsEngine->GetD3DDevice();
 D3D12_CONSTANT_BUFFER_VIEW_DESC desc = {};
 desc.BufferLocation = m_constantBuffer[bufferNo]->GetGPUVirtualAddress();
 desc.SizeInBytes = m_allocSize;
@@ -62,12 +62,12 @@ device->CreateConstantBufferView(&desc, descriptorHandle);
 
 void ConstantBuffer::RegistConstantBufferView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)
 {
-	auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
+	auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 	RegistConstantBufferView(descriptorHandle, backBufferIndex);
 }
 
 D3D12_GPU_VIRTUAL_ADDRESS ConstantBuffer::GetGPUVirtualAddress()
 {
-	auto backBufferIndex = m_graphicsEngine->GetBackBufferIndex();
+	auto backBufferIndex = g_graphicsEngine->GetBackBufferIndex();
 	return m_constantBuffer[backBufferIndex]->GetGPUVirtualAddress();
 }

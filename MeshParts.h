@@ -18,6 +18,7 @@ class DescriptorHeap;
 #include "StructuredBuffer.h"
 #include "ConstantBuffer.h"
 #include "VertexBuffer.h"
+#include "Skeleton.h"
 #include "Matrix.h"
 
 

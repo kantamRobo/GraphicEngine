@@ -1,5 +1,8 @@
 #pragma 
 #include <wrl.h>
+#include <dxcapi.h>
+#include <d3dcommon.h>
+#include <d3dcompiler.h>
 class Shader
 {
 public:

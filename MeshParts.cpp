@@ -3,7 +3,7 @@
 
 
 #include "Vector.h"
-#include "Skeleton.h"
+
 #include "Material.h"
 
 #include "IndexBuffer.h"

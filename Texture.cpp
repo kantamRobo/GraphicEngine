@@ -1,12 +1,11 @@
 #include "IShaderResource.h"
 #include <ResourceUploadBatch.h>
-
+#include "stdafx.h"
 #include "GraphicsEngine.h"
 
-#include "stdafx.h"
-#include "Texture.h"
 
-extern GraphicsEngine* g_graphicsEngine = nullptr;
+
+
 Texture::~Texture()
 {
 	if (m_texture) {
