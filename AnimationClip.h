@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "Matrix.h"
+#include "TkaFile.h"
 struct KeyFrame {
 	uint32_t boneIndex;
 	float time;
@@ -124,7 +125,7 @@ private:
 	std::unique_ptr<AnimationEvent[]> m_animationEvent;
 
 	std::shared_ptr<keyFramePtrList> 	m_topBoneKeyFramList = nullptr;
-
+	TkaFile m_tkaFile;
 
 
 };

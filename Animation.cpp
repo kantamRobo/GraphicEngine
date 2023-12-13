@@ -1,8 +1,11 @@
-#include "Animation.h"
+
 #include "stdafx.h"
 #include "Model.h"
 #include "Matrix.h"
 #include "Vector.h"
+#include "Math.h"
+#include "Animation.h"
+
 using namespace EngineMath;
 namespace {
 	//DCCツールでのアニメーション上での1フレームの経過時間(単位は秒)
