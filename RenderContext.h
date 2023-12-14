@@ -147,7 +147,7 @@ public:
 		void SetDescriptorHeap(Microsoft::WRL::ComPtr<DescriptorHeap> descHeap);
 		void SetComputeDescriptorHeap(Microsoft::WRL::ComPtr<DescriptorHeap> descHeap);
 
-		void SetDescriptorHeaps(int numDescriptorHeap, const Microsoft::WRL::ComPtr<DescriptorHeap> descHeaps[])
+		void SetDescriptorHeaps(int numDescriptorHeap,  DescriptorHeap* descHeaps)
 		{
 			for (int i = 0; i < numDescriptorHeap; i++)
 			{

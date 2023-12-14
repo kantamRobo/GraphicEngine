@@ -2,6 +2,7 @@
 
 class GPUBuffer
 {
+public:
 	~GPUBuffer()
 	{
 		if (m_buffer != nullptr)

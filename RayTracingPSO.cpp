@@ -216,7 +216,7 @@ namespace raytracing {
 	}
 
 
-	void PSO::InitRTPSO(const std::shared_ptr<DescriptorHeaps>descriptorHeaps)
+	void PSO::InitRTPSO(DescriptorHeaps& descriptorHeaps)
 	{
 		m_srvUavCbvHeap = &descriptorHeaps.GetSrvUavCbvDescriptorHeap();
 		using namespace BuildSubObjectHelper;

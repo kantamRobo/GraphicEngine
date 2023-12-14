@@ -10,7 +10,7 @@
 #include "Vector.h"
 #include "GPUBuffer.h"
 class Model;
-
+class ContatntBuffer;
 namespace raytracing {
 
 
@@ -21,7 +21,7 @@ namespace raytracing {
 		/// レイトレーシングをディスパッチ。
 		/// </summary>
 		/// <param name="rc">レンダリングコンテキスト</param>
-		void Dispatch(RenderContext& rc);
+		void Dispatch(std::shared_ptr<RenderContext> rc);
 		/// <summary>
 		/// ジオメトリを登録。
 		/// </summary>
@@ -46,6 +46,8 @@ namespace raytracing {
 		/// シェーダーリソースを作成。
 		/// </summary>
 		void CreateShaderResources();
+
+		void Dispatch(RenderContext& rc);
 
 	private:
 		/// <summary>

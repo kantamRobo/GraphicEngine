@@ -6,7 +6,7 @@
 #include "RaytracingWorld.h"
 
 
-void raytracing::World::RegistGeometry(std::shared_ptr<Model> model)
+void raytracing::World::RegistGeometry(Model& model)
 {
 	model->QueryMeshAndDescriptorHeap([&](const std::shared_ptr<SMesh> mesh, const std::shared_ptr<DescriptorHeap> ds) {
 
@@ -36,11 +36,11 @@ void raytracing::World::RegistGeometry(std::shared_ptr<Model> model)
 
 }
 
-void raytracing::World::CommitRegistGeometry(std::shared_ptr<RenderContext> rc)
+void raytracing::World::CommitRegistGeometry(RenderContext& rc)
 {
 	//BLASÇç\ízÅB
 	m_blasBuffer.Init(rc, m_instances);
 	//TLASÇç\íz
-	m_topLevelASBuffers.Init(rc,m_instances,m_blasBuffer.Get())
+	m_topLevelASBuffers.Init(rc, m_instances, m_blasBuffer.Get());
 
 }

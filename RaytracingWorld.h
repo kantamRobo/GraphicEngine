@@ -10,10 +10,13 @@ namespace raytracing {
 		//レイトレワールド
 	public:
 		//ジオメトリを登録
-		void RegistGeometry(std::shared_ptr<Model> model);
+	
+		void RegistGeometry(Model& model);
+
+		
 
 		//ジオメトリの登録を確定
-		void CommitRegistGeometry(std::shared_ptr<RenderContext> rc);
+		void CommitRegistGeometry(RenderContext& rc);
 
 		//レイトレワールドのインスタンスに対してクエリを行う
 

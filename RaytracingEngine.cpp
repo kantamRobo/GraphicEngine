@@ -1,5 +1,6 @@
 #include "Material.h"
-
+#include "ConstantBuffer.h"
+#include "GraphicsEngine.h"
 #include "RaytracingEngine.h"
 
 
@@ -48,7 +49,7 @@ namespace raytracing {
 		resDesc.MipLevels = 1;
 		resDesc.SampleDesc.Count = 1;
 		resDesc.Width = g_graphicsEngine->GetFrameBufferWidth();
-		m_outputResource.Init(resDesc);
+		m_outputResource.InitBuffer(resDesc);
 
 		//レイジェネレーション用の定数バッファ。
 		Camera cam;
@@ -57,7 +58,7 @@ namespace raytracing {
 		cam.aspect = g_camera3D->GetAspect();
 		cam.fNear = g_camera3D->GetNear();
 		cam.fFar = g_camera3D->GetFar();
-		m_rayGenerationCB.Init(sizeof(Camera), &cam);
+		m_rayGenerationCB.InitConstBuffer(sizeof(Camera), &cam);
 	}
 
 	void Engine::Dispatch(RenderContext& rc)
@@ -73,7 +74,7 @@ namespace raytracing {
 
 		D3D12_RESOURCE_BARRIER barrier = {};
 		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-		barrier.Transition.pResource = m_outputResource.Get();
+		barrier.Transition.pResource = m_outputResource.Get().Get();
 		barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 		barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_SOURCE;
 		barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
@@ -121,14 +122,14 @@ namespace raytracing {
 		rc.DispatchRays(raytraceDesc);
 
 		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-		barrier.Transition.pResource = m_outputResource.Get();
+		barrier.Transition.pResource = m_outputResource.Get().Get();
 		barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 		barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
 		barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_COPY_SOURCE;
 		rc.ResourceBarrier(barrier);
 
 		//レイトレの結果をフレームバッファに書き戻す。
-		g_graphicsEngine->CopyToFrameBuffer(rc, m_outputResource.Get());
+		g_graphicsEngine->CopyToFrameBuffer(rc, m_outputResource.Get().Get());
 		
 	}
 
@@ -139,9 +140,9 @@ namespace raytracing {
 		//シェーダーリソースを作成。
 		CreateShaderResources();
 		//各種リソースをディスクリプタヒープに登録する。
-		m_descriptorHeaps.Init(m_world, m_outputResource, m_rayGenerationCB);
+		m_descriptorHeaps.InitDescriptorHeaps(m_world, m_outputResource, m_rayGenerationCB);
 		//PSOを作成。
-		m_pipelineStateObject.Init(m_descriptorHeaps);
+		m_pipelineStateObject.InitRTPSO(m_descriptorHeaps);
 		//シェーダーテーブルを作成。
 		m_shaderTable.Init(m_world, m_pipelineStateObject, m_descriptorHeaps);
 

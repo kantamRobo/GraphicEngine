@@ -22,7 +22,7 @@ namespace raytracing {
 		/// <summary>
 		/// パイプラインステートオブジェクトを初期化。
 		/// </summary>
-		void InitRTPSO(const std::shared_ptr<DescriptorHeaps> descriptorHeaps);
+		void InitRTPSO(DescriptorHeaps& descriptorHeaps);
 		void QueryInterface(CComPtr< ID3D12StateObjectProperties >& props) const
 		{
 			m_pipelineState->QueryInterface(&props);
@@ -42,6 +42,7 @@ namespace raytracing {
 	private:
 		RootSignatureDesc CreateRayGenRootSignatureesc();
 		RootSignatureDesc CreatePBRMatterialHitRootSignatureDesc();
+		
 	private:
 		const DescriptorHeap* m_srvUavCbvHeap = nullptr;		//SRV_UAV_CBV用のディスクリプタヒープ。
 		ID3D12StateObjectPtr m_pipelineState;					//パイプラインステート

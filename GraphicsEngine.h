@@ -174,14 +174,14 @@ public:
 	/// フレームバッファにコピー。
 	/// </summary>
 	/// <param name="pDst"></param>
-	void CopyToFrameBuffer(std::shared_ptr<RenderContext> rc, ID3D12Resource* pSrc)
+	void CopyToFrameBuffer(RenderContext& rc, ID3D12Resource* pSrc)
 	{
 		D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 			m_renderTargets[m_frameIndex].Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_COPY_DEST);
-		rc->ResourceBarrier(barrier);
-		rc->CopyResource(m_renderTargets[m_frameIndex].Get(), pSrc);
+		rc.ResourceBarrier(barrier);
+		rc.CopyResource(m_renderTargets[m_frameIndex].Get(), pSrc);
 
 		D3D12_RESOURCE_BARRIER barrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
 			m_renderTargets[m_frameIndex].Get(),
