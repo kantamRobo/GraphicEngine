@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "RayTracingInstance.h"
 class BLASBuffer
 {

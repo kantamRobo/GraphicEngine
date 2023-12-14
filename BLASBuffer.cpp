@@ -1,6 +1,7 @@
 
-#include "stdafx.h"
 #include "Raytracing.h"
+#include "stdafx.h"
+
 #include "GraphicsEngine.h"
 #include "BLASBuffer.h"
 using namespace raytracing;

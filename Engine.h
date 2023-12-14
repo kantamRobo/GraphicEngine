@@ -41,7 +41,7 @@ public:
 	{
 		std::string programName = filePath;
 		programName += entryPointFuncName;
-		return m_shaderBank.Get(programName.c_str());
+		return m_shaderBank(programName.c_str());
 	}
 
 	/// <summary>
