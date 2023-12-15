@@ -1,5 +1,5 @@
 #pragma once
-
+#include <d3d12.h>
 namespace raytracing {
 	extern 	ID3D12Resource* CreateBuffer(
 		ID3D12Device5* pDevice,
