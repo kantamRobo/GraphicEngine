@@ -13,6 +13,8 @@ namespace raytracing
 
 		//SRVに登録
 
+		void InitTLASBuffer(RenderContext& rc, const std::vector<InstancePtr>& instances, const std::vector<AccelerationStructureBuffers>& bottomLevelASBuffers);
+
 		void RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)override;
 
 		//VRAM上の仮想アドレスを取得

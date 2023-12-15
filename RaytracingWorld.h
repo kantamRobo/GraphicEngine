@@ -1,8 +1,13 @@
 #pragma once
-class Model;
-class RenderContext;
+
+#include "Matrix.h"
+#include "Vector.h"
+#include "BLASBuffer.h"
+#include "TLASBuffer.h"
 #include <functional>
 #include <memory>
+class Model;
+class RenderContext;
 namespace raytracing {
 	class World
 	{
@@ -17,13 +22,13 @@ namespace raytracing {
 
 		//ジオメトリの登録を確定
 		void CommitRegistGeometry(RenderContext& rc);
-
-		//レイトレワールドのインスタンスに対してクエリを行う
-
-		void QueryInstances(std::function<void(Instance&)> queryfunc)const
+		/// <summary>
+		/// レイトレワールドのインスタンスに対してクエリを行う。
+		/// </summary>
+		/// <param name="queryFunc"></param>
+		void QueryInstances(std::function<void(Instance&)> queryFunc) const
 		{
-			for (auto& instance : m_instances)
-			{
+			for (auto& instance : m_instances) {
 				queryFunc(*instance);
 			}
 		}
@@ -35,15 +40,14 @@ namespace raytracing {
 		}
 
 		//BLASバッファーを取得
-		const std::shared_ptr<BLASBuffer> GetBLASBuffer()
+		const BLASBuffer& GetBLASBuffer()
 		{
 
 			return m_blasBuffer;
 		}
 
 		//TLASバッファーを取得。
-
-		const std::shared_ptr<TLASBuffer> GetTLASBuffer()const
+        const TLASBuffer& GetTLASBuffer()const
 		{
 			return m_topLevelASBuffers;
 		}

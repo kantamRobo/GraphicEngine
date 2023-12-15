@@ -21,7 +21,8 @@ namespace raytracing {
 		/// レイトレーシングをディスパッチ。
 		/// </summary>
 		/// <param name="rc">レンダリングコンテキスト</param>
-		void Dispatch(std::shared_ptr<RenderContext> rc);
+
+		void Dispatch(RenderContext& rc);
 		/// <summary>
 		/// ジオメトリを登録。
 		/// </summary>
@@ -46,8 +47,6 @@ namespace raytracing {
 		/// シェーダーリソースを作成。
 		/// </summary>
 		void CreateShaderResources();
-
-		void Dispatch(RenderContext& rc);
 
 	private:
 		/// <summary>

@@ -23,7 +23,7 @@ namespace raytracing {
 	extern const D3D12_HEAP_PROPERTIES kDefaultHeapProps;
 
 
-	void TLASBuffer::InitTLASBuffer(std::shared_ptr<RenderContext> rc, const std::vector<InstancePtr>& instances, const std::vector<AccelerationStructureBuffers>& bottomLevelASBuffers)
+	void TLASBuffer::InitTLASBuffer(RenderContext& rc, const std::vector<InstancePtr>& instances, const std::vector<AccelerationStructureBuffers>& bottomLevelASBuffers)
 	{
 		uint64_t tlasSize;
 

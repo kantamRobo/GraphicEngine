@@ -11,9 +11,10 @@
 #include "DDSTextureLoader.h"
 #include "ResourceUploadBatch.h"
 #include "RenderContext.h"
+#include "RaytracingEngine.h"
 #include "Camera.h"
 #include "Model.h"
-#include "NullTextureMaps.h"
+
 
 
 
@@ -187,7 +188,7 @@ public:
 			m_renderTargets[m_frameIndex].Get(),
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			D3D12_RESOURCE_STATE_RENDER_TARGET);
-		rc->ResourceBarrier(barrier2);
+		rc.ResourceBarrier(barrier2);
 	}
 
 
@@ -332,7 +333,7 @@ private:
 	std::shared_ptr<NullTextureMaps> m_nullTextureMaps;
 	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemory;
 	Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapChain = nullptr;
-
+	raytracing::Engine m_raytracingEngine;
 	Camera m_camera3D;
 };
 

@@ -1,6 +1,5 @@
 
 #include "stdafx.h"
-
 #include "GraphicsEngine.h"
 Camera* g_camera3D;
 GraphicsEngine::~GraphicsEngine()

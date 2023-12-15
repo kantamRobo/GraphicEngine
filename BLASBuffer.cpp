@@ -6,7 +6,7 @@
 #include "BLASBuffer.h"
 using namespace raytracing;
 
-void BLASBuffer::InitBLASBuffer(std::shared_ptr<RenderContext> rc, const std::vector<InstancePtr>& instances)
+void BLASBuffer::InitBLASBuffer(RenderContext& rc, const std::vector<InstancePtr>& instances)
 {
 	{
 		for (auto& instance : instances)

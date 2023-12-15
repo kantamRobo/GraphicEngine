@@ -19,7 +19,7 @@ namespace raytracing {
 		/// <param name="rc"></param>
 		/// <param name="instance"></param>
 
-		void InitBLASBuffer(std::shared_ptr<RenderContext> rc, const std::vector<InstancePtr>& instances);
+		void InitBLASBuffer(RenderContext& rc, const std::vector<InstancePtr>& instances);
 
 
 		/// <summary>
