@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "stdafx.h"
+#include "GraphicsEngine.h"
 #include "IUnorderAccessResrouce.h"
 #include "GPUBuffer.h"
 

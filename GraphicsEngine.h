@@ -18,6 +18,7 @@
 
 
 
+
 class GraphicsEngine
 {
 public:
@@ -336,5 +337,4 @@ private:
 	raytracing::Engine m_raytracingEngine;
 	Camera m_camera3D;
 };
-
 GraphicsEngine* g_graphicsEngine = nullptr;	//グラフィックスエンジン

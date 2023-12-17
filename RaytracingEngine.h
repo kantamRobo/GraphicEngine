@@ -12,7 +12,7 @@
 #include "GPUBuffer.h"
 
 class Model;
-
+class World;
 namespace raytracing {
 
 

@@ -1,5 +1,5 @@
 #include "Material.h"
-
+#include "RaytracingWorld.h"
 #include "GraphicsEngine.h"
 #include "RaytracingEngine.h"
 
