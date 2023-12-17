@@ -1,8 +1,9 @@
 #include "stdafx.h"
-#include "RaytracingShaderTable.h"
+#include "DescriptorHeap.h"
 #include "Raytracing.h"
 #include "RaytracingPSO.h"
-
+#include "GraphicsEngine.h"
+#include "RaytracingShaderTable.h"
 
 #define align_to(_alignment, _val) (((_val + _alignment - 1) / _alignment) * _alignment)
 
@@ -50,7 +51,7 @@ namespace raytracing {
 		int shaderTableSize = m_shaderTableEntrySize* (m_numRayGenShader + m_numMissShader + (m_numHitShader * world.GetNumInstance()));
 		auto d3dDevice = g_graphicsEngine->GetD3DDevice();
 		//シェーダーテーブル用のバッファを作成。
-		m_shaderTable = CreateBuffer(d3dDevice, shaderTableSize, D3D12_RESOURCE_FLAG_NONE, D3D12_RESOURCE_STATE_GENERIC_READ, kUploadHeapProps);
+		m_shaderTable = CreateBuffer(d3dDevice.Get(), shaderTableSize, D3D12_RESOURCE_FLAG_NONE, D3D12_RESOURCE_STATE_GENERIC_READ, kUploadHeapProps);
 
 
 		//バッファをシステムメモリにマップする。

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Material.h"
 #include "DescriptorHeap.h"
+#include "GPUBuffer.h"
 #include "Raytracing.h"
 #include "RayTracingInstance.h"
 #include "RaytracingDescriptorHeaps.h"

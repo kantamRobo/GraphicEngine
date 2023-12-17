@@ -2,6 +2,7 @@
 #include "Math.h"
 #include "stdafx.h"
 #include "Raytracing.h"
+#include "RenderContext.h"
 #include "RaytracingEngine.h"
 #include "GraphicsEngine.h"
 #include "TLASBuffer.h"
@@ -94,24 +95,20 @@ namespace raytracing {
 		}*/
 		rc.BuildRaytracingAccelerationStructure(asDesc);
 
-		//レイトレーシングアクセラレーション構造のビルド完了待ちのバリアを入れる。
-		D3D12_RESOURCE_BARRIER uavBarrier = {};
-		uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
-		uavBarrier.UAV.pResource = m_topLevelASBuffers.pResult;
-		rc->ResourceBarrier(uavBarrier);
+		
 
 		/*if (update)
 	{
 		asDesc.Inputs.Flags |= D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_PERFORM_UPDATE;
 		asDesc.SourceAccelerationStructureData = m_topLevelASBuffers.pResult->GetGPUVirtualAddress();
 	}*/
-		rc->BuildRaytracingAccelerationStructure(asDesc);
+		rc.BuildRaytracingAccelerationStructure(asDesc);
 
 		//レイトレーシングアクセラレーション構造のビルド完了待ちのバリアを入れる。
 		D3D12_RESOURCE_BARRIER uavBarrier = {};
 		uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
 		uavBarrier.UAV.pResource = m_topLevelASBuffers.pResult;
-		rc->ResourceBarrier(uavBarrier);
+		rc.ResourceBarrier(uavBarrier);
 	}
 
 	void TLASBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)

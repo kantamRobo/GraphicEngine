@@ -1,5 +1,6 @@
 #pragma once
-
+class GPUBuffer;
+class DescriptorHeap;
 namespace raytracing {
 
 	class DescriptorHeaps {
