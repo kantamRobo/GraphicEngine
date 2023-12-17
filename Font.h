@@ -4,6 +4,8 @@
 
 #pragma once
 #include "Matrix.h"
+
+#include "GraphicsEngine.h"
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
 
@@ -52,7 +54,7 @@ public:
 		*@param[in]	shadowOffset		影を描くときのピクセルのオフセット量。
 		*@param[in]	shadowColor			影の色。
 		*/
-	void SetShadowParam(bool isDrawShadow, float shadowOffset, const Vector4& shadowColor)
+	void SetShadowParam(bool isDrawShadow, float shadowOffset, const EngineMath::Vector4& shadowColor)
 	{
 		m_isDrawShadow = isDrawShadow;
 		m_shadowOffset = shadowOffset;

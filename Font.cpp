@@ -1,5 +1,6 @@
 #include "Vector.h"
 #include "RenderContext.h"
+#include "FontEngine.h"
 #include "Font.h"
 
 
@@ -28,6 +29,7 @@ void Font::Draw(
 	}
 	pivot.y = 1.0f - pivot.y;
 	DirectX::XMFLOAT2 tkFloat2Zero(0, 0);
+	EngineMath::Vector2 pos = position;
 	float frameBufferHalfWidth = g_graphicsEngine->GetFrameBufferWidth() * 0.5f;
 	float frameBufferHalfHeight = g_graphicsEngine->GetFrameBufferHeight() * 0.5f;
 
@@ -38,7 +40,7 @@ void Font::Draw(
 
 	if (m_isDrawShadow) {
 		//âeÇèëÇ≠ÅB
-		Vector2 offsetTbl[] = {
+		EngineMath::Vector2 offsetTbl[] = {
 			{ m_shadowOffset , 0.0f},
 			{ -m_shadowOffset , 0.0f },
 			{ 0.0f , m_shadowOffset },
@@ -51,7 +53,7 @@ void Font::Draw(
 		};
 		for (auto offset : offsetTbl) {
 
-			Vector2 sPos = pos;
+			EngineMath::Vector2 sPos = pos;
 			sPos.x += offset.x;
 			sPos.y += offset.y;
 			fontEngine.Draw(
