@@ -1,17 +1,20 @@
 #pragma once
-
-#include "Matrix.h"
-#include "Vector.h"
-#include "BLASBuffer.h"
-#include "TLASBuffer.h"
-#include <functional>
-#include <memory>
+class TLASBuffer;
+class BLASBuffer;
 class Model;
 class RenderContext;
+#include "Matrix.h"
+#include "Vector.h"
+
+#include <functional>
+#include <memory>
+
+
 namespace raytracing {
+	
 	class World
 	{
-
+		
 		//レイトレワールド
 	public:
 		//ジオメトリを登録

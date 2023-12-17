@@ -132,11 +132,11 @@ namespace raytracing {
 		eHitShaderDescriptorTable_Num       //テーブルの数。
 	};
 	struct Instance;
-	using InstancePtr = std::unique_ptr< Instance>;
+	using InstancePtr = std::unique_ptr<Instance>;
 	using ID3D12ResourcePtr = CComPtr<ID3D12Resource>;
 	using ID3D12RootSignaturePtr = CComPtr<ID3D12RootSignature>;
 	using ID3DBlobPtr = CComPtr<ID3DBlob>;
 	using ID3D12DescriptorHeapPtr = CComPtr<ID3D12DescriptorHeap>;
 }//namespace raytracing
 
-#include "RaytracingWorld.h"
+

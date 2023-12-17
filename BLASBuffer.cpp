@@ -24,14 +24,14 @@ void BLASBuffer::InitBLASBuffer(RenderContext& rc, const std::vector<InstancePtr
 
 			AccelerationStructureBuffers asbuffer;
 			asbuffer.pScratch = CreateBuffer(
-				d3dDevice,
+				d3dDevice.Get(),
 				info.ScratchDataSizeInBytes,
 				D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS,
 				D3D12_RESOURCE_STATE_COMMON,
 				kDefaultHeapProps);
 
 			asbuffer.pResult = CreateBuffer(
-				d3dDevice,
+				d3dDevice.Get(),
 				info.ResultDataMaxSizeInBytes,
 				D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS,
 				D3D12_RESOURCE_STATE_RAYTRACING_ACCELERATION_STRUCTURE,
@@ -43,13 +43,13 @@ void BLASBuffer::InitBLASBuffer(RenderContext& rc, const std::vector<InstancePtr
 			asDesc.DestAccelerationStructureData = asbuffer.pResult->GetGPUVirtualAddress();
 			asDesc.ScratchAccelerationStructureData = asbuffer.pScratch->GetGPUVirtualAddress();
 
-			rc->BuildRaytracingAccelerationStructure(asDesc);
+			rc.BuildRaytracingAccelerationStructure(asDesc);
 
 			//レイトレーシングアクセラレーション構造のビルド完了待ちのバリアを入れる。
 			D3D12_RESOURCE_BARRIER uavBarrier = {};
 			uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
 			uavBarrier.UAV.pResource = asbuffer.pResult;
-			rc->ResourceBarrier(uavBarrier);
+			rc.ResourceBarrier(uavBarrier);
 
 			m_bottomLevelASBuffers.push_back(std::move(asbuffer));
 
