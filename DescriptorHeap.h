@@ -1,6 +1,9 @@
 #pragma once
 class IShaderResource;
 class IUnorderAccessResrouce;
+class ConstantBuffer;
+#include <d3d12.h>
+#include <vector>
 /// <summary>
 /// ディスクリプタヒープ。
 /// </summary>

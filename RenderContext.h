@@ -2,6 +2,7 @@
 #include <memory>
 #include <wrl.h>
 #include <vector>
+#include "DescriptorHeap.h"
 #include "RootSignature.h"
 #include "PipelineState.h"
 #include "VertexBuffer.h"
@@ -9,7 +10,7 @@
 #include "d3dx12.h"
 class ConstantBuffer;
 class Texture;
-class DescriptorHeap;
+
 class RenderTarget;
 
 enum { MAX_DESCRIPTOR_HEAP = 4 };	//ディスクリプタヒープの最大数。

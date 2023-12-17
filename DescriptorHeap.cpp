@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "GraphicsEngine.h"
+#include "ConstantBuffer.h"
 #include "IUnorderAccessResrouce.h"
 #include "GPUBuffer.h"
 
