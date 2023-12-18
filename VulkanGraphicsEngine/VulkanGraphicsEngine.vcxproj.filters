@@ -105,6 +105,9 @@
     <ClInclude Include="VulkanVertex.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="VulkanModel.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VulkanGraphicsEngine.cpp">
@@ -160,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="RenderingContext.cpp">
       <Filter>ソース ファイル\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanModel.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
