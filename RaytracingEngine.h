@@ -7,12 +7,13 @@
 #include "RaytracingShaderTable.h"
 #include "RaytracingDescriptorHeaps.h"
 #include "Matrix.h"
+#include "RaytracingWorld.h"
 #include "ConstantBuffer.h"
 #include "Vector.h"
 #include "GPUBuffer.h"
 
 class Model;
-class World;
+
 namespace raytracing {
 
 

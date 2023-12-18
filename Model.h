@@ -12,6 +12,17 @@ enum EnModelUpAxis {
 	enModelUpAxisZ,		//モデルの上方向がZ軸。
 };
 
+
+struct Vertex
+{
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT2 UV;
+	DirectX::XMFLOAT3 normal;
+
+};
+
+
+
 //モデルの初期化データ
 struct ModelInitData {
 	const char* m_tkmFilePath = nullptr;

@@ -12,9 +12,6 @@ class VertexBuffer;
 class IShaderResource;
 
 class DescriptorHeap;
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
 #include "StructuredBuffer.h"
 #include "ConstantBuffer.h"
 #include "VertexBuffer.h"

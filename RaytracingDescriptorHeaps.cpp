@@ -5,6 +5,7 @@
 #include "Raytracing.h"
 #include "RayTracingInstance.h"
 #include "RaytracingDescriptorHeaps.h"
+#include "RaytracingWorld.h"
 
 namespace raytracing {
 

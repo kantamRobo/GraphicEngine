@@ -2,6 +2,9 @@
 
 
 
+#include <GLTFSDK/GLTF.h>
+#include <GLTFSDK/Document.h>
+#include <GLTFSDK/GLTFResourceReader.h>
 #include "Vector.h"
 
 #include "Material.h"
@@ -215,6 +218,17 @@ void MeshParts::CreateDescriptorHeaps()
 
 void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
 {
+
+
+
+
+
+	const Microsoft::glTF::Accessor& acc; std::shared_ptr<Microsoft::glTF::GLTFResourceReader> reader
+
+
+
+
+
 	//1. 頂点バッファを作成。
 	int numVertex = (int)tkmMesh.vertexBuffer.size();
 	int vertexStride = sizeof(TkmFile::SVertex);
@@ -286,3 +300,5 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 
 	m_meshs[meshNo] = mesh;
 }
+
+
