@@ -213,6 +213,9 @@
     <ClInclude Include="Texture.h">
       <Filter>Graphics\Pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX12Engine.cpp">
