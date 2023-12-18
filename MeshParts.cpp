@@ -270,7 +270,7 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 			}
 		}
 	}
-
+	//todo indicesをgltf用に
 
 
 
@@ -278,9 +278,9 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 	//1. 頂点バッファを作成。
 	
 	int vertexStride = sizeof(Vertex);
-	auto mesh = new SMesh;
+	auto mesh = new SMesh;//しおり。このMeshもgltf用に改修する。
 	mesh->skinFlags.reserve(tkmMesh.materials.size());
-	mesh->m_vertexBuffer.InitVertexBuffer(vertexStride *, vertexStride);
+	mesh->m_vertexBuffer.InitVertexBuffer(vertexStride *vertices.size(), vertexStride);
 	mesh->m_vertexBuffer.Copy((void*)&tkmMesh.vertexBuffer[0]);
 
 	auto SetSkinFlag = [&](int index) {
