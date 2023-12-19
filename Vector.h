@@ -696,6 +696,8 @@ namespace EngineMath {
 		{
 			SetRotation(g_vec3AxisX, angle);
 		}
+
+		void SetRotation(const Matrix& m);
 		/*
 		/// <summary>
 		/// X軸周りの回転クォータニオンを作成。
@@ -762,6 +764,14 @@ namespace EngineMath {
 			y = axis.y * s;
 			z = axis.z * s;
 		}
+
+	
+
+		/*!
+*@brief	行列からクォータニオンを作成。
+*/
+		
+		
 		/*
 		/// <summary>
 		/// 任意の軸周りの回転クォータニオンを作成。
@@ -779,11 +789,7 @@ namespace EngineMath {
 			z = axis.z * s;
 		}
 		*/
-		/// <summary>
-		/// 行列からクォータニオンを作成。
-		/// </summary>
-		/// <param name="m">行列</param>
-		void SetRotation(const Matrix& m);
+		
 		/// <summary>
 		/// fromベクトルからtoベクトルに回転させるクォータニオンを作成。
 		/// </summary>

@@ -6,7 +6,7 @@
 class ConstantBuffer;
 class RenderContext;
 class Skeleton;
-class Material;
+class SMaterial;
 class IndexBuffer;
 class VertexBuffer;
 class IShaderResource;
@@ -27,7 +27,7 @@ const int MAX_MODEL_EXPAND_SRV = 6;	//拡張SRVの最大数。
 struct SMesh {
 	VertexBuffer m_vertexBuffer;						//頂点バッファ。
 	std::vector< std::shared_ptr<IndexBuffer> >		m_indexBufferArray;	//インデックスバッファ。
-	std::vector < std::shared_ptr< Material> > m_materials;			//マテリアル。
+	std::vector < std::shared_ptr< SMaterial> > m_materials;			//マテリアル。
 	std::vector<int>				skinFlags;				//スキンを持っているかどうかのフラグ。
 };
 

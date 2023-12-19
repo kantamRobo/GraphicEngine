@@ -3,6 +3,7 @@
 #include "Indexbuffer.h"
 #include "VertexBuffer.h"
 #include "ConstantBuffer.h"
+
 class Texture;
 
 //スプライトに設定できる最大テクスチャ数。
@@ -52,7 +53,7 @@ struct SpriteInitData {
 /// </summary>
 class Sprite {
 public:
-	static const Vector2	DEFAULT_PIVOT;					//!<ピボット。
+	static const EngineMath::Vector2	DEFAULT_PIVOT;					//!<ピボット。
 	virtual ~Sprite();
 	/// <summary>
 	/// 初期化。
@@ -72,7 +73,7 @@ public:
 	/// 1.0, 1.0で画像の右上。
 	/// UnityのuGUIに準拠。
 	/// </param>
-	void Update(const Vector3& pos, const Quaternion& rot, const Vector3& scale, const Vector2& pivot = DEFAULT_PIVOT);
+	void Update(const EngineMath::Vector3& pos, const EngineMath::Quaternion& rot, const EngineMath::Vector3& scale, const EngineMath::Vector2& pivot = DEFAULT_PIVOT);
 	/// <summary>
 	/// 描画。
 	/// </summary>
@@ -114,15 +115,15 @@ private:
 	int m_numTexture = 0;				//テクスチャの枚数。
 	Texture m_textures[MAX_TEXTURE];	//テクスチャ。
 	Texture* m_textureExternal[MAX_TEXTURE] = { nullptr };	//外部から指定されたテクスチャ
-	Vector3 m_position;				//座標。
-	Vector2 m_size;						//サイズ。
-	Quaternion m_rotation;			//回転。
-	Matrix m_world;					//ワールド行列。
+	EngineMath::Vector3 m_position;				//座標。
+	EngineMath::Vector2 m_size;						//サイズ。
+	EngineMath::Quaternion m_rotation;			//回転。
+	EngineMath::Matrix m_world;					//ワールド行列。
 
 	struct LocalConstantBuffer {
-		Matrix mvp;
-		Vector4 mulColor;
-		Vector4 screenParam;
+		EngineMath::Matrix mvp;
+		EngineMath::Vector4 mulColor;
+		EngineMath::Vector4 screenParam;
 	};
 	LocalConstantBuffer m_constantBufferCPU;	//CPU側の定数バッファ。
 	ConstantBuffer		m_constantBufferGPU;	//GPU側の定数バッファ。

@@ -1,9 +1,16 @@
 #include "stdafx.h"
 #include "Vector.h"
 #include "Matrix.h"
-#include "Sprite.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "DescriptorHeap.h"
+#include "RootSignature.h"
+#include "PipelineState.h"
+#include "Texture.h"
+#include "RenderContext.h"
+#include "Shader.h"
+#include "Sprite.h"
+
 
 namespace {
 	

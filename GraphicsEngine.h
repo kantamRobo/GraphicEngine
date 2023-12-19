@@ -8,13 +8,13 @@
 #include "NullTextureMaps.h"
 #include <dxgi1_4.h>
 #include "Texture.h"
+#include "FontEngine.h"
 #include "DDSTextureLoader.h"
 #include "ResourceUploadBatch.h"
 #include "RenderContext.h"
 #include "RaytracingEngine.h"
 #include "Camera.h"
 #include "Model.h"
-
 
 
 
@@ -330,7 +330,7 @@ private:
 	std::shared_ptr<RenderContext> m_renderContext;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferRTVHandle;		//現在書き込み中のフレームバッファのレンダリングターゲットビューのハンドル。
 	D3D12_CPU_DESCRIPTOR_HANDLE m_currentFrameBufferDSVHandle;		//現在書き込み中のフレームバッファの深度ステンシルビューの
-	
+	FontEngine m_fontEngine;
 	std::shared_ptr<NullTextureMaps> m_nullTextureMaps;
 	std::unique_ptr<DirectX::GraphicsMemory> m_directXTKGfxMemory;
 	Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapChain = nullptr;

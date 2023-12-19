@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "MeshParts.h"
-#include "BLASBuffer.h"
-#include "TLASBuffer.h"
+
 #include "Model.h"
 #include "RaytracingWorld.h"
 

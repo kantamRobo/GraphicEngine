@@ -100,6 +100,15 @@ public:
 	}
 
 
+	//(‚µ‚¨‚è)
+	void BuildBoneMatrices()
+	{
+
+
+
+
+	}
+
 /*!
 	*@brief	–¼‘O‚Ìæ“¾B
 	*/
