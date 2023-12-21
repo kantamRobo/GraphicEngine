@@ -2,13 +2,11 @@
 
 
 
-#include <GLTFSDK/GLTF.h>
-#include <GLTFSDK/Document.h>
-#include <GLTFSDK/GLTFResourceReader.h>
+
 #include "Vector.h"
 
 #include "Material.h"
-
+#include "RenderContext.h"
 #include "IndexBuffer.h"
 
 #include "DescriptorHeap.h"
@@ -35,7 +33,7 @@ MeshParts::~MeshParts()
 
 }
 
-void MeshParts::InitFromAssimpFile(const aiScene* scene,const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
+void MeshParts::InitFromGltfFile(const aiScene* scene,const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
 {
 	//assimpから頂点をロードしたいが、
 	// 処理が複雑なので調査してからメッシュメモリ確保の

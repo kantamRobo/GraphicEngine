@@ -40,7 +40,7 @@ public:
 	/// デストラクタ。
 	/// </summary>
 	~MeshParts();
-	void InitFromAssimpFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
+	void InitFromGltfFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
 	
 	
 	void DrawCommon(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
@@ -55,8 +55,7 @@ public:
 	
 	void Draw(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 
-	void InitFromAssimpFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
-
+	
 	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
 	/// スケルトンを関連付ける。

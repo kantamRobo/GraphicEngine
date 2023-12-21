@@ -1,7 +1,8 @@
 #pragma once
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
-
+#include "Vector.h"
+#include "RenderContext.h"
 /// <summary>
 /// フォントエンジン。
 /// </summary>
