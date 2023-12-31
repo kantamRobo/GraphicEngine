@@ -1,4 +1,4 @@
-#include "Material.h"
+
 #include <string>
 #include <memory>
 #include "Engine.h"
@@ -7,6 +7,7 @@
 #include <GLTFSDK/GLTFResourceReader.h>
 #include <GLTFSDK/Deserialize.h>
 #include <GLTFSDK/GLBResourceReader.h>
+#include "Material.h"
 using namespace std;
 void Material::InitTexture(const Microsoft::glTF::Document& doc,const TkmFile::SMaterial& tkmMat)
 {
@@ -31,7 +32,7 @@ void Material::InitTexture(const Microsoft::glTF::Document& doc,const TkmFile::S
 				current /= modelFilePath;
 				current.swap(modelFilePath);
 			}
-			auto reader = make_unique<Microsoft::glTF::GLTFResourceReader>(modelFilePath.parent_path());
+			auto reader = std::make_unique<Microsoft::glTF::GLTFResourceReader>(modelFilePath.parent_path());
 			auto glbStream = reader->GetInputStream(modelFilePath.filename().u8string());
 			auto glbResourceReader = std::make_shared<Microsoft::glTF::GLBResourceReader>(std::move(reader), std::move(glbStream));
 			auto document = Microsoft::glTF::Deserialize(glbResourceReader->GetJson());
