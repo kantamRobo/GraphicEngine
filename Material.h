@@ -1,5 +1,12 @@
 #pragma once
-
+#include <string>
+#include <memory>
+#include "Engine.h"
+#include <GLTFSDK/GLTF.h>
+#include <GLTFSDK/Document.h>
+#include <GLTFSDK/GLTFResourceReader.h>
+#include <GLTFSDK/Deserialize.h>
+#include <GLTFSDK/GLBResourceReader.h>
 #include "TkmFIle.h"
 #include "Texture.h"
 /// <summary>
@@ -11,19 +18,7 @@ public:
 	/// tkmファイルのマテリアル情報から初期化する。
 	/// </summary>
 	/// <param name="tkmMat">tkmマテリアル</param>
-	void InitFromTkmMaterila(
-		const TkmFile::SMaterial& tkmMat,
-		const char* fxFilePath,
-		const char* vsEntryPointFunc,
-		const char* vsSkinEntriyPointFunc,
-		const char* psEntryPointFunc,
-		const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat,
-		int numSrv,
-		int numCbv,
-		UINT offsetInDescriptorsFromTableStartCB,
-		UINT offsetInDescriptorsFromTableStartSRV,
-		D3D12_FILTER samplerFilter
-	);
+	void InitTexture(const Microsoft::glTF::Document& doc, const TkmFile::SMaterial& tkmMat);
 	/// <summary>
 	/// レンダリングを開始するときに呼び出す関数。
 	/// </summary>
@@ -96,11 +91,7 @@ private:
 		const char* vsEntryPointFunc,
 		const char* vsSkinEntriyPointFunc,
 		const char* psEntryPointFunc);
-	/// <summary>
-	/// テクスチャを初期化。
-	/// </summary>
-	/// <param name="tkmMat"></param>
-	InitTexture(const Microsoft::glTF::Document& doc, const TkmFile::SMaterial& tkmMat);
+	
 private:
 	/// <summary>
 	/// マテリアルパラメータ。

@@ -1,12 +1,5 @@
 
-#include <string>
-#include <memory>
-#include "Engine.h"
-#include <GLTFSDK/GLTF.h>
-#include <GLTFSDK/Document.h>
-#include <GLTFSDK/GLTFResourceReader.h>
-#include <GLTFSDK/Deserialize.h>
-#include <GLTFSDK/GLBResourceReader.h>
+
 #include "Material.h"
 using namespace std;
 void Material::InitTexture(const Microsoft::glTF::Document& doc,const TkmFile::SMaterial& tkmMat)
@@ -28,7 +21,7 @@ void Material::InitTexture(const Microsoft::glTF::Document& doc,const TkmFile::S
 			auto modelFilePath = experimental::filesystem::path(filePath);
 			if (modelFilePath.is_relative())
 			{
-				auto current = experimental::filesystem::current_path();
+				auto current = experimental::filesystem::current_path(); ‚µ‚¨‚è
 				current /= modelFilePath;
 				current.swap(modelFilePath);
 			}
@@ -52,9 +45,9 @@ void Material::InitTexture(const Microsoft::glTF::Document& doc,const TkmFile::S
 			{
 				normalMap = new Texture();
 				normalMap->InitFromMemory(map, mapSize);
-				g_engine->RegistTextureToBank(filePath, normalMap);
+				g_engine->RegistTextureToBank(filePath, normalMap.get());
 			}
-			m_normalMap = normalMap;
+			m_normalMap = normalMap.get();
 		}
 
 	}
