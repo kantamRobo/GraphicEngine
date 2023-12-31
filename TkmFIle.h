@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Vector.h"
 
 /// <summary>
 /// tkmファイルクラス。
