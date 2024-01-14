@@ -266,9 +266,15 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 					}
 				);
 			}
+
+			//todo indicesをgltf用に
+	 // インデックスデータ
+			indices = reader->ReadBinaryData<uint32_t>(doc, accIndex);
+
 		}
 	}
-	//todo indicesをgltf用に
+	
+
 
 
 
