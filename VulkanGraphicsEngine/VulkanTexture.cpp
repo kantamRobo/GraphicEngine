@@ -43,13 +43,125 @@ void VulkanTexture::LoadTextureFromStorage(VkDevice device,const std::string& fi
 			//メモリのバインド
 			vkBindImageMemory(device, m_texture, , 0);
 	}
-
-	ステージングバッファというの分からないので、後日調べる。
+	2024/01/22
+	/*ステージングバッファというの分からないので、後日調べる。
 	{
+VkBuffer staging_buffer;
+VkDeviceMemory  staging_memory;
+VkBufferCreateInfo ci{};
+  ci.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+  ci.usage = usage;
+  ci.size = size;
+  auto result = vkCreateBuffer(m_device, &ci, nullptr, &obj.buffer);
+  checkResult(result);
 
+   // メモリ量の算出
+  VkMemoryRequirements reqs;
+  vkGetBufferMemoryRequirements(m_device, obj.buffer, &reqs);
+  VkMemoryAllocateInfo info{};
+  info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+  info.allocationSize = reqs.size;
+  // メモリタイプの判定
+  info.memoryTypeIndex = getMemoryTypeIndex(reqs.memoryTypeBits, flags);
+  // メモリの確保
+  vkAllocateMemory(m_device, &info, nullptr, &obj.memory);
+
+
+  stagingbufferとstagingmemoryに、バッファ作成およびバインド関数の当該箇所を変えていく
+ModelApp::BufferObject ModelApp::createBuffer(uint32_t size, VkBufferUsageFlags usage, VkMemoryPropertyFlags flags, const void* initialData)
+{
+  BufferObject obj;
+  VkBufferCreateInfo ci{};
+  ci.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+  ci.usage = usage;
+  ci.size = size;
+  auto result = vkCreateBuffer(m_device, &ci, nullptr, &stagingbuffer);
+  checkResult(result);
+
+  // メモリ量の算出
+  VkMemoryRequirements reqs;
+  vkGetBufferMemoryRequirements(m_device, stagingbuffer, &reqs);
+  VkMemoryAllocateInfo info{};
+  info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+  info.allocationSize = reqs.size;
+  // メモリタイプの判定
+  info.memoryTypeIndex = getMemoryTypeIndex(reqs.memoryTypeBits, flags);
+  // メモリの確保
+  vkAllocateMemory(m_device, &info, nullptr, stagingmemory);
+
+
+
+
+  // メモリのバインド
+  vkBindBufferMemory(m_device, stagingbuffer, stagingmemory, 0);
+
+
+  // メモリのバインド
+  vkBindBufferMemory(m_device,stagingbuffer,  stagingmemory, 0);
+
+  if ((flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) != 0 &&
+	initialData != nullptr)
+  {
+	void* p;
+	vkMapMemory(m_device,  stagingmemory, 0, VK_WHOLE_SIZE, 0, &p);
+	memcpy(p, initialData, size);
+	vkUnmapMemory(m_device,  stagingmemory);
+  }
+
+  if ((flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) != 0 &&
+	initialData != nullptr)
+  {
+	void* p;
+	vkMapMemory(m_device, stagingmemory, 0, VK_WHOLE_SIZE, 0, &p);
+	memcpy(p, initialData, size);
+	vkUnmapMemory(m_device,  stagingmemory);
+  }
+  return obj;
+}
+     VkBufferCreateInfo ci{};
+  ci.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+  ci.usage = usage;
+  ci.size = size;
+  auto result = vkCreateBuffer(m_device, &ci, nullptr, &stagingbuffer);
+  checkResult(result);
 	
-	
+
+	// メモリ量の算出
+  VkMemoryRequirements reqs;
+  vkGetBufferMemoryRequirements(m_device, stagingbuffer, &reqs);
+  VkMemoryAllocateInfo info{};
+  info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+  info.allocationSize = reqs.size;
+  // メモリタイプの判定
+  info.memoryTypeIndex = getMemoryTypeIndex(reqs.memoryTypeBits, flags);
+  // メモリの確保
+  vkAllocateMemory(m_device, &info, nullptr, &stagingmemory);
+
+
+
+  // メモリ量の算出
+  VkMemoryRequirements reqs;
+  vkGetBufferMemoryRequirements(m_device, stagingbuffer, &reqs);
+  VkMemoryAllocateInfo info{};
+  info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+  info.allocationSize = reqs.size;
+  // メモリタイプの判定
+  info.memoryTypeIndex = getMemoryTypeIndex(reqs.memoryTypeBits, flags);
+  // メモリの確保
+  vkAllocateMemory(m_device, &info, nullptr, &stagingmemory);
+
+
+
+
+  // メモリのバインド
+  vkBindBufferMemory(m_device,stagingbuffer, stagingmemory, 0);
+
+
+  // メモリのバインド
+  vkBindBufferMemory(m_device, stagingbuffer, stagingmemory, 0);
+
 	}
+	*/
 
 	VkCommandBufferBeginInfo commandBI{};
 	commandBI.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
