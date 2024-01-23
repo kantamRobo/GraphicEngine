@@ -6,8 +6,7 @@
 
 
 //IOから画像をロードし、テクスチャを作る。
-
-void VulkanTexture::LoadTextureFromStorage(VkDevice device,const std::string& filepath,VkFormat& format)
+void VulkanTexture::LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengine,VkDevice device,const std::string& filepath,VkFormat& format)
 {
 	int channels = 0;
 	auto* pImage = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
@@ -43,7 +42,38 @@ void VulkanTexture::LoadTextureFromStorage(VkDevice device,const std::string& fi
 			//メモリのバインド
 			vkBindImageMemory(device, m_texture, , 0);
 	}
-	2024/01/22
+	
+	VkBuffer staging_buffer;
+	VkDeviceMemory staging_memory;
+	VkBufferCreateInfo stagingci{};
+	stagingci.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	stagingci.usage =
+		stagingci.size =
+
+		auto result = vkCreateBuffer(device, &stagingci, nullptr, &staging_buffer);
+
+
+	VkMemoryRequirements reqs;
+	vkGetBufferMemoryRequirements(device, staging_buffer, &reqs);
+	VkMemoryAllocateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	info.allocationSize = reqs.size;
+	// メモリタイプの判定
+	info.memoryTypeIndex = getMemoryTypeIndex(reqs.memoryTypeBits, flags);
+	// メモリの確保
+	vkAllocateMemory(device, &info, nullptr, &staging_memory);
+
+	// メモリのバインド
+	vkBindBufferMemory(device, staging_buffer, staging_memory, 0);
+
+	if ((flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) != 0 &&
+		initialData != nullptr)
+	{
+		void* p;
+		vkMapMemory(device, staging_memory, 0, VK_WHOLE_SIZE, 0, &p);
+		memcpy(p, initialData, size);
+		vkUnmapMemory(device, staging_memory);
+	}
 	/*ステージングバッファというの分からないので、後日調べる。
 	{
 VkBuffer staging_buffer;
@@ -66,17 +96,6 @@ VkBufferCreateInfo ci{};
   // メモリの確保
   vkAllocateMemory(m_device, &info, nullptr, &obj.memory);
 
-
-  stagingbufferとstagingmemoryに、バッファ作成およびバインド関数の当該箇所を変えていく
-ModelApp::BufferObject ModelApp::createBuffer(uint32_t size, VkBufferUsageFlags usage, VkMemoryPropertyFlags flags, const void* initialData)
-{
-  BufferObject obj;
-  VkBufferCreateInfo ci{};
-  ci.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-  ci.usage = usage;
-  ci.size = size;
-  auto result = vkCreateBuffer(m_device, &ci, nullptr, &stagingbuffer);
-  checkResult(result);
 
   // メモリ量の算出
   VkMemoryRequirements reqs;
@@ -165,18 +184,18 @@ ModelApp::BufferObject ModelApp::createBuffer(uint32_t size, VkBufferUsageFlags 
 
 	VkCommandBufferBeginInfo commandBI{};
 	commandBI.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	vkBeginCommandBuffer(command, &commandBI);
-	setImageMemoryBarrier(command, texture.image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
-	vkCmdCopyBufferToImage(command, stagingBuffer.buffer, texture.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copyRegion);
+	vkBeginCommandBuffer(coregraphicsengine.commandbuffer, &commandBI);
+	setImageMemoryBarrier(coregraphicsengine.commandbuffer, texture.image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+	vkCmdCopyBufferToImage(coregraphicsengine.commandbuffer, staging_buffer, texture.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copyRegion);
 
-	setImageMemoryBarrier(command, texture.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-	vkEndCommandBuffer(command);
+	setImageMemoryBarrier(coregraphicsengine.commandbuffer, texture.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+	vkEndCommandBuffer(coregraphicsengine.commandbuffer);
 
 	VkSubmitInfo submitInfo{};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &command;
-	vkQueueSubmit(m_deviceQueue, 1, &submitInfo, VK_NULL_HANDLE);
+	submitInfo.pCommandBuffers = &coregraphicsengine.commandbuffer;
+	vkQueueSubmit(coregraphicsengine.devicequeue, 1, &submitInfo, VK_NULL_HANDLE);
 	{
 		// テクスチャ参照用のビューを生成
 		VkImageViewCreateInfo ci{};
@@ -193,10 +212,10 @@ ModelApp::BufferObject ModelApp::createBuffer(uint32_t size, VkBufferUsageFlags 
 		ci.subresourceRange = {
 		  VK_IMAGE_ASPECT_COLOR_BIT,0,1,0,1
 		};
-		vkCreateImageView(m_device, &ci, nullptr, &texture.view);
+		vkCreateImageView(device, &ci, nullptr, &texture.view);
 	}
 
-	vkDeviceWaitIdle(m_device);
-	vkFreeCommandBuffers(m_device, m_commandPool, 1, &command);
+	vkDeviceWaitIdle(device);
+	vkFreeCommandBuffers(device, coregraphicsengine.commandpool, 1, &coregraphicsengine.commandbuffer);
 
 }

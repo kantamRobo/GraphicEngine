@@ -1,6 +1,7 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include <string>
+#include "CoreGraphicsEngine.h"
 class VulkanTexture:public IVulkanShaderResource
 {
 public:
@@ -34,7 +35,6 @@ public:
 	}
 
 private:
-	void LoadTextureFromStorage(VkDevice device, const std::string& filepath, VkFormat& format);
 
 	int width;
 	int height;
@@ -42,5 +42,7 @@ private:
 	VkImageCreateInfo m_textureInfo;
 	//ステージングバッファを入れる？
 	
+	void LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengine, VkDevice device, const std::string& filepath, VkFormat& format);
+
 };
 
