@@ -42,7 +42,8 @@ private:
 	VkImageCreateInfo m_textureInfo;
 	//ステージングバッファを入れる？
 	
-	void LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengine, VkDevice device, const std::string& filepath, VkFormat& format);
+	
+	void LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengine, VkDevice device, const std::string& filepath, VkFormat& format, void* initialData);
 
 };
 

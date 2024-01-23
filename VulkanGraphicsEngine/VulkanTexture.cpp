@@ -6,7 +6,7 @@
 
 
 //IOから画像をロードし、テクスチャを作る。
-void VulkanTexture::LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengine,VkDevice device,const std::string& filepath,VkFormat& format)
+void VulkanTexture::LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengine,VkDevice device,const std::string& filepath,VkFormat& format,void* initialData)
 {
 	int channels = 0;
 	auto* pImage = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
@@ -42,13 +42,13 @@ void VulkanTexture::LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengin
 			//メモリのバインド
 			vkBindImageMemory(device, m_texture, , 0);
 	}
-	
+	uint32_t imageSize = width * height * sizeof(uint32_t);
 	VkBuffer staging_buffer;
 	VkDeviceMemory staging_memory;
 	VkBufferCreateInfo stagingci{};
 	stagingci.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-	stagingci.usage =
-		stagingci.size =
+	stagingci.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+	stagingci.size = imageSize;
 
 		auto result = vkCreateBuffer(device, &stagingci, nullptr, &staging_buffer);
 
@@ -71,7 +71,7 @@ void VulkanTexture::LoadTextureFromStorage(CoreGraphicsEngine& coregraphicsengin
 	{
 		void* p;
 		vkMapMemory(device, staging_memory, 0, VK_WHOLE_SIZE, 0, &p);
-		memcpy(p, initialData, size);
+		memcpy(p, initialData, imageSize);
 		vkUnmapMemory(device, staging_memory);
 	}
 	/*ステージングバッファというの分からないので、後日調べる。
