@@ -1,4 +1,11 @@
 #pragma once
+#include "VulkanCamera.h"
+#include "RenderingContext.h"
+#include <GLFW/glfw3.h>
+#include <array>
+
+#include <vector>
+#include "stdafx.h"
 class CoreGraphicsEngine
 {
 public:

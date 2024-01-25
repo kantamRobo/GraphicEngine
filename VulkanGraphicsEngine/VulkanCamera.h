@@ -329,7 +329,7 @@ public:
 	/// カメラのコピーを作成。
 	/// </summary>
 	/// <param name="dst"></param>
-	void CopyTo(Camera& dst)
+	void CopyTo(VulkanCamera& dst)
 	{
 		memcpy(&dst, this, sizeof(dst));
 		m_isDirty = true;

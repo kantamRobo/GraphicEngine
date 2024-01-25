@@ -1,16 +1,13 @@
-#include <GLFW/glfw3.h>
-#include <array>
-#include "stdafx.h"
-#include <vector>
+
+
+
 #include "CoreGraphicsEngine.h"
 
 
-#include "RenderingContext.h"
-
 
 CoreGraphicsEngine* g_graphicsEngine = nullptr;	//グラフィックスエンジン
-Camera* g_camera2D = nullptr;				//2Dカメラ。
-Camera* g_camera3D = nullptr;				//3Dカメラ。
+VulkanCamera* g_camera2D = nullptr;				//2Dカメラ。
+VulkanCamera* g_camera3D = nullptr;				//3Dカメラ。
 bool CoreGraphicsEngine::InitializeEngine(GLFWwindow* window, unsigned int frameBufferWidth, unsigned int frameBufferHeight)
 {
 	g_graphicsEngine = this;
