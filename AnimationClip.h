@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "Matrix.h"
-#include "tiny_gltf_loader.h"
+#include "tinygltfExtended.h"
 struct KeyFrame {
 	uint32_t boneIndex;
 	float time;
@@ -84,7 +84,7 @@ public:
 		m_isLoop = flag;
 	}
 
-	const std::vector<keyFramePtrList>& GetKeyFramePtrListArray() const
+	const std::vector<std::shared_ptr<keyFramePtrList>> GetKeyFramePtrListArray() const
 	{
 		return m_keyFramePtrListArray;
 	}
@@ -113,7 +113,12 @@ public:
 	/// <returns></returns>
 	int GetNumAnimationEvent() const
 	{
-		return m_tkaFile
+		return m_animationEvents.size();
+	}
+
+	int GetNumKeyFrame()const
+	{
+		return m_keyframes.size();
 	}
 
 private:
@@ -127,6 +132,8 @@ private:
 	std::shared_ptr<keyFramePtrList> 	m_topBoneKeyFramList = nullptr;
 	tinygltf::Animation m_tkaFile;
 
-
+private:
+	std::vector< AnimationEvent> m_animationEvents;	//アニメーションイベント。
+	std::vector< KeyFrame> m_keyFrames;				//キーフレーム。
 };
 using AnimationClipPtr = std::unique_ptr<AnimationClip>;

@@ -177,6 +177,7 @@
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="tinygltfExtended.h" />
     <ClInclude Include="TLASBuffer.h" />
     <ClInclude Include="TResourceBank.h" />
     <ClInclude Include="Vector.h" />

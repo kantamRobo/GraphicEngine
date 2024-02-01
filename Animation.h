@@ -137,6 +137,7 @@ private:
 		m_interpolateTime = 0.0f;
 		m_interpolateTimeEnd = interpolateTime;
 	}
+	void InitAnimation(Skeleton& skeleton, std::shared_ptr<AnimationClip> animClips, int numAnimClip);
 	/// <summary>
 	/// ローカルポーズの更新。
 	/// </summary>

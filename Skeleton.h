@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 #include <WinUser.h>
-#include "TksFile.h"
+
 #include <string>
 class Bone {
 public:

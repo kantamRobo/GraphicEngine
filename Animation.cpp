@@ -12,7 +12,8 @@ namespace {
 	const float DELTA_SEC_PER_FRAME_ON_DCC_TOOL = 1.0f / 30.0f;
 }
 
-void Animation::InitAnimation(Skeleton& skeleton, AnimationClip* animClips, int numAnimClip)
+void Animation::InitAnimation(Skeleton& skeleton, std::shared_ptr<AnimationClip> animClips,
+	int numAnimClip)
 {
 	m_skeleton = &skeleton;
 	for (int i = 0; i < numAnimClip; i++)
