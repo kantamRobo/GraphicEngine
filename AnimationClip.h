@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "Matrix.h"
-#include "TkaFile.h"
+#include "tiny_gltf_loader.h"
 struct KeyFrame {
 	uint32_t boneIndex;
 	float time;
@@ -113,7 +113,7 @@ public:
 	/// <returns></returns>
 	int GetNumAnimationEvent() const
 	{
-		return m_tkaFile.GetNumAnimationEvent();
+		return m_tkaFile
 	}
 
 private:
@@ -125,7 +125,7 @@ private:
 	std::unique_ptr<AnimationEvent[]> m_animationEvent;
 
 	std::shared_ptr<keyFramePtrList> 	m_topBoneKeyFramList = nullptr;
-	TkaFile m_tkaFile;
+	tinygltf::Animation m_tkaFile;
 
 
 };
