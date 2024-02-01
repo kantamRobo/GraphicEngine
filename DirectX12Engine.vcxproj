@@ -176,9 +176,6 @@
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TkaFile.h" />
-    <ClInclude Include="TkmFIle.h" />
-    <ClInclude Include="TksFile.h" />
     <ClInclude Include="TLASBuffer.h" />
     <ClInclude Include="TResourceBank.h" />
     <ClInclude Include="Vector.h" />
@@ -221,9 +218,6 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TkaFile.cpp" />
-    <ClCompile Include="TkmFile.cpp" />
-    <ClCompile Include="TksFile.cpp" />
     <ClCompile Include="TLASBuffer.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />

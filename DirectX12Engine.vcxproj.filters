@@ -114,12 +114,6 @@
     <ClInclude Include="AnimationPlayController.h">
       <Filter>Animation</Filter>
     </ClInclude>
-    <ClInclude Include="TkaFile.h">
-      <Filter>IO</Filter>
-    </ClInclude>
-    <ClInclude Include="TkmFIle.h">
-      <Filter>IO</Filter>
-    </ClInclude>
     <ClInclude Include="Matrix.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -207,9 +201,6 @@
     <ClInclude Include="MyAssert.h">
       <Filter>dbg</Filter>
     </ClInclude>
-    <ClInclude Include="TksFile.h">
-      <Filter>IO</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Graphics\Pipeline</Filter>
     </ClInclude>
@@ -275,12 +266,6 @@
     <ClCompile Include="AnimationPlayController.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
-    <ClCompile Include="TkaFile.cpp">
-      <Filter>IO</Filter>
-    </ClCompile>
-    <ClCompile Include="TkmFile.cpp">
-      <Filter>IO</Filter>
-    </ClCompile>
     <ClCompile Include="Matrix.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -337,9 +322,6 @@
     </ClCompile>
     <ClCompile Include="FontEngine.cpp">
       <Filter>Font</Filter>
-    </ClCompile>
-    <ClCompile Include="TksFile.cpp">
-      <Filter>IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
