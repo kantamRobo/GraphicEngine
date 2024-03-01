@@ -130,22 +130,29 @@
     <ClInclude Include="DirectX11GraphicEngine.h" />
     <ClInclude Include="DirectX11IndexBuffer.h" />
     <ClInclude Include="DirectX11VertexBuffer.h" />
+    <ClInclude Include="DX11Model.h" />
     <ClInclude Include="IShaderResource.h" />
+    <ClInclude Include="json.h" />
+    <ClInclude Include="stbi_image_write.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="DirectX11GraphicsEngine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureDX11.h" />
+    <ClInclude Include="tinygltf.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11Buffer.cpp" />
     <ClCompile Include="DirectX11GraphicEngine.cpp" />
     <ClCompile Include="DirectX11IndexBuffer.cpp" />
+    <ClCompile Include="DX11Model.cpp" />
     <ClCompile Include="IShaderResource.cpp" />
     <ClCompile Include="DirectX11GraphicsEngine.cpp" />
     <ClCompile Include="TextureDX11.cpp" />
+    <ClCompile Include="tinygltf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11GraphicsEngine.rc" />
@@ -162,6 +169,8 @@
     <Import Project="..\packages\directxtex_desktop_2019.2023.4.28.1\build\native\directxtex_desktop_2019.targets" Condition="Exists('..\packages\directxtex_desktop_2019.2023.4.28.1\build\native\directxtex_desktop_2019.targets')" />
     <Import Project="..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets')" />
     <Import Project="..\packages\directxtk_desktop_2019.2023.4.28.1\build\native\directxtk_desktop_2019.targets" Condition="Exists('..\packages\directxtk_desktop_2019.2023.4.28.1\build\native\directxtk_desktop_2019.targets')" />
+    <Import Project="..\packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets" Condition="Exists('..\packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets')" />
+    <Import Project="..\packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets" Condition="Exists('..\packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -170,5 +179,7 @@
     <Error Condition="!Exists('..\packages\directxtex_desktop_2019.2023.4.28.1\build\native\directxtex_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtex_desktop_2019.2023.4.28.1\build\native\directxtex_desktop_2019.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.XAudio2.Redist.1.2.11\build\native\Microsoft.XAudio2.Redist.targets'))" />
     <Error Condition="!Exists('..\packages\directxtk_desktop_2019.2023.4.28.1\build\native\directxtk_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2019.2023.4.28.1\build\native\directxtk_desktop_2019.targets'))" />
+    <Error Condition="!Exists('..\packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets'))" />
   </Target>
 </Project>

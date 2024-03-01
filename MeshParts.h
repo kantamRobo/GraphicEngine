@@ -77,6 +77,7 @@ public:
 	/// ディスクリプタヒープを作成。
 	/// </summary>
 	void CreateDescriptorHeaps();
+	void CreateMeshFromAssimpMesh(const Microsoft::glTF::Document& doc, int meshNo, int& materialNum, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
 private:
 	/// <summary>
 	/// tkmメッシュからメッシュを作成。
