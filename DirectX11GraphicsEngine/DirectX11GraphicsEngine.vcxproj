@@ -131,6 +131,7 @@
     <ClInclude Include="DirectX11IndexBuffer.h" />
     <ClInclude Include="DirectX11VertexBuffer.h" />
     <ClInclude Include="DX11Model.h" />
+    <ClInclude Include="DX11RasterizerState.h" />
     <ClInclude Include="IShaderResource.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="stbi_image_write.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="DirectX11GraphicEngine.cpp" />
     <ClCompile Include="DirectX11IndexBuffer.cpp" />
     <ClCompile Include="DX11Model.cpp" />
+    <ClCompile Include="DX11RasterizerState.cpp" />
     <ClCompile Include="IShaderResource.cpp" />
     <ClCompile Include="DirectX11GraphicsEngine.cpp" />
     <ClCompile Include="TextureDX11.cpp" />
