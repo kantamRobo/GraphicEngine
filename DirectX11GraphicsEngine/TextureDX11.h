@@ -2,7 +2,7 @@
 
 #include <DDSTextureLoader.h>
 #include "stdafx.h"
-	class TextureDX11 :public IShaderResource
+	class TextureDX11
 	{
 		
 		TextureDX11(const wchar_t* filePath)
