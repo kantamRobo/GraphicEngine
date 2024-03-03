@@ -133,6 +133,7 @@
     <ClInclude Include="DX11ConstantBuffer.h" />
     <ClInclude Include="DX11Model.h" />
     <ClInclude Include="DX11RasterizerState.h" />
+    <ClInclude Include="DX11StrucutredBuffer.h" />
     <ClInclude Include="IShaderResource.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="stbi_image_write.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="DX11ConstantBuffer.cpp" />
     <ClCompile Include="DX11Model.cpp" />
     <ClCompile Include="DX11RasterizerState.cpp" />
+    <ClCompile Include="DX11StrucutredBuffer.cpp" />
     <ClCompile Include="IShaderResource.cpp" />
     <ClCompile Include="DirectX11GraphicsEngine.cpp" />
     <ClCompile Include="TextureDX11.cpp" />
