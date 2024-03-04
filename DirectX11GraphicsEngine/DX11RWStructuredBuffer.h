@@ -14,11 +14,11 @@ class DX11RWStructuredBuffer
 	void InitRWStructuredBuffer(const DirectX11IndexBuffer& ib, bool isUpdateByCPU);
 
 
-	void RegistUnorderAccessView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
+	void RegistUnorderAccessView( int bufferNo);
 
 
 
-	void RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
+	void RegistShaderResourceView( int bufferNo);
 
 	bool IsInited()const
 	{
