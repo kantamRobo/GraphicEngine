@@ -160,7 +160,7 @@
     <ClCompile Include="DX11RWStructuredBuffer.cpp" />
     <ClCompile Include="DX11StrucutredBuffer.cpp" />
     <ClCompile Include="IShaderResource.cpp" />
-    <ClCompile Include="DirectX11GraphicsEngine.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureDX11.cpp" />
     <ClCompile Include="tinygltf.cpp" />
   </ItemGroup>
