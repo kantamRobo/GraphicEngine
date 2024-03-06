@@ -150,7 +150,7 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DirectX11Buffer.cpp" />
+    <ClCompile Include="DirectX11VertexBuffer.cpp" />
     <ClCompile Include="DirectX11GraphicEngine.cpp" />
     <ClCompile Include="DirectX11IndexBuffer.cpp" />
     <ClCompile Include="DX11ConstantBuffer.cpp" />

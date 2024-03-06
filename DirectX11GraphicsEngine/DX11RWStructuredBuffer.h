@@ -21,6 +21,8 @@ class DX11RWStructuredBuffer
 
 	void RegistUnorderAccessView( int bufferNo);
 
+	void RegistShaderResourceView(ID3D11Device* device, int bufferNo);
+
 
 
 	void RegistShaderResourceView( int bufferNo);
@@ -37,7 +39,7 @@ class DX11RWStructuredBuffer
 	/// <returns></returns>
 	void* GetResourceOnCPU();
 
-
+	Microsoft::WRL::ComPtr< ID3D11ShaderResourceView> m_srvbuffer = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> GetD3DResource();
 private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffersOnGPU[2] = { nullptr };

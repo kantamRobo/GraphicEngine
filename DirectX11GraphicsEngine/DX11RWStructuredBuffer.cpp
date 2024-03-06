@@ -42,8 +42,8 @@ devicecontext->Unmap(m_buffersOnGPU->Get(), 0);
 
 void DX11RWStructuredBuffer::InitRWStructuredBuffer(const DirectX11VertexBuffer& vb, bool isUpdateByCPU)
 {
-	m_sizeOfElement = vb.GetStrideInBytes();
-	m_numElement = vb.GetSizeInBytes() / m_sizeOfElement;
+	m_sizeOfElement = vb.m_sizeofElement;
+	m_numElement = vb.m_numElement;
 	if (isUpdateByCPU) {
 		//未対応。
 		std::abort();
@@ -51,7 +51,7 @@ void DX11RWStructuredBuffer::InitRWStructuredBuffer(const DirectX11VertexBuffer&
 	else {
 
 		for (auto& gpuBuffer : m_buffersOnGPU) {
-			gpuBuffer = vb.GetID3DResourceAddress();
+			gpuBuffer = vb.m_vertexbuffer;
 			gpuBuffer->AddRef();
 		}
 		//CPUからは変更できないのでマップしない。
@@ -66,12 +66,47 @@ void DX11RWStructuredBuffer::InitRWStructuredBuffer(const DirectX11VertexBuffer&
 
 void DX11RWStructuredBuffer::InitRWStructuredBuffer(const DirectX11IndexBuffer& ib, bool isUpdateByCPU)
 {
+
+	m_sizeOfElement = ib.m_sizeofElement;
+	m_numElement = ib.m_numElement;
+	if (isUpdateByCPU) {
+		//未対応。
+		std::abort();
+	}
+	else {
+
+		for (auto& gpuBuffer : m_buffersOnGPU) {
+			gpuBuffer = ib.m_IndexBuffer;
+			gpuBuffer->AddRef();
+		}
+		//CPUからは変更できないのでマップしない。
+		for (auto& cpuBuffer : m_buffersOnCPU) {
+			cpuBuffer = nullptr;
+		}
+	}
+	m_isInited = true;
 }
 
 void DX11RWStructuredBuffer::RegistUnorderAccessView(int bufferNo)
 {
+
+
+
 }
 
-void DX11RWStructuredBuffer::RegistShaderResourceView(int bufferNo)
+void DX11RWStructuredBuffer::RegistShaderResourceView(ID3D11Device* device,int bufferNo)
 {
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc{};
+	desc.Format = DXGI_FORMAT_UNKNOWN;
+	desc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	desc.Buffer.FirstElement = 0;
+	desc.Buffer.NumElements = static_cast<UINT>(m_numElement);
+	
+	auto result = device->CreateShaderResourceView(m_buffersOnGPU[bufferNo].Get(), 
+		&desc,m_srvbuffer.ReleaseAndGetAddressOf());
+
+
+
+
 }
