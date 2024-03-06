@@ -42,6 +42,26 @@ devicecontext->Unmap(m_buffersOnGPU->Get(), 0);
 
 void DX11RWStructuredBuffer::InitRWStructuredBuffer(const DirectX11VertexBuffer& vb, bool isUpdateByCPU)
 {
+	m_sizeOfElement = vb.GetStrideInBytes();
+	m_numElement = vb.GetSizeInBytes() / m_sizeOfElement;
+	if (isUpdateByCPU) {
+		//未対応。
+		std::abort();
+	}
+	else {
+
+		for (auto& gpuBuffer : m_buffersOnGPU) {
+			gpuBuffer = vb.GetID3DResourceAddress();
+			gpuBuffer->AddRef();
+		}
+		//CPUからは変更できないのでマップしない。
+		for (auto& cpuBuffer : m_buffersOnCPU) {
+			cpuBuffer = nullptr;
+		}
+	}
+	m_isInited = true;
+
+
 }
 
 void DX11RWStructuredBuffer::InitRWStructuredBuffer(const DirectX11IndexBuffer& ib, bool isUpdateByCPU)

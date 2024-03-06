@@ -10,7 +10,7 @@ class DX11RWStructuredBuffer
 	
 
 	
-	void InitRWStructuredBuffer(ID3D11Device* device, ID3D11DeviceContext* devicecontext, int sizeOfElement, int numElement);
+	
 
 	void InitRWStructuredBuffer(ID3D11Device* device, ID3D11DeviceContext* devicecontext, int sizeOfElement, int numElement, void* InitData);
 

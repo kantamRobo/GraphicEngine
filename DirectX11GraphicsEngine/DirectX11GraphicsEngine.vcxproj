@@ -131,6 +131,7 @@
     <ClInclude Include="DirectX11IndexBuffer.h" />
     <ClInclude Include="DirectX11VertexBuffer.h" />
     <ClInclude Include="DX11ConstantBuffer.h" />
+    <ClInclude Include="DX11GPUBuffer.h" />
     <ClInclude Include="DX11Model.h" />
     <ClInclude Include="DX11RasterizerState.h" />
     <ClInclude Include="DX11RWStructuredBuffer.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="DirectX11GraphicEngine.cpp" />
     <ClCompile Include="DirectX11IndexBuffer.cpp" />
     <ClCompile Include="DX11ConstantBuffer.cpp" />
+    <ClCompile Include="DX11GPUBuffer.cpp" />
     <ClCompile Include="DX11Model.cpp" />
     <ClCompile Include="DX11RasterizerState.cpp" />
     <ClCompile Include="DX11RWStructuredBuffer.cpp" />
