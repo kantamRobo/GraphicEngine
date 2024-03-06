@@ -7,12 +7,12 @@ void DX11RWStructuredBuffer::InitRWStructuredBuffer(ID3D11Device* device,
 
 
 	D3D11_BUFFER_DESC vbDesc = {};
-	vbDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;	// デバイスにバインドするときの種類(頂点バッファ、インデックスバッファ、定数バッファなど)
+	vbDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	// デバイスにバインドするときの種類(頂点バッファ、インデックスバッファ、定数バッファなど)
 	vbDesc.ByteWidth = sizeof(m_buffersOnGPU);					// 作成するバッファのバイトサイズ
 	vbDesc.MiscFlags = 0;							// その他のフラグ
-	vbDesc.StructureByteStride = 0;					// 構造化バッファの場合、その構造体のサイズ
+	vbDesc.StructureByteStride = sizeof(ID3D11Buffer);					// 構造化バッファの場合、その構造体のサイズ
 	vbDesc.Usage = D3D11_USAGE_DEFAULT;				// 作成するバッファの使用法
-	vbDesc.CPUAccessFlags = 0;
+	vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE| D3D11_CPU_ACCESS_READ;
 
 
 	D3D11_SUBRESOURCE_DATA initData = { srcData, sizeOfElement, 0 };	// 書き込むデータ
