@@ -20,11 +20,3 @@
 	 
  }
 
- void TextureDX11::InitFromMemory(const char* memory, unsigned int size)
- {
-
- }
-
- void TextureDX11::InitFromD3DResource(ComPtr<ID3D11Texture2D> texture)
- {
- }

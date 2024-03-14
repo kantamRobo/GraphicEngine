@@ -1,8 +1,9 @@
 #include "DX11ConstantBuffer.h"
+#include <stdexcept>
 
 void DX11ConstantBuffer::InitConstantBuffer(ID3D11Device* device,int paramsize, void* srcData = nullptr)
 {
-	たたき台
+
 	//マップ可能な定数バッファの作成
 	D3D11_BUFFER_DESC desc = {};
 	desc.ByteWidth = paramsize + paramsize % 16 == 0 ? 0 : 16 - paramsize % 16);//サイズは16の倍数でないといけない

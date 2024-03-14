@@ -4,7 +4,7 @@ void DX11RenderContext::SetVertexBuffer(ID3D11Buffer* vertexbuffers)
 {
 	
 		m_rendercontext->IASetVertexBuffers(0, 1, &vertexbuffers, 0, 0);//Žb’è“I‚Èˆ’u
-	
+		
 }
 
 void DX11RenderContext::SetIndexBuffer(ID3D11Buffer* indexbuffer)
@@ -47,4 +47,20 @@ void DX11RenderContext::SetHullShader(ID3D11HullShader* hullShader, UINT numclas
 void DX11RenderContext::SetDomainShader(ID3D11DomainShader* DomainShader, UINT numclassInstances)
 {
 	m_rendercontext->DSSetShader(DomainShader, nullptr, numclassInstances);
+}
+
+void DX11RenderContext::DrawIndexed(UINT indexCount)
+{
+	m_rendercontext->DrawIndexed(indexCount,0,0);
+	
+}
+
+void DX11RenderContext::DrawIndexedInstanced(UINT indexcountperinstance,UINT instanceCount)
+{
+	m_rendercontext->DrawIndexedInstanced(indexcountperinstance,instanceCount,0,0,0);
+}
+
+void DX11RenderContext::DrawIndexedInstancedIndirect(ID3D11Buffer* args,UINT AlingedByteOffset) {
+	m_rendercontext->DrawIndexedInstancedIndirect(args,AlingedByteOffset);
+
 }

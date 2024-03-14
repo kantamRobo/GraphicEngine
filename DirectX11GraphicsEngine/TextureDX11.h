@@ -15,12 +15,7 @@
 		
 		~TextureDX11();
 		
-		/// <summary>
-			/// ファイルからテクスチャをロードするコンストラクタ
-			/// </summary>
-			/// <param name="filePath">ロードするテクスチャのファイルパス。</param>
-		explicit TextureDX11(const wchar_t* filePath);
-	
+		
 		/// <summary>
 		/// テクスチャが有効か判定。
 		/// </summary>
@@ -30,10 +25,7 @@
 			return m_texture != nullptr;
 		}
 
-		bool IsValid()const
-		{
-			return m_texture != nullptr;
-		}
+		
 
 	private:
 		/// <summary>

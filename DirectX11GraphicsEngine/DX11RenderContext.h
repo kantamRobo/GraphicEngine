@@ -43,6 +43,19 @@ public:
 	void SetHullShader(ID3D11HullShader* hullShader, UINT numclassInstances);
 
 	void SetDomainShader(ID3D11DomainShader* DomainShader, UINT numclassInstances);
+
+	void DrawIndexed(UINT indexCount);
+
+	void DrawIndexedInstanced(UINT indexcountperinstance, UINT instanceCount);
+
+	void DrawIndexedInstancedIndirect(ID3D11Buffer* args, UINT AlingedByteOffset);
+
+	
+	
+
+	
+
+	
 	
 };
 

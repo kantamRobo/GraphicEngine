@@ -5,7 +5,7 @@
 
 void DX11RasterizerState::InitRasterizerState(ID3D11Device* p_device,ID3D11DeviceContext* p_context)
 {
-	‚½‚½‚«‘ä
+	//‚½‚½‚«‘ä
 	D3D11_RASTERIZER_DESC desc = {};
 	desc.CullMode = D3D11_CULL_NONE;
 	desc.FillMode = D3D11_FILL_SOLID;

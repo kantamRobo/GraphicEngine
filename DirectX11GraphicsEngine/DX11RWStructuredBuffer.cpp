@@ -37,8 +37,8 @@ void DX11RWStructuredBuffer::InitRWStructuredBuffer(ID3D11Device* device,
 	
 	
 }
-
-devicecontext->Unmap(m_buffersOnGPU->Get(), 0);
+//‚µ‚¨‚è
+//devicecontext->Unmap(m_buffersOnGPU->Get(), 0);
 
 void DX11RWStructuredBuffer::InitRWStructuredBuffer(const DirectX11VertexBuffer& vb, bool isUpdateByCPU)
 {
