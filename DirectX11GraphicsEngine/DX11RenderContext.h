@@ -11,16 +11,28 @@ public:
 
 
 		
+
+		
 		
 		
 	}
 	
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_rendercontext;
 
-	void SetVertexBuffer(ID3D11Buffer* vertexbuffers)
-	{
-		m_rendercontext->IASetVertexBuffers(vertexbuffers);
-	}
+	void SetVertexBuffer(ID3D11Buffer* vertexbuffers);
+
+	void SetIndexBuffer(ID3D11Buffer* indexbuffer);
+
+	void SetViewPorts(UINT numviewports, const D3D11_VIEWPORT* viewports);
+
+	void SetRenderTargets(UINT numviews, ID3D11RenderTargetView* rendertargetviews, ID3D11DepthStencilView* depthstencilviews);
+
+	
+	
+
+	
+
+	
 
 	//shader
 	void SetVertexShader(ID3D11VertexShader* vertexShader, UINT numclassInstances);

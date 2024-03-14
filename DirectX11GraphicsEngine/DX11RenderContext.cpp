@@ -1,5 +1,27 @@
 #include "DX11RenderContext.h"
 
+void DX11RenderContext::SetVertexBuffer(ID3D11Buffer* vertexbuffers)
+{
+	
+		m_rendercontext->IASetVertexBuffers(0, 1, &vertexbuffers, 0, 0);//Žb’è“I‚Èˆ’u
+	
+}
+
+void DX11RenderContext::SetIndexBuffer(ID3D11Buffer* indexbuffer)
+{
+	m_rendercontext->IASetIndexBuffer(indexbuffer, DXGI_FORMAT_R8_UINT, 0);//Žb’è“I‚Èˆ’u
+}
+
+void DX11RenderContext::SetViewPorts(UINT numviewports,const D3D11_VIEWPORT* viewports)
+{
+	m_rendercontext->RSSetViewports(numviewports,viewports);
+}
+
+void DX11RenderContext::SetRenderTargets(UINT numviews, ID3D11RenderTargetView* rendertargetviews,ID3D11DepthStencilView* depthstencilviews)
+{
+	m_rendercontext->OMSetRenderTargets(numviews,&rendertargetviews,depthstencilviews);
+}
+
 void DX11RenderContext::SetVertexShader(ID3D11VertexShader* vertexShader, UINT numclassInstances)
 {
 	m_rendercontext->VSSetShader(vertexShader,nullptr,numclassInstances);
