@@ -17,6 +17,10 @@ public:
 	
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_rendercontext;
 
+	void SetVertexBuffer(ID3D11Buffer* vertexbuffers)
+	{
+		m_rendercontext->IASetVertexBuffers(vertexbuffers);
+	}
 
 	//shader
 	void SetVertexShader(ID3D11VertexShader* vertexShader, UINT numclassInstances);

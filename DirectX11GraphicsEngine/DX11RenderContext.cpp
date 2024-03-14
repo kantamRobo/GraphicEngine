@@ -13,7 +13,7 @@ void DX11RenderContext::SetPixelShader(ID3D11PixelShader* pixelShader, UINT numc
 
 void DX11RenderContext::SetComputeShader(ID3D11ComputeShader* computeShader, UINT numclassInstances)
 {
-
+	
 	m_rendercontext->CSSetShader(computeShader, nullptr, numclassInstances);
 }
 
