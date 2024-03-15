@@ -87,15 +87,18 @@ void DX11RenderContext::DrawIndexedInstanced(UINT indexcountperinstance,UINT ins
 //Indirect‚Á‚Ä‚È‚ñ‚¼‚â
 //https://sites.google.com/site/monshonosuana/directx%E3%81%AE%E8%A9%B1/directx%E3%81%AE%E8%A9%B1-%E7%AC%AC165%E5%9B%9E
 //Indirect–½—ß
-void DX11RenderContext::DrawIndexedInstancedIndirect(ID3D11Buffer* args,UINT AlingedByteOffset) {
-	m_rendercontext->DrawIndexedInstancedIndirect(args,AlingedByteOffset);
+void DX11RenderContext::DrawIndexedInstancedIndirect(ID3D11Buffer* GPUPrimitiveBuffer,UINT AlingedByteOffset) {
+	m_rendercontext->DrawIndexedInstancedIndirect(GPUPrimitiveBuffer,AlingedByteOffset);
 	
 }
 void DX11RenderContext::DrawDispatchIndirect(ID3D11Buffer* GPUPrimitivebuffer,UINT Offset)
 {
 	m_rendercontext->DispatchIndirect(GPUPrimitivebuffer, Offset);
-
+	
 }
+
+
+
 
 void DX11RenderContext::DrawIndexed(UINT indexCount)
 {
