@@ -4,7 +4,12 @@
 
 #include "DX11Model.h"
 
-bool DX11Model::Init(const Microsoft::glTF::Document& doc,const std::string& attrName)
+DX11Model::DX11Model(ID3D11Device* device, const Microsoft::glTF::Document& doc, const std::string& attrName)
+{
+	Init(device, doc, attrName);
+}
+
+bool DX11Model::Init(ID3D11Device* device,const Microsoft::glTF::Document& doc,const std::string& attrName)
 {
 
 
@@ -66,14 +71,13 @@ bool DX11Model::Init(const Microsoft::glTF::Document& doc,const std::string& att
 
 
 
-	//1. 頂点バッファを作成。
+	//頂点・インデックスバッファを作成。
 
-	int vertexStride = sizeof(Vertex);
-	auto mesh = new SMesh;//しおり。このMeshもgltf用に改修する。
-	mesh->skinFlags.reserve(tkmMesh.materials.size());
-	mesh->m_vertexBuffer.InitVertexBuffer(vertexStride * vertices.size(), vertexStride);
-	mesh->m_vertexBuffer.Copy((void*)&tkmMesh.vertexBuffer[0]);
-
+	
+	//mesh->skinFlags.reserve(tkmMesh.materials.size());
+	m_mesh->m_vertexbuffer->InitVertexBuffer(device,vertices);
+	m_mesh->m_indexbuffer->InitIndexbuffer(indices);
+	/*
 	auto SetSkinFlag = [&](int index) {
 		if (tkmMesh.vertexBuffer[index].skinWeights.x > 0.0f) {
 			//スキンがある。
@@ -84,6 +88,8 @@ bool DX11Model::Init(const Microsoft::glTF::Document& doc,const std::string& att
 			mesh->skinFlags.push_back(0);
 		}
 		};
+		*/
+	/*
 	//2. インデックスバッファを作成。
 	if (!tkmMesh.indexBuffer16Array.empty()) {
 		//インデックスのサイズが2byte
@@ -91,7 +97,7 @@ bool DX11Model::Init(const Microsoft::glTF::Document& doc,const std::string& att
 		for (auto& tkIb : tkmMesh.indexBuffer16Array) {
 			auto ib = new DirectX11IndexBuffer;
 			auto hr =ib->InitIndexbuffer(static_cast<int>(tkIb.indices.size()) * 2);
-			ib->Copy((uint16_t*)&tkIb.indices.at(0));
+			
 
 			//スキンがあるかどうかを設定する。
 			SetSkinFlag(tkIb.indices[0]);
@@ -113,7 +119,7 @@ bool DX11Model::Init(const Microsoft::glTF::Document& doc,const std::string& att
 			mesh->m_indexBufferArray.push_back(ib);
 		}
 	}
-
+	*/
 	/*
 	//3. マテリアルを作成。
 	mesh->m_materials.reserve(tkmMesh.materials.size());
@@ -138,6 +144,6 @@ bool DX11Model::Init(const Microsoft::glTF::Document& doc,const std::string& att
 	}
 
 	*/
-	m_meshs[meshNo] = mesh;
+	
 }
 

@@ -134,6 +134,7 @@
     <ClInclude Include="DX11ConstantBuffer.h" />
     <ClInclude Include="DX11GPUBuffer.h" />
     <ClInclude Include="DX11Material.h" />
+    <ClInclude Include="DX11Mesh.h" />
     <ClInclude Include="DX11Model.h" />
     <ClInclude Include="DX11RasterizerState.h" />
     <ClInclude Include="DX11RenderContext.h" />
