@@ -95,7 +95,61 @@ HRESULT DirectX11GraphicEngine::CreateRTV()
     {
         return false;
     }
+    D3D11_TEXTURE2D_DESC desc = {};
+    desc.Width = this->width();
+    desc.Height = this->height();
+    //深度値に24bitのfloat型をステンシル値に8ビットのuintを確保している
+    desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    desc.SampleDesc.Count = 1;
+    desc.MipLevels = 1;
+    desc.ArraySize = 1;
+    auto hr = this->m_device->CreateTexture2D(&desc, nullptr, this->m_depthmapbuffer.GetAddressOf());
+    if (FAILED(hr)) {
+        throw std::runtime_error("深度ステンシルバッファの作成に失敗");
+    }
+    D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    dsvDesc.Format = desc.Format;
+    dsvDesc.Texture2D.MipSlice = 0;
+    hr = this->m_device->CreateDepthStencilView(this->m_depthmapbuffer.Get(), &dsvDesc, this->m_DepthstencilView.GetAddressOf());
+    if (FAILED(hr)) {
+        throw std::runtime_error("深度ステンシルビュー作成に失敗");
+    }
 
+    // Scene::onInit関数の一部
+//深度テストとステンシルテストを別々で作っていますが、もちろん同時に行うこともできます。
+    D3D11_DEPTH_STENCIL_DESC ds = {};
+    //深度テストを行う深度ステンシルステートの作成
+    ds.DepthEnable = true;
+    ds.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+    ds.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    ds.StencilEnable = false;
+    auto hr = this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
+    if (FAILED(hr)) {
+        throw std::runtime_error("深度テスト用のステート作成に失敗");
+    }
+    
+    //ステンシルテストを行う深度ステンシルステートの作成
+    ds.DepthEnable = false;
+    ds.StencilEnable = true;
+    ds.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+    ds.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+    ds.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    ds.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    ds.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+    ds.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER_EQUAL;
+
+    ds.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    ds.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    ds.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+    ds.BackFace.StencilFunc = D3D11_COMPARISON_GREATER_EQUAL;
+
+    hr = this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
+    if (FAILED(hr)) {
+        throw std::runtime_error("ステンシルテスト用のステート作成に失敗");
+    }
+    
     // バックバッファリソース用のRTVを作成
     D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
     rtvDesc.Format = scDesc.BufferDesc.Format;
@@ -104,7 +158,7 @@ HRESULT DirectX11GraphicEngine::CreateRTV()
     {
         return false;
     }
-
+    m_device->CreateDepthStencilView(m_depthstencilbuffer.Get(), &dsvDesc, m_DepthstencilView.GetAddressOf());
     //=====================================================
     // デバイスコンテキストに描画に関する設定を行っておく
     //=====================================================

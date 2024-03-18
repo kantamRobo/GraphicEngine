@@ -17,7 +17,7 @@ void Renderer::Tick()
 	context->SetVertexShader();
 	context->SetRasterizerState();
 	context->SetSingleViewPort();
-	context->SetSingleRenderTarget();
+	context->SetSingleRenderTarget(graphicEngine.m_backBufferView.Get());
 	
 	context->DrawIndexedInstanced()
 }

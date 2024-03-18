@@ -18,6 +18,10 @@ public:
     Microsoft::WRL::ComPtr<IDXGIFactory2> m_dxgiFactory = nullptr;
     Microsoft::WRL::ComPtr<IDXGISwapChain> m_swapChain;
     Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_backBufferView;
+    Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_DepthstencilView;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> m_depthstencilbuffer;
+    Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthstencilstate;
+    Microsoft::WRL::ComPtr<ID3D11Texture2D> m_depthmapbuffer;
     Microsoft::WRL::ComPtr<IDXGIFactory> factory;
     DXGI_SWAP_CHAIN_DESC scDesc = {};
     UINT width = {};
