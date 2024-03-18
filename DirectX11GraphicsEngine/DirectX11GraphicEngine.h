@@ -12,7 +12,7 @@
 class DirectX11GraphicEngine
 {
 
-
+public:
     Microsoft::WRL::ComPtr<ID3D11Device> m_device = nullptr;
     Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_deviceContext = nullptr;
     Microsoft::WRL::ComPtr<IDXGIFactory2> m_dxgiFactory = nullptr;
