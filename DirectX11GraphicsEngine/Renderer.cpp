@@ -69,7 +69,7 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 } };
 	temp_shader->InitLayout(graphicEngine.m_device.Get(), layout);
-	model.Init(graphicEngine.m_device.Get(), doc, attrName);
+	//model.Init(graphicEngine.m_device.Get(), doc, attrName);
 
 
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
@@ -84,6 +84,11 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 	float    nearZ = 0.1f;
 	float    farZ = 100.0f;
 	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
+
+
+	temp_const.proj = projMatrix;
+	temp_const.view = viewMatrix;
+	temp_const.world - worldMatrix;
 }
 
 void Renderer::Tick()
