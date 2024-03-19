@@ -167,7 +167,7 @@ HRESULT DirectX11GraphicEngine::CreateRTV(UINT width,UINT height)
     m_deviceContext->OMSetRenderTargets(1, m_backBufferView.GetAddressOf(), nullptr);
 
     // ビューポートの設定
-    D3D11_VIEWPORT vp = { 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f };
-    m_deviceContext->RSSetViewports(1, &vp);
+
+    m_deviceContext->RSSetViewports(1, &m_viewport);
     return S_OK;
 }

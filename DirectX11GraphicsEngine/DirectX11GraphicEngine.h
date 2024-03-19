@@ -24,6 +24,7 @@ public:
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_depthmapbuffer;
     Microsoft::WRL::ComPtr<IDXGIFactory> factory;
     DXGI_SWAP_CHAIN_DESC scDesc = {};
+    D3D11_VIEWPORT m_viewport = { 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f };
     UINT width = {};
     UINT height = {};
     HRESULT CreateDevice();
