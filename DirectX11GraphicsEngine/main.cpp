@@ -2,7 +2,7 @@
 //
 
 #include "framework.h"
-#include "DirectX11GraphicsEngine.h"
+#include "Renderer.h"
 
 #define MAX_LOADSTRING 100
 
@@ -17,6 +17,8 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+
+Renderer renderer;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -95,15 +97,25 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
+    
    hInst = hInstance; // グローバル変数にインスタンス ハンドルを格納する
-
+   
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   {
+       Microsoft::glTF::Document document;
+       std::string attrName = "hoge";
+   }
 
+   //https://github.com/techlabxe/d3d12_book_1
+
+   renderer.Init(hWnd,document,attrName);
    if (!hWnd)
    {
       return FALSE;
    }
+
+
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
