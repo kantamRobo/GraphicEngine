@@ -1,4 +1,5 @@
 #pragma once
+#include <d3d11.h>
 #include "DirectX11GraphicEngine.h"
 #include "DX11RenderContext.h"
 #include "DX11Model.h"

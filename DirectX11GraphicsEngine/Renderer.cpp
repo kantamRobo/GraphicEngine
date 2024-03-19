@@ -11,6 +11,9 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 	temp_shader = std::make_shared<DX11Shader>();
 	temp_shader->InitVertexShader(graphicEngine.m_device.Get(), L"hoge");
 	temp_shader->InitPixelShader(graphicEngine.m_device.Get(), L"hoge");
+	
+
+
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 } };
 	temp_shader->InitLayout(graphicEngine.m_device.Get(), layout);
@@ -21,6 +24,7 @@ void Renderer::Tick()
 {
 	context->SetVertexBuffer(model.m_mesh->m_vertexbuffer->m_vertexbuffer.Get());
 	context->SetIndexBuffer(model.m_mesh->m_indexbuffer->m_IndexBuffer.Get());
+	context->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	//シェーダーは暫定的なもの。
 	context->SetVertexShader(temp_shader->m_VS.Get(), 1);
 	context->SetVertexShader_SingleConstantBuffer();
