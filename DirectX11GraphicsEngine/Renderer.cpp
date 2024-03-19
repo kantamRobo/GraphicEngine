@@ -23,6 +23,7 @@ void Renderer::Tick()
 	context->SetIndexBuffer(model.m_mesh->m_indexbuffer->m_IndexBuffer.Get());
 	//シェーダーは暫定的なもの。
 	context->SetVertexShader(temp_shader->m_VS.Get(), 1);
+	context->SetVertexShader_SingleConstantBuffer();
 	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
 	context->SetRasterizerState(rasterizerState->m_rasterizerstate.Get());
 	context->SetSingleViewPort(&graphicEngine.m_viewport);

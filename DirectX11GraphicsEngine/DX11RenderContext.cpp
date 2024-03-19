@@ -23,7 +23,7 @@ void DX11RenderContext::SetIndexBuffer(ID3D11Buffer* indexbuffer)
 		m_rendercontext->VSSetShader(vertexShader,nullptr,numclassInstances);
 	}
 
-	void DX11RenderContext::SetVertexShader_ConstantBuffer(ID3D11Buffer* constantbuffer)
+	void DX11RenderContext::SetVertexShader_SingleConstantBuffer(ID3D11Buffer* constantbuffer)
 	{
 		m_rendercontext->VSSetConstantBuffers(0, 1, &constantbuffer);
 	}
