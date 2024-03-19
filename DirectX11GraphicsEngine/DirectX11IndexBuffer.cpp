@@ -1,6 +1,6 @@
 #include "DirectX11IndexBuffer.h"
 
-HRESULT DirectX11IndexBuffer::InitIndexbuffer(std::vector<UINT> indices)
+HRESULT DirectX11IndexBuffer::InitIndexbuffer(ID3D11Device* device,std::vector<UINT> indices)
 {
     // Fill in a buffer description.
     D3D11_BUFFER_DESC bufferDesc;

@@ -55,7 +55,7 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 
 
 	model.m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
-	model.m_mesh->m_indexbuffer->InitIndexbuffer(g_IndexList);
+	model.m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList);
 	m_constbuffer.InitConstantBuffer(graphicEngine.m_device.Get(), sizeof(SceneConstant), &temp_const);
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();

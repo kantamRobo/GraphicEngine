@@ -8,6 +8,7 @@ public:
 	Microsoft::WRL::ComPtr< ID3D11Buffer> m_IndexBuffer = nullptr;
 	UINT m_sizeofElement = 0;
 	UINT m_numElement = 0;
-	HRESULT InitIndexbuffer(std::vector<UINT> indices);
+	
+	HRESULT InitIndexbuffer(ID3D11Device* device, std::vector<UINT> indices);
 };
 
