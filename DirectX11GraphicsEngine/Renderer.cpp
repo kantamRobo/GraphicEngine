@@ -59,7 +59,7 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 	
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();
-	rasterizerState->InitRasterizerState(graphicEngine.m_device.Get(), graphicEngine.m_deviceContext.Get());
+	rasterizerState->InitRasterizerState(&graphicEngine, graphicEngine.m_deviceContext.Get(),&graphicEngine.m_viewport);
 	temp_shader = std::make_shared<DX11Shader>();
 	temp_shader->InitVertexShader(graphicEngine.m_device.Get(), L"hoge");
 	temp_shader->InitPixelShader(graphicEngine.m_device.Get(), L"hoge");

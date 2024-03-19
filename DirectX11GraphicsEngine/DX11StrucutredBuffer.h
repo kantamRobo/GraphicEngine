@@ -8,7 +8,7 @@ public:
 	~DX11StructuredBuffer();
 
 	//構造化バッファを初期化
-	void InitStructuredBuffer(ID3D11Device* device, int sizeOfElement, int numElement, void* initDatap);
+	
 
 
 	//SRVに登録

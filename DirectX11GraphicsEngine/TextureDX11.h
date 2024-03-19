@@ -1,5 +1,5 @@
 #pragma once
-
+#define NOMINMAX
 #include <DDSTextureLoader.h>
 #include "stdafx.h"
 	class TextureDX11

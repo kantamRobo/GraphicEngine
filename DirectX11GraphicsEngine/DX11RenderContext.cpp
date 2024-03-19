@@ -34,7 +34,7 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 	{
 		m_rendercontext->VSSetShader(vertexShader,nullptr,numclassInstances);
 
-		m_rendercontext->IASetInputLayout()
+		
 	}
 
 	void DX11RenderContext::SetVertexShader_SingleConstantBuffer(ID3D11Buffer* constantbuffer)

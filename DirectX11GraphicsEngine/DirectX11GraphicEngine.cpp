@@ -68,20 +68,9 @@ HRESULT DirectX11GraphicEngine::CreateSwapChain(HWND hwnd)
     {
         return false;
     }
-    DXGI_SWAP_CHAIN_FULLSCREEN_DESC swapChainFullscreenDescriptor = {};
-    swapChainFullscreenDescriptor.Windowed = true;
+    
 
-    if (FAILED(m_dxgiFactory->CreateSwapChainForHwnd(
-        m_device.Get(),
-        glfwGetWin32Window(GetWindow()),
-        &swapChainDescriptor,
-        &swapChainFullscreenDescriptor,
-        nullptr,
-        &m_swapChain)))
-    {
-        std::cout << "DXGI: Failed to create swapchain\n";
-        return false;
-    }
+    
 
     return S_OK;
 }
@@ -104,7 +93,7 @@ HRESULT DirectX11GraphicEngine::CreateRTV(UINT width,UINT height)
     desc.SampleDesc.Count = 1;
     desc.MipLevels = 1;
     desc.ArraySize = 1;
-    auto hr = this->m_device->CreateTexture2D(&desc, nullptr, this->m_depthmapbuffer.GetAddressOf());
+     auto hr = this->m_device->CreateTexture2D(&desc, nullptr, this->m_depthmapbuffer.GetAddressOf());
     if (FAILED(hr)) {
         throw std::runtime_error("深度ステンシルバッファの作成に失敗");
     }
@@ -112,7 +101,7 @@ HRESULT DirectX11GraphicEngine::CreateRTV(UINT width,UINT height)
     dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     dsvDesc.Format = desc.Format;
     dsvDesc.Texture2D.MipSlice = 0;
-    hr = this->m_device->CreateDepthStencilView(this->m_depthmapbuffer.Get(), &dsvDesc, this->m_DepthstencilView.GetAddressOf());
+    this->m_device->CreateDepthStencilView(this->m_depthmapbuffer.Get(), &dsvDesc, this->m_DepthstencilView.GetAddressOf());
     if (FAILED(hr)) {
         throw std::runtime_error("深度ステンシルビュー作成に失敗");
     }
@@ -125,7 +114,7 @@ HRESULT DirectX11GraphicEngine::CreateRTV(UINT width,UINT height)
     ds.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
     ds.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     ds.StencilEnable = false;
-    auto hr = this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
+    auto dshr = this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
     if (FAILED(hr)) {
         throw std::runtime_error("深度テスト用のステート作成に失敗");
     }
@@ -145,7 +134,7 @@ HRESULT DirectX11GraphicEngine::CreateRTV(UINT width,UINT height)
     ds.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
     ds.BackFace.StencilFunc = D3D11_COMPARISON_GREATER_EQUAL;
 
-    hr = this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
+     this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
     if (FAILED(hr)) {
         throw std::runtime_error("ステンシルテスト用のステート作成に失敗");
     }

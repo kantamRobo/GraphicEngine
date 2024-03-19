@@ -1,12 +1,12 @@
 #include "DX11ConstantBuffer.h"
 #include <stdexcept>
 
-void DX11ConstantBuffer::InitConstantBuffer(ID3D11Device* device,int paramsize, void* srcData = nullptr)
+void DX11ConstantBuffer::InitConstantBuffer(ID3D11Device* device,int paramsize, void* srcData)
 {
 
 	//マップ可能な定数バッファの作成
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = paramsize + paramsize % 16 == 0 ? 0 : 16 - paramsize % 16);//サイズは16の倍数でないといけない
+	desc.ByteWidth = paramsize + paramsize % 16 == 0 ? 0 : 16 - paramsize % 16;//サイズは16の倍数でないといけない
 	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	//ID3D11Bufferを定数バッファとして使うよう宣言している
 	desc.Usage = D3D11_USAGE_DYNAMIC;				//GPU上では読み込みだけをCPUから書き込みだけをできるように宣言している
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;

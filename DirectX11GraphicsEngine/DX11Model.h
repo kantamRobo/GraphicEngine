@@ -1,8 +1,11 @@
 #pragma once
+#define NOMINMAX
 #include <GLTFSDK/GLTF.h>
 #include <GLTFSDK/Document.h>
+#include <GLTFSDK/GLTFResourceReader.h>
 #include <Model.h>
 #include "DX11Mesh.h"
+#include <memory>
 class DX11Model
 {
 public:

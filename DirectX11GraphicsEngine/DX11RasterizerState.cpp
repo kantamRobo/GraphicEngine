@@ -3,7 +3,7 @@
 
 
 
-void DX11RasterizerState::InitRasterizerState(ID3D11Device* p_device,ID3D11DeviceContext* p_context)
+void DX11RasterizerState::InitRasterizerState(const DirectX11GraphicEngine* p_engine,ID3D11DeviceContext* p_context,D3D11_VIEWPORT* viewport)
 {
 	//‚½‚½‚«‘ä
 	D3D11_RASTERIZER_DESC desc = {};
@@ -15,8 +15,8 @@ void DX11RasterizerState::InitRasterizerState(ID3D11Device* p_device,ID3D11Devic
 	desc.MultisampleEnable = false;
 	desc.ScissorEnable = true;
 	
-	auto hr = p_device->CreateRasterizerState(&desc, this->m_rasterizerstate.GetAddressOf());
+	auto hr = p_engine->m_device->CreateRasterizerState(&desc, m_rasterizerstate.GetAddressOf());
 	UINT count = 1;
-	p_context->RSGetViewports(&count, &this->mDefaultViewport);
+	p_context->RSGetViewports(&count, viewport);
 }
 

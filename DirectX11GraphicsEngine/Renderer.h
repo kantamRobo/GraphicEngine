@@ -1,6 +1,7 @@
 #pragma once
+#define NOMINMAX
 #include <d3d11.h>
-#include "DirectX11GraphicEngine.h"
+#include "SceneConstant.h"
 #include "DX11RenderContext.h"
 #include "DX11Model.h"
 #include <memory>

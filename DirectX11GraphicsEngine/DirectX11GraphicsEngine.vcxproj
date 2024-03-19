@@ -70,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <MultiProcFXC>true</MultiProcFXC>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -105,11 +108,16 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>vs_main</EntryPointName>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -132,7 +140,6 @@
     <ClInclude Include="DirectX11IndexBuffer.h" />
     <ClInclude Include="DirectX11VertexBuffer.h" />
     <ClInclude Include="DX11ConstantBuffer.h" />
-    <ClInclude Include="DX11GPUBuffer.h" />
     <ClInclude Include="DX11Material.h" />
     <ClInclude Include="DX11Mesh.h" />
     <ClInclude Include="DX11Model.h" />
@@ -152,7 +159,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureDX11.h" />
-    <ClInclude Include="tinygltf.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
@@ -161,7 +167,6 @@
     <ClCompile Include="DirectX11GraphicEngine.cpp" />
     <ClCompile Include="DirectX11IndexBuffer.cpp" />
     <ClCompile Include="DX11ConstantBuffer.cpp" />
-    <ClCompile Include="DX11GPUBuffer.cpp" />
     <ClCompile Include="DX11Material.cpp" />
     <ClCompile Include="DX11Model.cpp" />
     <ClCompile Include="DX11RasterizerState.cpp" />
@@ -191,6 +196,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ps_main</EntryPointName>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

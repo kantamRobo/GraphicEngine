@@ -18,9 +18,9 @@ HRESULT DirectX11IndexBuffer::InitIndexbuffer(ID3D11Device* device,std::vector<U
     m_sizeofElement = sizeof(indices.data());
     m_numElement = indices.size();
     // Create the buffer with the device.
-   auto hr = g_pd3dDevice->CreateBuffer(&bufferDesc, &InitData, &m_IndexBuffer);
+   auto hr = device->CreateBuffer(&bufferDesc, &InitData, &m_IndexBuffer);
    if (FAILED(hr)) {
        return hr; 
    }
-    return hr
+   return hr;
 }

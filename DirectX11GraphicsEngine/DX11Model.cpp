@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "DirectX11IndexBuffer.h"
 #include <GLTFSDK/GLTFResourceReader.h>
 #include "Vertex.h"
@@ -76,7 +77,7 @@ bool DX11Model::Init(ID3D11Device* device,const Microsoft::glTF::Document& doc,c
 	
 	//mesh->skinFlags.reserve(tkmMesh.materials.size());
 	m_mesh->m_vertexbuffer->InitVertexBuffer(device,vertices);
-	m_mesh->m_indexbuffer->InitIndexbuffer(indices);
+	m_mesh->m_indexbuffer->InitIndexbuffer(device,indices);
 	/*
 	auto SetSkinFlag = [&](int index) {
 		if (tkmMesh.vertexBuffer[index].skinWeights.x > 0.0f) {
@@ -144,6 +145,6 @@ bool DX11Model::Init(ID3D11Device* device,const Microsoft::glTF::Document& doc,c
 	}
 
 	*/
-	
+	return true;
 }
 

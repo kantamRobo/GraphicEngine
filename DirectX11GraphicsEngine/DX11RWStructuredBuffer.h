@@ -43,7 +43,7 @@ class DX11RWStructuredBuffer
 	Microsoft::WRL::ComPtr<ID3D11Buffer> GetD3DResource();
 private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffersOnGPU[2] = { nullptr };
-	ID3D11Resource
+	
 	void* m_buffersOnCPU[2] = { nullptr };
 	int m_sizeOfElement = 0;
 	int m_numElement = 0;

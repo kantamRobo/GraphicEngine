@@ -1,6 +1,6 @@
 ﻿// DirectX11GraphicsEngine.cpp : アプリケーションのエントリ ポイントを定義します。
 //
-
+#define NOMINMAX
 #include "framework.h"
 #include "Renderer.h"
 
