@@ -3,7 +3,7 @@
 #define NOMINMAX
 #include "framework.h"
 #include "Renderer.h"
-
+#include "Resource.h"
 #define MAX_LOADSTRING 100
 
 // グローバル変数:
@@ -49,6 +49,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
         {
+            renderer.Tick();
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
