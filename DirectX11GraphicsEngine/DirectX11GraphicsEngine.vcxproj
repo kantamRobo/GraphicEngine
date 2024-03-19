@@ -144,6 +144,7 @@
     <ClInclude Include="IShaderResource.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SceneConstant.h" />
     <ClInclude Include="stbi_image_write.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="DirectX11main.h" />
