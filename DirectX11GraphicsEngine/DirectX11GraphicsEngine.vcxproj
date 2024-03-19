@@ -139,6 +139,7 @@
     <ClInclude Include="DX11RasterizerState.h" />
     <ClInclude Include="DX11RenderContext.h" />
     <ClInclude Include="DX11RWStructuredBuffer.h" />
+    <ClInclude Include="DX11Shader.h" />
     <ClInclude Include="DX11StrucutredBuffer.h" />
     <ClInclude Include="IShaderResource.h" />
     <ClInclude Include="json.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="DX11RasterizerState.cpp" />
     <ClCompile Include="DX11RenderContext.cpp" />
     <ClCompile Include="DX11RWStructuredBuffer.cpp" />
+    <ClCompile Include="DX11Shader.cpp" />
     <ClCompile Include="DX11StrucutredBuffer.cpp" />
     <ClCompile Include="IShaderResource.cpp" />
     <ClCompile Include="main.cpp" />
