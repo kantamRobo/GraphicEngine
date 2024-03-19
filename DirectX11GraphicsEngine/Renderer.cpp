@@ -88,7 +88,7 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 
 	temp_const.proj = projMatrix;
 	temp_const.view = viewMatrix;
-	temp_const.world - worldMatrix;
+	temp_const.world  = worldMatrix;
 }
 
 void Renderer::Tick()
