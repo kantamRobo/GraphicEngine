@@ -86,7 +86,7 @@ HRESULT DirectX11GraphicEngine::CreateSwapChain(HWND hwnd)
     return S_OK;
 }
 
-HRESULT DirectX11GraphicEngine::CreateRTV()
+HRESULT DirectX11GraphicEngine::CreateRTV(UINT width,UINT height)
 {
 
     // スワップチェインからバックバッファリソース取得
@@ -96,8 +96,8 @@ HRESULT DirectX11GraphicEngine::CreateRTV()
         return false;
     }
     D3D11_TEXTURE2D_DESC desc = {};
-    desc.Width = this->width();
-    desc.Height = this->height();
+    desc.Width = width;
+    desc.Height = height;
     //深度値に24bitのfloat型をステンシル値に8ビットのuintを確保している
     desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;

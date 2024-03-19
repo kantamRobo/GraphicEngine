@@ -28,7 +28,8 @@ public:
     UINT height = {};
     HRESULT CreateDevice();
     HRESULT CreateSwapChain(HWND hwnd);
-    HRESULT CreateRTV();
+    HRESULT CreateRTV(UINT width, UINT height);
+   
   
 };
 
