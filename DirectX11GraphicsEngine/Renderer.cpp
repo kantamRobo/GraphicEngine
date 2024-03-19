@@ -56,7 +56,7 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 
 	model.m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
 	model.m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList);
-	m_constbuffer.InitConstantBuffer(graphicEngine.m_device.Get(), sizeof(SceneConstant), &temp_const);
+	
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();
 	rasterizerState->InitRasterizerState(graphicEngine.m_device.Get(), graphicEngine.m_deviceContext.Get());
@@ -86,9 +86,14 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
 
 
-	temp_const.proj = projMatrix;
-	temp_const.view = viewMatrix;
-	temp_const.world  = worldMatrix;
+	m_constbuffer.InitConstantBuffer(graphicEngine.m_device.Get(), sizeof(SceneConstant), &temp_const);
+
+
+	DirectX::XMStoreFloat4x4(&temp_const.world, XMMatrixTranspose(worldMatrix));
+	DirectX::XMStoreFloat4x4(&temp_const.view, XMMatrixTranspose(viewMatrix));
+	DirectX::XMStoreFloat4x4(&temp_const.proj, XMMatrixTranspose(projMatrix));
+
+	graphicEngine.m_deviceContext->UpdateSubresource(m_constbuffer.m_constantBuffer->Get(), 0, NULL, &temp_const, 0, 0);
 }
 
 void Renderer::Tick()
