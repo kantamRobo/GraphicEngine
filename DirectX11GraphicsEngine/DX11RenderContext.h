@@ -63,6 +63,9 @@ public:
 	//shader
 	void SetVertexShader(ID3D11VertexShader* vertexShader, UINT numclassInstances);
 
+	void SetVertexShader_ConstantBuffer(ID3D11Buffer* constantbuffer);
+
+	
 	void SetPixelShader(ID3D11PixelShader* pixelShader, UINT numclassInstances);
 	
 	void SetComputeShader(ID3D11ComputeShader* computeShader, UINT numclassInstances);
