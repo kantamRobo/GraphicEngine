@@ -25,6 +25,13 @@ public:
 
 	void SetIndexBuffer(ID3D11Buffer* indexbuffer);
 
+	void SetPrimitiveTopology(const D3D11_PRIMITIVE_TOPOLOGY& topology);
+
+
+	void SetInputLayout(ID3D11InputLayout* layout);
+
+	
+
 	void SetViewPorts(UINT numviewports, const D3D11_VIEWPORT* viewports);
 	void SetSingleViewPort(const D3D11_VIEWPORT* viewports);
 	void SetScssciorRects(UINT numRects, D3D11_RECT* rects);

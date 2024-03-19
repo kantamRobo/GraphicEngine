@@ -15,12 +15,26 @@ void DX11RenderContext::SetIndexBuffer(ID3D11Buffer* indexbuffer)
 	m_rendercontext->IASetIndexBuffer(indexbuffer, DXGI_FORMAT_R8_UINT, 0);//暫定的な処置
 }
 
+void DX11RenderContext::SetPrimitiveTopology(const D3D11_PRIMITIVE_TOPOLOGY& topology)
+{
+	m_rendercontext->IASetPrimitiveTopology(topology);
+}
+
+void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
+{
+
+	m_rendercontext->IASetInputLayout(layout);
+
+	
+}
 
 	//ATTENTION:シェーダーに関しては、初期化に関してはShaderクラスを作成し、そこでシェーダーの作成を行う。ここではグラフィックスパイプラインを動かすコンテキストの一部
 	//として、シェーダーのセット関数をこちらに実装している。
 	void DX11RenderContext::SetVertexShader(ID3D11VertexShader * vertexShader, UINT numclassInstances)
 	{
 		m_rendercontext->VSSetShader(vertexShader,nullptr,numclassInstances);
+
+		m_rendercontext->IASetInputLayout()
 	}
 
 	void DX11RenderContext::SetVertexShader_SingleConstantBuffer(ID3D11Buffer* constantbuffer)
