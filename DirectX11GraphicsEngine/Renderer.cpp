@@ -63,8 +63,8 @@ void Renderer::Init(HWND hwnd)
 	rasterizerState = std::make_shared<DX11RasterizerState>();
 	rasterizerState->InitRasterizerState(&graphicEngine, graphicEngine.m_deviceContext.Get(),&graphicEngine.m_viewport);
 	temp_shader = std::make_shared<DX11Shader>();
-	temp_shader->InitVertexShader(graphicEngine.m_device.Get(), L"hoge");
-	temp_shader->InitPixelShader(graphicEngine.m_device.Get(), L"hoge");
+	temp_shader->InitVertexShader(graphicEngine.m_device.Get(), L"VertexShader.hlsl");
+	temp_shader->InitPixelShader(graphicEngine.m_device.Get(), L"PixelShader.hlsl");
 	
 
 
