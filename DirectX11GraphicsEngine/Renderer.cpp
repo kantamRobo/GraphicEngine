@@ -11,7 +11,8 @@ std::vector<UINT> g_IndexList{
 	   16, 17, 18,    19, 18, 17,
 	   20, 21, 22,    23, 22, 21,
 };
-void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::string& attrName)
+//const Microsoft::glTF::Document& doc, const std::string& attrName
+void Renderer::Init(HWND hwnd)
 {
 
 	std::vector<Vertex> g_VertexList{
@@ -50,12 +51,13 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 
 	graphicEngine.CreateDevice();
 	graphicEngine.CreateSwapChain(hwnd);
-	graphicEngine.CreateRTV(640,480);
+	graphicEngine.CreateRTV();
 
 
+	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get());
 
-	model.m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
-	model.m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList);
+	model->m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
+	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList);
 	
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();
@@ -98,8 +100,8 @@ void Renderer::Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::
 
 void Renderer::Tick()
 {
-	context->SetVertexBuffer(model.m_mesh->m_vertexbuffer->m_vertexbuffer.Get());
-	context->SetIndexBuffer(model.m_mesh->m_indexbuffer->m_IndexBuffer.Get());
+	context->SetVertexBuffer(model->m_mesh->m_vertexbuffer->m_vertexbuffer.Get());
+	context->SetIndexBuffer(model->m_mesh->m_indexbuffer->m_IndexBuffer.Get());
 	context->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	//シェーダーは暫定的なもの。
 	context->SetVertexShader(temp_shader->m_VS.Get(), 1);

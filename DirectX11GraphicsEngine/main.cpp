@@ -103,14 +103,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-   
+   /*
        Microsoft::glTF::Document document;
        std::string attrName = "hoge";
-   
+   */
 
    //https://github.com/techlabxe/d3d12_book_1
 
-   renderer.Init(hWnd,document,attrName);
+   renderer.Init(hWnd);
    if (!hWnd)
    {
       return FALSE;

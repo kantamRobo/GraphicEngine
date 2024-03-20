@@ -19,17 +19,21 @@ public:
     Microsoft::WRL::ComPtr<IDXGISwapChain> m_swapChain;
     Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_backBufferView;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_DepthstencilView;
+   
     Microsoft::WRL::ComPtr<ID3D11Buffer> m_depthstencilbuffer;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthstencilstate;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_depthmapbuffer;
+    Microsoft::WRL::ComPtr<ID3D11Texture2D> m_BackBuffer = nullptr;
+    Microsoft::WRL::ComPtr<ID3D11Texture2D> m_backbufferTexture;
     Microsoft::WRL::ComPtr<IDXGIFactory> factory;
     DXGI_SWAP_CHAIN_DESC scDesc = {};
     D3D11_VIEWPORT m_viewport = { 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f };
-    UINT width = {};
-    UINT height = {};
+    UINT width = 640;
+    UINT height = 480;
     HRESULT CreateDevice();
     HRESULT CreateSwapChain(HWND hwnd);
-    HRESULT CreateRTV(UINT width, UINT height);
+    HRESULT CreateRTV();
+    
    
   
 };

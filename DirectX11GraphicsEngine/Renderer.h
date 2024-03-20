@@ -16,12 +16,14 @@ public:
 	DirectX11GraphicEngine graphicEngine;
 	SceneConstant temp_const;
 	std::shared_ptr<DX11RenderContext> context;
-	DX11Model model;
+	std::shared_ptr<DX11Model> model;
 	DX11ConstantBuffer m_constbuffer;
 	std::shared_ptr<DX11RasterizerState> rasterizerState;
 	std::shared_ptr<DX11Shader> temp_shader;
+	//const Microsoft::glTF::Document& doc, const std::string& attrName
+	//void Init(HWND hwnd);
 
-	void Init(HWND hwnd, const Microsoft::glTF::Document& doc, const std::string& attrName);
+	void Init(HWND hwnd);
 
 	void Tick();
 

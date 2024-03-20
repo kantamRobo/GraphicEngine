@@ -71,9 +71,11 @@ HRESULT DirectX11GraphicEngine::CreateSwapChain(HWND hwnd)
     // https://learn.microsoft.com/ja-jp/windows/win32/api/dxgi/nf-dxgi-createdxgifactory
     // 
     // スワップチェインの作成
+
+    CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)(&factory));
     if (FAILED(factory->CreateSwapChain(m_device.Get(), &scDesc, m_swapChain.GetAddressOf())))
     {
-        return E_FAIL
+        return E_FAIL;
     }
     
 
@@ -81,89 +83,57 @@ HRESULT DirectX11GraphicEngine::CreateSwapChain(HWND hwnd)
 
     return S_OK;
 }
+//https://github.com/RikutoNarita/20221003_ss/blob/2cc0fc45f3f09473abfc0ae8a4b4c88afe4a98b5/Library/GraphicsSystem/DirectX/Gfx_D3DManager.cpp#L143
 
-HRESULT DirectX11GraphicEngine::CreateRTV(UINT width,UINT height)
+//たたき台。DirectX11の理解度が深まるにつれて変えていく。
+HRESULT DirectX11GraphicEngine::CreateRTV()
 {
+//レンダーターゲットビュー生成
 
-    // スワップチェインからバックバッファリソース取得
-    Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
-    if (FAILED(m_swapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer))))
-    {
-        return false;
-    }
-    D3D11_TEXTURE2D_DESC desc = {};
-    desc.Width = width;
-    desc.Height = height;
-    //深度値に24bitのfloat型をステンシル値に8ビットのuintを確保している
-    desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-    desc.SampleDesc.Count = 1;
-    desc.MipLevels = 1;
-    desc.ArraySize = 1;
-     auto hr = this->m_device->CreateTexture2D(&desc, nullptr, this->m_depthmapbuffer.GetAddressOf());
-    if (FAILED(hr)) {
-        throw std::runtime_error("深度ステンシルバッファの作成に失敗");
-    }
-    D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-    dsvDesc.Format = desc.Format;
-    dsvDesc.Texture2D.MipSlice = 0;
-    this->m_device->CreateDepthStencilView(this->m_depthmapbuffer.Get(), &dsvDesc, this->m_DepthstencilView.GetAddressOf());
-    if (FAILED(hr)) {
-        throw std::runtime_error("深度ステンシルビュー作成に失敗");
-    }
 
-    // Scene::onInit関数の一部
-//深度テストとステンシルテストを別々で作っていますが、もちろん同時に行うこともできます。
-    D3D11_DEPTH_STENCIL_DESC ds = {};
-    //深度テストを行う深度ステンシルステートの作成
-    ds.DepthEnable = true;
-    ds.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-    ds.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    ds.StencilEnable = false;
-    auto dshr = this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
-    if (FAILED(hr)) {
-        throw std::runtime_error("深度テスト用のステート作成に失敗");
-    }
-    
-    //ステンシルテストを行う深度ステンシルステートの作成
-    ds.DepthEnable = false;
-    ds.StencilEnable = true;
-    ds.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
-    ds.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
-    ds.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    ds.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    ds.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
-    ds.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER_EQUAL;
-
-    ds.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    ds.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    ds.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
-    ds.BackFace.StencilFunc = D3D11_COMPARISON_GREATER_EQUAL;
-
-     this->m_device->CreateDepthStencilState(&ds, this->m_depthstencilstate.GetAddressOf());
-    if (FAILED(hr)) {
-        throw std::runtime_error("ステンシルテスト用のステート作成に失敗");
-    }
-    
-    // バックバッファリソース用のRTVを作成
+    m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &m_BackBuffer);
     D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
     rtvDesc.Format = scDesc.BufferDesc.Format;
     rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-    if (FAILED(m_device->CreateRenderTargetView(pBackBuffer.Get(), &rtvDesc, &m_backBufferView)))
+    auto hr =m_device->CreateRenderTargetView(m_BackBuffer.Get(),&rtvDesc , m_backBufferView.GetAddressOf());
+    
+    if (FAILED(hr))
     {
-        return false;
+        return hr;
     }
-    m_device->CreateDepthStencilView(m_depthstencilbuffer.Get(), &dsvDesc, m_DepthstencilView.GetAddressOf());
-    //=====================================================
-    // デバイスコンテキストに描画に関する設定を行っておく
-    //=====================================================
+    //Zバッファ用テクスチャ生成
 
-    // バックバッファをRTとしてセット
-    m_deviceContext->OMSetRenderTargets(1, m_backBufferView.GetAddressOf(), nullptr);
+    D3D11_TEXTURE2D_DESC texturedesc = {};
 
-    // ビューポートの設定
+    texturedesc.Width = width;
+    texturedesc.Height = height;
+    texturedesc.MipLevels = 1;
+    texturedesc.ArraySize = 1;
+    texturedesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    texturedesc.SampleDesc.Count = 1;
+    texturedesc.SampleDesc.Quality = 0;
+    texturedesc.Usage = D3D11_USAGE_DEFAULT;
+    texturedesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 
-    m_deviceContext->RSSetViewports(1, &m_viewport);
-    return S_OK;
+    hr = m_device->CreateTexture2D(&texturedesc, nullptr, &m_backbufferTexture);
+    if (FAILED(hr)) { return hr; }
+
+    //Zバッファターゲットビュー生成
+
+    D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+    ZeroMemory(&dsvd, sizeof(dsvd));
+    dsvd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    hr = m_device->CreateDepthStencilView(m_backbufferTexture.Get(), &dsvd, &m_DepthstencilView);
+    if (FAILED(hr)) { return hr; }
+    //バックバッファをRTとしてセット
+    m_deviceContext->OMSetRenderTargets(1, m_backBufferView.GetAddressOf(), m_DepthstencilView.Get());
+
+
+    //! ビューポートの設定
+    D3D11_VIEWPORT vp = { 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f };
+    m_deviceContext->RSSetViewports(1, &vp);
+
+    return hr;
+
 }

@@ -5,12 +5,13 @@
 
 #include "DX11Model.h"
 
-DX11Model::DX11Model(ID3D11Device* device, const Microsoft::glTF::Document& doc, const std::string& attrName)
+DX11Model::DX11Model(ID3D11Device* device)
 {
-	Init(device, doc, attrName);
+	m_mesh = std::make_shared<DX11Mesh>();
+	Init(device);
 }
 
-bool DX11Model::Init(ID3D11Device* device,const Microsoft::glTF::Document& doc,const std::string& attrName)
+bool DX11Model::Init(ID3D11Device* device)
 {
 
 
@@ -21,6 +22,8 @@ bool DX11Model::Init(ID3D11Device* device,const Microsoft::glTF::Document& doc,c
 	using namespace Microsoft::glTF;
 	std::vector<Vertex> vertices;
 	std::vector <uint32_t> indices;
+	/*
+	m_mesh = std::make_shared<DX11Mesh>();
 	for (const auto& mesh : acc.meshes.Elements())
 	{
 		for (const auto& meshPrimitives : mesh.primitives)
@@ -69,15 +72,15 @@ bool DX11Model::Init(ID3D11Device* device,const Microsoft::glTF::Document& doc,c
 
 
 
-
+	*/
 
 
 	//頂点・インデックスバッファを作成。
 
 	
 	//mesh->skinFlags.reserve(tkmMesh.materials.size());
-	m_mesh->m_vertexbuffer->InitVertexBuffer(device,vertices);
-	m_mesh->m_indexbuffer->InitIndexbuffer(device,indices);
+	//m_mesh->m_vertexbuffer->InitVertexBuffer(device,vertices);
+	//m_mesh->m_indexbuffer->InitIndexbuffer(device,indices);
 	/*
 	auto SetSkinFlag = [&](int index) {
 		if (tkmMesh.vertexBuffer[index].skinWeights.x > 0.0f) {
