@@ -39,6 +39,8 @@ HRESULT DirectX11GraphicEngine::CreateDevice()
     {
         return E_FAIL;
     }
+
+
     return S_OK;
 }
 
@@ -63,10 +65,15 @@ HRESULT DirectX11GraphicEngine::CreateSwapChain(HWND hwnd)
     scDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
+
+    //ファクトリーの作成
+    // 
+    // https://learn.microsoft.com/ja-jp/windows/win32/api/dxgi/nf-dxgi-createdxgifactory
+    // 
     // スワップチェインの作成
-    if (FAILED(factory->CreateSwapChain(m_device.Get(), &scDesc, &m_swapChain)))
+    if (FAILED(factory->CreateSwapChain(m_device.Get(), &scDesc, m_swapChain.GetAddressOf())))
     {
-        return false;
+        return E_FAIL
     }
     
 
