@@ -1,13 +1,13 @@
 struct VS_IN
 {
     float4 pos : POSITION0;
-    float4 col : COLOR0;
+    
 };
  
 struct VS_OUT
 {
     float4 pos : SV_POSITION;
-    float4 col : COLOR0;
+    
 };
  
 cbuffer ConstantBuffer
@@ -24,6 +24,6 @@ VS_OUT vs_main(VS_IN input)
     output.pos = mul(input.pos, World);
     output.pos = mul(output.pos, View);
     output.pos = mul(output.pos, Projection);
-    output.col = input.col;
+    
     return output;
 }

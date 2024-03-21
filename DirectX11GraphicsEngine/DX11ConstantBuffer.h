@@ -4,7 +4,7 @@
 class DX11ConstantBuffer
 {
 public:
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer[2] = { nullptr };
+   Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer  ;
 	void* m_constBufferCPU[2] = { nullptr };//CPU側からアクセスできるする定数バッファのアドレス。
 	int m_size = 0;
 	int m_allocSize = 0;

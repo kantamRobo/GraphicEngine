@@ -1,18 +1,20 @@
 #include "DX11RenderContext.h"
-
+#include "Vertex.h"
 //セッタ
 
 //入力アセンブリ
 void DX11RenderContext::SetVertexBuffer(ID3D11Buffer* vertexbuffers)
 {
-	
-		m_rendercontext->IASetVertexBuffers(0, 1, &vertexbuffers, 0, 0);//暫定的な処置
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+
+		m_rendercontext->IASetVertexBuffers(0, 1, &vertexbuffers, &stride, &offset);//暫定的な処置
 		
 }
 
 void DX11RenderContext::SetIndexBuffer(ID3D11Buffer* indexbuffer)
 {
-	m_rendercontext->IASetIndexBuffer(indexbuffer, DXGI_FORMAT_R8_UINT, 0);//暫定的な処置
+	m_rendercontext->IASetIndexBuffer(indexbuffer, DXGI_FORMAT_R32_UINT, 0);//暫定的な処置
 }
 
 void DX11RenderContext::SetPrimitiveTopology(const D3D11_PRIMITIVE_TOPOLOGY& topology)
@@ -32,7 +34,7 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 	//として、シェーダーのセット関数をこちらに実装している。
 	void DX11RenderContext::SetVertexShader(ID3D11VertexShader * vertexShader, UINT numclassInstances)
 	{
-		m_rendercontext->VSSetShader(vertexShader,nullptr,numclassInstances);
+		m_rendercontext->VSSetShader(vertexShader,nullptr,0);
 
 		
 	}
@@ -94,7 +96,7 @@ void DX11RenderContext::SetScssciorRects(UINT numRects, D3D11_RECT* rects)
 
 void DX11RenderContext::SetPixelShader(ID3D11PixelShader* pixelShader, UINT numclassInstances)
 {
-	m_rendercontext->PSSetShader(pixelShader, nullptr, numclassInstances);
+	m_rendercontext->PSSetShader(pixelShader, nullptr, 0);
 
 }
 

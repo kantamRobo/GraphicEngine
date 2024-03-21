@@ -57,7 +57,7 @@ void Renderer::Init(HWND hwnd)
 	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get());
 
 	model->m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
-	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList);
+	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList, g_IndexList.size()*sizeof(UINT));
 	
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();
@@ -95,7 +95,7 @@ void Renderer::Init(HWND hwnd)
 	DirectX::XMStoreFloat4x4(&temp_const.view, XMMatrixTranspose(viewMatrix));
 	DirectX::XMStoreFloat4x4(&temp_const.proj, XMMatrixTranspose(projMatrix));
 
-	graphicEngine.m_deviceContext->UpdateSubresource(m_constbuffer.m_constantBuffer->Get(), 0, NULL, &temp_const, 0, 0);
+	graphicEngine.m_deviceContext->UpdateSubresource(m_constbuffer.m_constantBuffer.Get(), 0, NULL, &temp_const, 0, 0);
 }
 
 void Renderer::Tick()
@@ -104,8 +104,9 @@ void Renderer::Tick()
 	context->SetIndexBuffer(model->m_mesh->m_indexbuffer->m_IndexBuffer.Get());
 	context->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	//シェーダーは暫定的なもの。
+	context->SetInputLayout(temp_shader->m_InputLayout.Get());
 	context->SetVertexShader(temp_shader->m_VS.Get(), 1);
-	context->SetVertexShader_SingleConstantBuffer(m_constbuffer.m_constantBuffer->Get());
+	context->SetVertexShader_SingleConstantBuffer(m_constbuffer.m_constantBuffer.Get());
 	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
 	context->SetRasterizerState(rasterizerState->m_rasterizerstate.Get());
 	context->SetSingleViewPort(&graphicEngine.m_viewport);

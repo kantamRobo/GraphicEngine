@@ -46,5 +46,5 @@ void DX11Shader::InitPixelShader(ID3D11Device* device,const std::wstring& shader
 void DX11Shader::InitLayout(ID3D11Device* device,const std::vector <D3D11_INPUT_ELEMENT_DESC>& layout)
 {
 
-	device->CreateInputLayout(layout.data(), 1, m_compiledVS->GetBufferPointer(), m_compiledVS->GetBufferSize(), m_InputLayout.GetAddressOf());
+	device->CreateInputLayout(layout.data(), layout.size(), m_compiledVS->GetBufferPointer(), m_compiledVS->GetBufferSize(), m_InputLayout.GetAddressOf());
 }
