@@ -27,9 +27,9 @@ public:
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_backbufferTexture;
     Microsoft::WRL::ComPtr<IDXGIFactory> factory;
     DXGI_SWAP_CHAIN_DESC scDesc = {};
-    D3D11_VIEWPORT m_viewport = { 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f };
-    UINT width = 640;
-    UINT height = 480;
+    D3D11_VIEWPORT m_viewport = {};
+    float width = 640;
+    float height = 480;
     HRESULT CreateDevice();
     HRESULT CreateSwapChain(HWND hwnd);
     HRESULT CreateRTV();

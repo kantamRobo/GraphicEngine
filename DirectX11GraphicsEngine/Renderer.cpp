@@ -48,7 +48,7 @@ void Renderer::Init(HWND hwnd)
 	};
 
 
-
+	
 	graphicEngine.CreateDevice();
 	graphicEngine.CreateSwapChain(hwnd);
 	graphicEngine.CreateRTV();

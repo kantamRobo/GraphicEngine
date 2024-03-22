@@ -3,7 +3,13 @@
 #include <iostream>
 HRESULT DirectX11GraphicEngine::CreateDevice()
 {
-
+  
+    m_viewport.Width = width;
+    m_viewport.Height = height;
+    m_viewport.TopLeftX = 0.0f;
+    m_viewport.TopLeftY = 0.0f;  // 上端をウィンドウの上端に合わせます
+    m_viewport.MinDepth = 0.0f;  // 標準的な深度範囲の最小値
+    m_viewport.MaxDepth = 1.0f;  // 標準的な深度範囲の最大値
     //=====================================================
 //デバイス生成(主にリソース作成時に使用するオブジェクト)
 //=====================================================
@@ -131,8 +137,8 @@ HRESULT DirectX11GraphicEngine::CreateRTV()
 
 
     //! ビューポートの設定
-    D3D11_VIEWPORT vp = { 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f };
-    m_deviceContext->RSSetViewports(1, &vp);
+   
+    m_deviceContext->RSSetViewports(1, &m_viewport);
 
     return hr;
 
