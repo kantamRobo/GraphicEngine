@@ -9,11 +9,11 @@ void DX11RasterizerState::InitRasterizerState(const DirectX11GraphicEngine* p_en
 	D3D11_RASTERIZER_DESC desc = {};
 	desc.CullMode = D3D11_CULL_NONE;
 	desc.FillMode = D3D11_FILL_SOLID;
-	desc.FrontCounterClockwise = true;
+	desc.FrontCounterClockwise = false;
 	desc.ScissorEnable = false;
 	desc.DepthClipEnable = true;
 	desc.MultisampleEnable = false;
-	desc.ScissorEnable = true;
+	desc.ScissorEnable = false;
 	
 	auto hr = p_engine->m_device->CreateRasterizerState(&desc, m_rasterizerstate.GetAddressOf());
 	UINT count = 1;

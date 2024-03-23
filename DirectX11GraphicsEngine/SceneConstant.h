@@ -3,8 +3,9 @@
 
 struct SceneConstant
 {
-	DirectX::XMFLOAT4X4 world;
-	DirectX::XMFLOAT4X4 view;
-	DirectX::XMFLOAT4X4 proj;
+	
+	DirectX::XMMATRIX xmworld;
+	DirectX::XMMATRIX xmview;
+	DirectX::XMMATRIX xmproj;
 	float padding[48];
 };
