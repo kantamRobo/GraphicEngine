@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d11.h>
 #include <wrl.h>
-
+#include "DX11Texture.h"
 //グラフィックスパイプラインに関わる関数を一元管理する(入力アセンブリ・シェーダー・ラスタライザ・アウトプットマージャー,またはコンピュートパイプラインの実行や、それにかかわるコマンド)
 class DX11RenderContext
 {
@@ -33,6 +33,14 @@ public:
 	
 	
 	void ClearRenderTargetView(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv);
+
+	void SetPSSingleSampler(const DX11Texture& texture);
+
+	
+
+	
+	
+	void SetSingleShaderResource(ID3D11ShaderResourceView* srv);
 	void SetViewPorts(UINT numviewports, const D3D11_VIEWPORT* viewports);
 	void SetSingleViewPort(const D3D11_VIEWPORT* viewports);
 	void SetScssciorRects(UINT numRects, D3D11_RECT* rects);

@@ -83,11 +83,30 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 			0);
 	}
 
+
+
+	void DX11RenderContext::SetPSSingleSampler(const DX11Texture& texture)
+	{
+		m_rendercontext->PSSetSamplers(0, 1, texture.m_samplerstate.GetAddressOf());
+	}
+
+//https://learn.microsoft.com/ja-jp/windows/uwp/gaming/applying-textures-to-primitives
+//プリミティブへのテクスチャの適用
+	
+	void DX11RenderContext::SetSingleShaderResource(ID3D11ShaderResourceView* srv)
+	{
+		m_rendercontext->PSSetShaderResources(0, 1, &srv);
+	}
+//https://gamesgard.com/directx11_lesson05/#st-toc-h-5
+	//https://gamesgard.com/directx11_lesson06/
+
+
+	
 	void DX11RenderContext::SetViewPorts(UINT numviewports, const D3D11_VIEWPORT * viewports)
 	{
 		m_rendercontext->RSSetViewports(numviewports, viewports);
 
-
+		
 		
 	}
 

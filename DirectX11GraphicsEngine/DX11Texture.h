@@ -1,19 +1,30 @@
 #pragma once
 #define NOMINMAX
-#include <DDSTextureLoader.h>
+#include <DirectXTex.h>
 #include "stdafx.h"
-	class TextureDX11
+
+	class DX11Texture
 	{
-		
-		TextureDX11(const wchar_t* filePath)
+	public:
+		DX11Texture(const wchar_t* filePath)
 		{
 
 		}
+		ComPtr<ID3D11ShaderResourceView> m_shaderResourceView;
 
+		ComPtr<ID3D11Resource> m_textureresource;
+
+		ComPtr<ID3D11Texture2D> m_texture;
+
+		ComPtr<ID3D11SamplerState> m_samplerstate;
+
+		D3D11_TEXTURE2D_DESC texdesc;
+
+		D3D11_SAMPLER_DESC m_samplerDesc;
 		
 		
 		
-		~TextureDX11();
+		~DX11Texture();
 		
 		
 		/// <summary>
@@ -41,10 +52,6 @@
 		/// <param name="ge12">Dx12版のグラフィックスエンジン</param>
 		/// <param name="device">D3Dデバイス</param>
 		void LoadTextureFromMemory(const char* memory, unsigned int size);
-
-		ComPtr<ID3D11ShaderResourceView> m_shaderResourceView;
-
-		ComPtr<ID3D11Resource> m_texture;
 
 		
 	};

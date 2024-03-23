@@ -68,9 +68,11 @@ void Renderer::Init(HWND hwnd)
 	
 
 
-	std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 } };
-	temp_shader->InitLayout(graphicEngine.m_device.Get(), layout);
+	std::vector<D3D11_INPUT_ELEMENT_DESC> templayout = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		 { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	 };
+	temp_shader->InitLayout(graphicEngine.m_device.Get(), templayout);
 	//model.Init(graphicEngine.m_device.Get(), doc, attrName);
 
 
@@ -147,10 +149,13 @@ void Renderer::Tick()
 	
 
 	
-
-	context->SetVertexShader_SingleConstantBuffer(m_constbuffer.m_constantBuffer.Get());
-	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
 	
+	context->SetVertexShader_SingleConstantBuffer(m_constbuffer.m_constantBuffer.Get());
+	
+	
+	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
+	context->SetSingleShaderResource();(‚µ‚¨‚è)
+	context->SetPSSingleSampler();///newi‚µ‚¨‚è)
 	context->SetSingleViewPort(&graphicEngine.m_viewport);
 	
 	context->DrawIndexed(g_IndexList.size());
