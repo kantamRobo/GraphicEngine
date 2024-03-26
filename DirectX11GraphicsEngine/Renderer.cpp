@@ -15,50 +15,19 @@ std::vector<UINT> g_IndexList{
 void Renderer::Init(HWND hwnd)
 {
 
-	std::vector<Vertex> g_VertexList{
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f },  },
-	{ { -0.5f, -0.5f, -0.5f },},
-	{ {  0.5f, -0.5f, -0.5f }, },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f, -0.5f,  0.5f }, },
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ { -0.5f, -0.5f,  0.5f }, },
-	{ { -0.5f, -0.5f, -0.5f }, },
-
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f }, },
-	{ {  0.5f, -0.5f, -0.5f } },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f },  },
-
-	{ { -0.5f, -0.5f,  0.5f },  },
-	{ { -0.5f, -0.5f, -0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f, -0.5f }, },
-	};
 
 
-
+	
 	graphicEngine.CreateDevice();
 	graphicEngine.CreateSwapChain(hwnd);
 	graphicEngine.CreateRTV();
 
 
-	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get());
+	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get(),"alicia-solid.vrm");
 
 	model->m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
-	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(), g_IndexList, g_IndexList.size() * sizeof(UINT));
-
+	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList, g_IndexList.size()*sizeof(UINT));
+	
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();
 	rasterizerState->InitRasterizerState(&graphicEngine, graphicEngine.m_deviceContext.Get(), &graphicEngine.m_viewport);
@@ -69,10 +38,9 @@ void Renderer::Init(HWND hwnd)
 
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 } };
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 } };
 	temp_shader->InitLayout(graphicEngine.m_device.Get(), layout);
 	//model.Init(graphicEngine.m_device.Get(), doc, attrName);
-
 
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
@@ -88,7 +56,7 @@ void Renderer::Init(HWND hwnd)
 	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
 
 
-	m_constbuffer.InitConstantBuffer(&graphicEngine, sizeof(SceneConstant), &temp_const);
+	m_constbuffer.InitConstantBuffer(graphicEngine.m_device.Get(), sizeof(SceneConstant), &temp_const);
 
 
 
@@ -108,7 +76,7 @@ void Renderer::Tick()
 	context->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	context->SetRasterizerState(rasterizerState->m_rasterizerstate.Get());
-	//ƒVƒF[ƒ_[‚ÍŽb’è“I‚È‚à‚ÌB
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¯æš«å®šçš„ãªã‚‚ã®ã€‚
 	context->SetInputLayout(temp_shader->m_InputLayout.Get());
 	context->SetVertexShader(temp_shader->m_VS.Get(), 1);
 	// Rotate the cube 1 degree per frame.
@@ -131,15 +99,15 @@ void Renderer::Tick()
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT hr = graphicEngine.m_deviceContext->Map(
-		m_constbuffer.m_constantBuffer.Get(), // ƒ}ƒbƒv‚·‚éƒŠƒ\[ƒX
-		0,                                    // ƒTƒuƒŠƒ\[ƒX‚ÌƒCƒ“ƒfƒbƒNƒX
-		D3D11_MAP_WRITE_DISCARD,              // ƒ}ƒbƒv‚Ìƒ^ƒCƒv
-		0,                                    // ƒ}ƒbƒvƒIƒvƒVƒ‡ƒ“
-		&mappedResource);                     // ƒ}ƒbƒv‚³‚ê‚½ƒŠƒ\[ƒXî•ñ‚ðŽó‚¯Žæ‚é\‘¢‘Ì
+		m_constbuffer.m_constantBuffer.Get(), // ãƒžãƒƒãƒ—ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹
+		0,                                    // ã‚µãƒ–ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		D3D11_MAP_WRITE_DISCARD,              // ãƒžãƒƒãƒ—ã®ã‚¿ã‚¤ãƒ—
+		0,                                    // ãƒžãƒƒãƒ—ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+		&mappedResource);                     // ãƒžãƒƒãƒ—ã•ã‚ŒãŸãƒªã‚½ãƒ¼ã‚¹æƒ…å ±ã‚’å—ã‘å–ã‚‹æ§‹é€ ä½“
 	if (SUCCEEDED(hr)) {
-		// ’è”ƒoƒbƒtƒ@‚Éƒf[ƒ^‚ðƒRƒs[
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼
 		memcpy(mappedResource.pData, &temp_const, sizeof(temp_const));
-		// ƒŠƒ\[ƒX‚Ìƒ}ƒbƒv‚ð‰ðœ
+		// ãƒªã‚½ãƒ¼ã‚¹ã®ãƒžãƒƒãƒ—ã‚’è§£é™¤
 		graphicEngine.m_deviceContext->Unmap(m_constbuffer.m_constantBuffer.Get(), 0);
 	}
 
@@ -149,6 +117,8 @@ void Renderer::Tick()
 
 
 	context->SetVertexShader_SingleConstantBuffer(m_constbuffer.m_constantBuffer.Get());
+	
+	
 	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
 
 	context->SetSingleViewPort(&graphicEngine.m_viewport);

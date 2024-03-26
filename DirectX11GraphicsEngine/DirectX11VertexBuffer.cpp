@@ -14,11 +14,15 @@ HRESULT DirectX11VertexBuffer::InitVertexBuffer(ID3D11Device* device,const std::
 	vbDesc.StructureByteStride = 0;					// 構造化バッファの場合、その構造体のサイズ
 	vbDesc.Usage = D3D11_USAGE_DEFAULT;				// 作成するバッファの使用法
 	vbDesc.CPUAccessFlags = 0;
-	this->m_sizeofElement = sizeof(v[0]);
+	this->m_sizeofElement = sizeof(v.data());
 	this->m_numElement = v.size();
 
-	D3D11_SUBRESOURCE_DATA initData = { &v[0], sizeof(v), 0 };	// 書き込むデータ
+	D3D11_SUBRESOURCE_DATA initData = { v.data(), sizeof(v), 0};	// 書き込むデータ
 	// 頂点バッファの作成
 	device->CreateBuffer(&vbDesc, &initData, &m_vertexbuffer);
-    return E_NOTIMPL;
+    return S_OK;
 }
+
+
+//※頂点バッファを動的に扱うときは、また別の初期化法を利用した頂点バッファの
+//確保方法がある。

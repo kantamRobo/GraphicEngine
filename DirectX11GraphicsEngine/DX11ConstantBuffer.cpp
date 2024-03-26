@@ -4,42 +4,42 @@
 void DX11ConstantBuffer::InitConstantBuffer(DirectX11GraphicEngine* engine, int paramsize, void* srcData)
 {
 
-	//ƒ}ƒbƒv‰Â”\‚È’è”ƒoƒbƒtƒ@‚Ìì¬
+	//ãƒžãƒƒãƒ—å¯èƒ½ãªå®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	D3D11_BUFFER_DESC desc = {};
 	desc.ByteWidth = paramsize + (paramsize % 16 == 0 ? 0 : 16 - paramsize % 16);
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	//ID3D11Buffer‚ð’è”ƒoƒbƒtƒ@‚Æ‚µ‚ÄŽg‚¤‚æ‚¤éŒ¾‚µ‚Ä‚¢‚é
-	desc.Usage = D3D11_USAGE_DYNAMIC;				//GPUã‚Å‚Í“Ç‚Ýž‚Ý‚¾‚¯‚ðCPU‚©‚ç‘‚«ž‚Ý‚¾‚¯‚ð‚Å‚«‚é‚æ‚¤‚ÉéŒ¾‚µ‚Ä‚¢‚é
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	//ID3D11Bufferã‚’å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨ã—ã¦ä½¿ã†ã‚ˆã†å®£è¨€ã—ã¦ã„ã‚‹
+	desc.Usage = D3D11_USAGE_DYNAMIC;				//GPUä¸Šã§ã¯èª­ã¿è¾¼ã¿ã ã‘ã‚’CPUã‹ã‚‰æ›¸ãè¾¼ã¿ã ã‘ã‚’ã§ãã‚‹ã‚ˆã†ã«å®£è¨€ã—ã¦ã„ã‚‹
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	//CPU‚ÆGPUŠÔ‚Ìƒf[ƒ^“]‘—‚ÌŽž‚ÉŽg‚¤\‘¢‘Ì
-	//‚±‚±‚Å‚ÍID3D11Buffer‚Ì‰Šúƒf[ƒ^‚ðÝ’è‚·‚é‚½‚ß‚ÉŽg‚Á‚Ä‚¢‚é
+	//CPUã¨GPUé–“ã®ãƒ‡ãƒ¼ã‚¿è»¢é€ã®æ™‚ã«ä½¿ã†æ§‹é€ ä½“
+	//ã“ã“ã§ã¯ID3D11Bufferã®åˆæœŸãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ãŸã‚ã«ä½¿ã£ã¦ã„ã‚‹
 	D3D11_SUBRESOURCE_DATA initData = {};
 	initData.pSysMem = srcData;
 	initData.SysMemPitch = paramsize;
 
 	auto hr = engine->m_device->CreateBuffer(&desc, &initData, m_constantBuffer.GetAddressOf());
 	if (FAILED(hr)) {
-		throw std::runtime_error("ƒ}ƒbƒv‰Â”\‚È’è”ƒoƒbƒtƒ@‚Ìì¬‚ÉŽ¸”s");
+		throw std::runtime_error("ãƒžãƒƒãƒ—å¯èƒ½ãªå®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆã«å¤±æ•—");
 	}
 
 
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	//CPU‚ÆGPUŠÔ‚Ìƒf[ƒ^“]‘—‚ÌŽž‚ÉŽg‚¤\‘¢‘Ì
-	//‚±‚±‚Å‚ÍID3D11Buffer‚Ì‰Šúƒf[ƒ^‚ðÝ’è‚·‚é‚½‚ß‚ÉŽg‚Á‚Ä‚¢‚é
+	//CPUã¨GPUé–“ã®ãƒ‡ãƒ¼ã‚¿è»¢é€ã®æ™‚ã«ä½¿ã†æ§‹é€ ä½“
+	//ã“ã“ã§ã¯ID3D11Bufferã®åˆæœŸãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ãŸã‚ã«ä½¿ã£ã¦ã„ã‚‹
 
-	// ƒŠƒ\[ƒX‚ðƒ}ƒbƒv‚µ‚ÄCPU‚©‚çƒAƒNƒZƒX‰Â”\‚Èƒƒ‚ƒŠ‚ðŽæ“¾
+	// ãƒªã‚½ãƒ¼ã‚¹ã‚’ãƒžãƒƒãƒ—ã—ã¦CPUã‹ã‚‰ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ãªãƒ¡ãƒ¢ãƒªã‚’å–å¾—
 	hr = engine->m_deviceContext->Map(
-		m_constantBuffer.Get(),  // ƒ}ƒbƒv‚·‚éƒŠƒ\[ƒX
-		0,                                     // ƒTƒuƒŠƒ\[ƒX‚ÌƒCƒ“ƒfƒbƒNƒX
-		D3D11_MAP_WRITE_DISCARD,               // ƒ}ƒbƒv‚Ìƒ^ƒCƒv
-		0,                                     // ƒ}ƒbƒvƒIƒvƒVƒ‡ƒ“
+		m_constantBuffer.Get(),  // ãƒžãƒƒãƒ—ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹
+		0,                                     // ã‚µãƒ–ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		D3D11_MAP_WRITE_DISCARD,               // ãƒžãƒƒãƒ—ã®ã‚¿ã‚¤ãƒ—
+		0,                                     // ãƒžãƒƒãƒ—ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 		&mappedResource);
 
 	if (SUCCEEDED(hr)) {
-		// ’è”ƒoƒbƒtƒ@‚Éƒf[ƒ^‚ðƒRƒs[
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼
 		memcpy(mappedResource.pData, m_constantBuffer.Get(), sizeof(m_constantBuffer));
-		// ƒŠƒ\[ƒX‚Ìƒ}ƒbƒv‚ð‰ðœ
+		// ãƒªã‚½ãƒ¼ã‚¹ã®ãƒžãƒƒãƒ—ã‚’è§£é™¤
 		engine->m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
 	}
 }

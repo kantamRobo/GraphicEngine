@@ -1,3 +1,4 @@
+
 struct VS_IN
 {
     float4 pos : POSITION0;
@@ -24,6 +25,6 @@ VS_OUT vs_main(VS_IN input)
     output.pos = mul(input.pos, World);
     output.pos = mul(output.pos, View);
     output.pos = mul(output.pos, Projection);
-    
+  
     return output;
 }
