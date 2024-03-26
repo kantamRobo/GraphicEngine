@@ -74,7 +74,7 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 	{
 		m_rendercontext->RSSetViewports(numviewports, viewports);
 
-
+		
 		
 	}
 

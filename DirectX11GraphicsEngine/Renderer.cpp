@@ -15,38 +15,6 @@ std::vector<UINT> g_IndexList{
 void Renderer::Init(HWND hwnd)
 {
 
-	std::vector<Vertex> g_VertexList{
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f },  },
-	{ { -0.5f, -0.5f, -0.5f },},
-	{ {  0.5f, -0.5f, -0.5f }, },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f, -0.5f,  0.5f }, },
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ { -0.5f, -0.5f,  0.5f }, },
-	{ { -0.5f, -0.5f, -0.5f }, },
-
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f }, },
-	{ {  0.5f, -0.5f, -0.5f } },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f },  },
-
-	{ { -0.5f, -0.5f,  0.5f },  },
-	{ { -0.5f, -0.5f, -0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f, -0.5f }, },
-	};
-
 
 	
 	graphicEngine.CreateDevice();
@@ -54,11 +22,9 @@ void Renderer::Init(HWND hwnd)
 	graphicEngine.CreateRTV();
 
 
-	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get());
+	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get(),"alicia-solid.vrm");
 
-	model->m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
-	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList, g_IndexList.size()*sizeof(UINT));
-	
+		
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();
 	rasterizerState->InitRasterizerState(&graphicEngine, graphicEngine.m_deviceContext.Get(),&graphicEngine.m_viewport);
@@ -67,11 +33,6 @@ void Renderer::Init(HWND hwnd)
 	temp_shader->InitPixelShader(graphicEngine.m_device.Get(), L"PixelShader.hlsl");
 	
 
-
-	std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 } };
-	temp_shader->InitLayout(graphicEngine.m_device.Get(), layout);
-	//model.Init(graphicEngine.m_device.Get(), doc, attrName);
 
 
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
@@ -85,10 +46,7 @@ void Renderer::Init(HWND hwnd)
 	float    aspect = graphicEngine.m_viewport.Width / graphicEngine.m_viewport.Height;
 	float    nearZ = 0.1f;
 	float    farZ = 100.0f;
-	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
-
-
-	m_constbuffer.InitConstantBuffer(graphicEngine.m_device.Get(), sizeof(SceneConstant), &temp_const);
+	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovRH(fov, aspect, nearZ, farZ);
 
 
 	DirectX::XMStoreFloat4x4(&temp_const.world, XMMatrixTranspose(worldMatrix));
@@ -103,10 +61,12 @@ void Renderer::Tick()
 	context->SetVertexBuffer(model->m_mesh->m_vertexbuffer->m_vertexbuffer.Get());
 	context->SetIndexBuffer(model->m_mesh->m_indexbuffer->m_IndexBuffer.Get());
 	context->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	//ƒVƒF[ƒ_[‚ÍŽb’è“I‚È‚à‚ÌB
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¯æš«å®šçš„ãªã‚‚ã®ã€‚
 	context->SetInputLayout(temp_shader->m_InputLayout.Get());
 	context->SetVertexShader(temp_shader->m_VS.Get(), 1);
 	context->SetVertexShader_SingleConstantBuffer(m_constbuffer.m_constantBuffer.Get());
+	
+	
 	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
 	context->SetRasterizerState(rasterizerState->m_rasterizerstate.Get());
 	context->SetSingleViewPort(&graphicEngine.m_viewport);

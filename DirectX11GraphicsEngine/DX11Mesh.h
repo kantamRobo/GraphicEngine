@@ -7,7 +7,8 @@ struct DX11Mesh
 {
 	std::shared_ptr<DirectX11VertexBuffer> m_vertexbuffer;
 	std::shared_ptr <DirectX11IndexBuffer> m_indexbuffer;
-
+	std::vector<Vertex> vertices;
+	std::vector <uint32_t> indices;
 	DX11Mesh(){
 		m_vertexbuffer = std::make_shared<DirectX11VertexBuffer>();
 		m_indexbuffer = std::make_shared<DirectX11IndexBuffer>();

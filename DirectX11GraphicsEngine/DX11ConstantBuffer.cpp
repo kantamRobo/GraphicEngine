@@ -1,25 +1,24 @@
 #include "DX11ConstantBuffer.h"
 #include <stdexcept>
 
-void DX11ConstantBuffer::InitConstantBuffer(ID3D11Device* device,int paramsize, void* srcData)
 {
 
-	//ƒ}ƒbƒv‰Â”\‚È’è”ƒoƒbƒtƒ@‚Ìì¬
+	//ãƒãƒƒãƒ—å¯èƒ½ãªå®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	D3D11_BUFFER_DESC desc = {};
 	desc.ByteWidth = paramsize + (paramsize % 16 == 0 ? 0 : 16 - paramsize % 16);
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	//ID3D11Buffer‚ğ’è”ƒoƒbƒtƒ@‚Æ‚µ‚Äg‚¤‚æ‚¤éŒ¾‚µ‚Ä‚¢‚é
-	desc.Usage = D3D11_USAGE_DYNAMIC;				//GPUã‚Å‚Í“Ç‚İ‚İ‚¾‚¯‚ğCPU‚©‚ç‘‚«‚İ‚¾‚¯‚ğ‚Å‚«‚é‚æ‚¤‚ÉéŒ¾‚µ‚Ä‚¢‚é
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	//ID3D11Bufferã‚’å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨ã—ã¦ä½¿ã†ã‚ˆã†å®£è¨€ã—ã¦ã„ã‚‹
+	desc.Usage = D3D11_USAGE_DYNAMIC;				//GPUä¸Šã§ã¯èª­ã¿è¾¼ã¿ã ã‘ã‚’CPUã‹ã‚‰æ›¸ãè¾¼ã¿ã ã‘ã‚’ã§ãã‚‹ã‚ˆã†ã«å®£è¨€ã—ã¦ã„ã‚‹
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	//CPU‚ÆGPUŠÔ‚Ìƒf[ƒ^“]‘—‚Ì‚Ég‚¤\‘¢‘Ì
-	//‚±‚±‚Å‚ÍID3D11Buffer‚Ì‰Šúƒf[ƒ^‚ğİ’è‚·‚é‚½‚ß‚Ég‚Á‚Ä‚¢‚é
+	//CPUã¨GPUé–“ã®ãƒ‡ãƒ¼ã‚¿è»¢é€ã®æ™‚ã«ä½¿ã†æ§‹é€ ä½“
+	//ã“ã“ã§ã¯ID3D11Bufferã®åˆæœŸãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ãŸã‚ã«ä½¿ã£ã¦ã„ã‚‹
 	D3D11_SUBRESOURCE_DATA initData = {};
 	initData.pSysMem = srcData;
 	initData.SysMemPitch = paramsize;
 
 	auto hr = device->CreateBuffer(&desc, &initData, m_constantBuffer.GetAddressOf());
 	if (FAILED(hr)) {
-		throw std::runtime_error("ƒ}ƒbƒv‰Â”\‚È’è”ƒoƒbƒtƒ@‚Ìì¬‚É¸”s");
+		throw std::runtime_error("ãƒãƒƒãƒ—å¯èƒ½ãªå®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆã«å¤±æ•—");
 	}
 
 
