@@ -2,7 +2,7 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include "DX11Texture.h"
-//ƒOƒ‰ƒtƒBƒbƒNƒXƒpƒCƒvƒ‰ƒCƒ“‚ÉŠÖ‚í‚éŠÖ”‚ğˆêŒ³ŠÇ—‚·‚é(“ü—ÍƒAƒZƒ“ƒuƒŠEƒVƒF[ƒ_[Eƒ‰ƒXƒ^ƒ‰ƒCƒUEƒAƒEƒgƒvƒbƒgƒ}[ƒWƒƒ[,‚Ü‚½‚ÍƒRƒ“ƒsƒ…[ƒgƒpƒCƒvƒ‰ƒCƒ“‚ÌÀs‚âA‚»‚ê‚É‚©‚©‚í‚éƒRƒ}ƒ“ƒh)
+//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã«é–¢ã‚ã‚‹é–¢æ•°ã‚’ä¸€å…ƒç®¡ç†ã™ã‚‹(å…¥åŠ›ã‚¢ã‚»ãƒ³ãƒ–ãƒªãƒ»ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ»ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ãƒ»ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆãƒãƒ¼ã‚¸ãƒ£ãƒ¼,ã¾ãŸã¯ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®å®Ÿè¡Œã‚„ã€ãã‚Œã«ã‹ã‹ã‚ã‚‹ã‚³ãƒãƒ³ãƒ‰)
 class DX11RenderContext
 {
 public:
@@ -31,16 +31,7 @@ public:
 	void SetInputLayout(ID3D11InputLayout* layout);
 
 	
-	
-	void ClearRenderTargetView(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv);
 
-	void SetPSSingleSampler(const DX11Texture& texture);
-
-	
-
-	
-	
-	void SetSingleShaderResource(ID3D11ShaderResourceView* srv);
 
 	void SetViewPorts(UINT numviewports, const D3D11_VIEWPORT* viewports);
 	void SetSingleViewPort(const D3D11_VIEWPORT* viewports);
