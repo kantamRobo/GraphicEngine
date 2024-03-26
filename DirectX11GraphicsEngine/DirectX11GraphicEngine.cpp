@@ -1,6 +1,8 @@
 #include "DirectX11GraphicEngine.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
+
+//guwaaa
 HRESULT DirectX11GraphicEngine::CreateDevice()
 {
   
