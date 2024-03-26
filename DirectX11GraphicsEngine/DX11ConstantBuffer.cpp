@@ -1,6 +1,6 @@
 #include "DX11ConstantBuffer.h"
 #include <stdexcept>
-
+//a
 void DX11ConstantBuffer::InitConstantBuffer(DirectX11GraphicEngine* engine,int paramsize, void* srcData)
 {
 
