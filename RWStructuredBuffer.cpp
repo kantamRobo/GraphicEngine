@@ -1,4 +1,14 @@
+
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "GraphicsEngine.h"
+#include "stdafx.h"
+
 #include "RWStructuredBuffer.h"
+
+
+
+
 
 RWStructuredBuffer::~RWStructuredBuffer()
 {
@@ -76,6 +86,10 @@ void RWStructuredBuffer::InitRWStructuredBuffer(const VertexBuffer& vb, bool isU
 	m_isInited = true;
 }
 
+void RWStructuredBuffer::RegistUnorderAccessView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo)
+{
+}
+
 
 void RWStructuredBuffer::InitRWStructuredBuffer(const IndexBuffer& ib, bool isUpdateByCPU)
 {
@@ -115,7 +129,7 @@ void RWStructuredBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE de
 	srvDesc.Buffer.StructureByteStride = m_sizeOfElement;
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	device->CreateShaderResourceView(
-		m_buffersOnGPU[bufferNo],
+		m_buffersOnGPU[bufferNo].Get(),
 		&srvDesc,
 		descriptorHandle
 	);

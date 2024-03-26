@@ -1,10 +1,10 @@
 #pragma once
 
-	class IShaderResource
+	class I11ShaderResource
 	{
 
 	public:
-		virtual ~IShaderResource()
+		virtual ~I11ShaderResource()
 		{
 		}
 		/// <summary>

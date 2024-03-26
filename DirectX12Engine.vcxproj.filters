@@ -13,133 +13,202 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resourceibinding">
-      <UniqueIdentifier>{c7613159-5a57-4928-b5d0-3b4461984e06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rendering">
       <UniqueIdentifier>{5ab41c02-e248-461c-a8d4-e8cee9d2eaff}</UniqueIdentifier>
     </Filter>
     <Filter Include="raytracing">
       <UniqueIdentifier>{c1bc7d06-1881-4e86-8170-03e85808f800}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{cadb85ec-49ae-4f22-86d6-a97886ee8944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{7b4baa0b-6aaf-4298-be08-325149d1fe58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{8439546a-c7ac-4872-b377-b2eafa286302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{6c92d9bc-8f4e-4fe6-b168-3fcae8460c5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\GPUResources">
+      <UniqueIdentifier>{3f4a3dc5-b2bb-401c-8cbe-dfe3354280d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Core">
+      <UniqueIdentifier>{05ce7c0d-6dd3-4f80-981d-6f8286565dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Pipeline">
+      <UniqueIdentifier>{70911658-01fd-4231-8649-527a7f9ebac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Resourcebinding">
+      <UniqueIdentifier>{c7613159-5a57-4928-b5d0-3b4461984e06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Font">
+      <UniqueIdentifier>{23006a1f-85af-4ab4-97f1-3174dce40623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dbg">
+      <UniqueIdentifier>{79dea24b-fe1f-48e4-bbb6-cc0aff4c9797}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectX12Engine.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="IndexBuffer.h">
-      <Filter>Resourceibinding</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="GPUBuffer.h">
-      <Filter>Resourceibinding</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dx12.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="StructuredBuffer.h">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="RWStructuredBuffer.h">
-      <Filter>Resourceibinding</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderContext.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="IShaderResource.h">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="IUnorderAccessResrouce.h">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="DescriptorHeap.h">
-      <Filter>Resourceibinding</Filter>
-    </ClInclude>
-    <ClInclude Include="RootSignature.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="PipelineState.h">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Resourceibinding</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderTarget.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="NullTextureMaps.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationClip.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
-      <Filter>Resourceibinding</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationPlayController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TResourceBank.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshParts.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TkaFile.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClInclude>
     <ClInclude Include="RaytracingWorld.h">
       <Filter>raytracing</Filter>
     </ClInclude>
-    <ClInclude Include="RayTracingInstance.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="RayTracingPSO.h">
       <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingInstance.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="BLASBuffer.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="Raytracing.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="TLASBuffer.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="RaytracingDescriptorHeaps.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationClip.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationPlayController.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX12Engine.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TResourceBank.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Graphics\GPUResources</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Graphics\GPUResources</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine.h">
+      <Filter>Graphics\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="NullTextureMaps.h">
+      <Filter>Graphics\GPUResources</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContext.h">
+      <Filter>Graphics\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RootSignature.h">
+      <Filter>Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniEngine.h">
+      <Filter>Graphics\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshParts.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContext_inline.h">
+      <Filter>Graphics\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Graphics\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RaytracingEngine.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Font</Filter>
+    </ClInclude>
+    <ClInclude Include="FontEngine.h">
+      <Filter>Font</Filter>
+    </ClInclude>
+    <ClInclude Include="RaytracingShaderTable.h">
+      <Filter>raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="MyAssert.h">
+      <Filter>dbg</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="tinygltfExtended.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -147,91 +216,115 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="IndexBuffer.cpp">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="GPUBuffer.cpp">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="StructuredBuffer.cpp">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="RWStructuredBuffer.cpp">
-      <Filter>Resourceibinding</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderContext.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="DescriptorHeap.cpp">
-      <Filter>Resourceibinding</Filter>
-    </ClCompile>
-    <ClCompile Include="RootSignature.cpp">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="PipelineState.cpp">
-      <Filter>Resourceibinding</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Resourceibinding</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderTarget.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="NullTexture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationClip.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="ConstantBuffer.cpp">
-      <Filter>Resourceibinding</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationPlayController.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshParts.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TkaFile.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Graphics\Resourcebinding</Filter>
     </ClCompile>
     <ClCompile Include="RaytracingWorld.cpp">
       <Filter>raytracing</Filter>
     </ClCompile>
-    <ClCompile Include="RayTracingInstance.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="RayTracingPSO.cpp">
       <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracingInstance.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="BLASBuffer.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="TLASBuffer.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="RaytracingDescriptorHeaps.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationClip.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationPlayController.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>Graphics\GPUResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Graphics\GPUResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Graphics\GPUResources</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine.cpp">
+      <Filter>Graphics\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="NullTextureMaps.cpp">
+      <Filter>Graphics\GPUResources</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshParts.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Graphics\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RootSignature.cpp">
+      <Filter>Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderContext.cpp">
+      <Filter>Graphics\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RaytracingEngine.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="RaytracingShaderTable.cpp">
+      <Filter>raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Font</Filter>
+    </ClCompile>
+    <ClCompile Include="FontEngine.cpp">
+      <Filter>Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

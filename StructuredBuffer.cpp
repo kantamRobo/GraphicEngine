@@ -1,3 +1,4 @@
+#include "GraphicsEngine.h"
 #include "StructuredBuffer.h"
 
 StructuredBuffer::~StructuredBuffer()
@@ -26,7 +27,7 @@ void StructuredBuffer::InitStructuredBuffer(int sizeOfElement, int numElement, v
 	auto heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	auto rDesc = CD3DX12_RESOURCE_DESC::Buffer(m_sizeOfElement * m_numElement);
 
-	for (auto& buffer : m_bufferOnGPU)
+	for (auto& buffer : m_buffersOnGPU)
 	{
 		auto hr = device->CreateCommittedResource(
 			&heapProp,
@@ -74,7 +75,7 @@ void StructuredBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE desc
 	srvDesc.Buffer.StructureByteStride = m_sizeOfElement;
 	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	device->CreateShaderResourceView(
-		m_buffersOnGPU[bufferNo],
+		m_buffersOnGPU[bufferNo].Get(),
 		&srvDesc,
 		descriptorHandle
 	);
@@ -85,7 +86,7 @@ void StructuredBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE desc
 Microsoft::WRL::ComPtr<ID3D12Resource> StructuredBuffer::GetD3DResources()
 {
 	auto backbufferIndex = g_graphicsEngine->GetBackBufferIndex();
-	return m_buffersOnGPU[backBufferIndex];
+	return m_buffersOnGPU[backbufferIndex];
 }
 
 void StructuredBuffer::Update(void* data)

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "TResourceBank.h"
+
 class Engine
 {
 
 private:
-	std::unique_ptr<GraphicsEngine> m_graphicsEngine = nullptr;
+	
 	TResourceBank<Shader> m_shaderBank;
 	TResourceBank<Texture> m_textureBank;
 public:
@@ -19,16 +21,11 @@ public:
 
 
 	//バンクからテクスチャを取得
-	Texture* GetTextureFromBank(const char* filePath)
+	std::shared_ptr<Texture> GetTextureFromBank(const char* filePath)
 	{
 		return m_textureBank.Get(filePath);
 	}
 
-	//テクスチャをバンクに登録
-	void RegistTextureToBank(const char* filePath, Texture* texture)
-	{
-	  
-	}
 
 	/// <summary>
 	/// テクスチャをバンクに登録。
@@ -40,11 +37,11 @@ public:
 		m_textureBank.Regist(filePath, texture);
 	}
 
-	Shader* GetShaderFromBank(const char* filePath, const char* entryPointFuncName)
+	std::shared_ptr<Shader> GetShaderFromBank(const char* filePath, const char* entryPointFuncName)
 	{
 		std::string programName = filePath;
 		programName += entryPointFuncName;
-		return m_shaderBank.Get(programName.c_str());
+		return m_shaderBank(programName.c_str());
 	}
 
 	/// <summary>
@@ -61,3 +58,4 @@ public:
 
 };
 
+extern Engine* g_engine = nullptr;

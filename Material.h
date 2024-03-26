@@ -1,55 +1,84 @@
 #pragma once
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include "stdafx.h"
-#include "RenderContext.h"
-#include "Shader.h"
-class Material
-{
+#include <string>
+#include <memory>
+#include "Engine.h"
+#include <GLTFSDK/GLTF.h>
+#include <GLTFSDK/Document.h>
+#include <GLTFSDK/GLTFResourceReader.h>
+#include <GLTFSDK/Deserialize.h>
+#include <GLTFSDK/GLBResourceReader.h>
+#include "TkmFIle.h"
+#include "Texture.h"
+/// <summary>
+/// マテリアル。
+/// </summary>
+class Material {
 public:
-	//assimpのマテリアル情報から初期化
-	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv,
-		UINT offsetInDescriptorsFromTableStartCB,
-		UINT offsetInDescriptorsFromTableStartSRV,
-		D3D12_FILTER samplerFilter,
-		const char* fxfilePath);
+	/// <summary>
+	/// tkmファイルのマテリアル情報から初期化する。
+	/// </summary>
+	/// <param name="tkmMat">tkmマテリアル</param>
+	void InitTexture(const Microsoft::glTF::Document& doc, const TkmFile::SMaterial& tkmMat);
+	/// <summary>
+	/// レンダリングを開始するときに呼び出す関数。
+	/// </summary>
+	/// <param name="rc">レンダリングコンテキスト</param>
+	/// <param name="hasSkin">スキンがあるかどうかのフラグ</param>
+	void BeginRender(RenderContext& rc, int hasSkin);
 
-	//レンダリングを開始するときに呼び出す関数
-
-	void BeginRender(std::shared_ptr<RenderContext> rc, int hasSkin);
-
-	std::shared_ptr<Texture> GetAlbedoMap()
+	/// <summary>
+	/// アルベドマップを取得。
+	/// </summary>
+	/// <returns></returns>
+	Texture& GetAlbedoMap()
 	{
-		return m_albedoMap;
+		return *m_albedoMap;
 	}
-
-	//法線マップを取得
-	std::shared_ptr<Texture> GetNormalMap()
+	/// <summary>
+	/// 法線マップを取得。
+	/// </summary>
+	/// <returns></returns>
+	Texture& GetNormalMap()
 	{
-		return m_normalMap;
+		return *m_normalMap;
 	}
-
-	std::shared_ptr<Texture> GetSpecularMap()
+	/// <summary>
+	/// スペキュラマップを取得。
+	/// </summary>
+	/// <returns></returns>
+	Texture& GetSpecularMap()
 	{
-		return m_specularMap;
+		return *m_specularMap;
 	}
-
-	//反射マップを取得
-
-	std::shared_ptr<Texture> GetReflectionMap()
+	/// <summary>
+	/// 反射マップを取得。
+	/// </summary>
+	/// <returns></returns>
+	Texture& GetReflectionMap()
 	{
-		return m_reflectionMap;
+		return *m_reflectionMap;
 	}
-
-	std::shared_ptr<ConstantBuffer> GetConstantBuffer()
+	/// <summary>
+	/// 屈折マップを取得。
+	/// </summary>
+	/// <returns></returns>
+	Texture& GetRefractionMap()
 	{
-		return 
+		return *m_refractionMap;
 	}
-
+	/// <summary>
+	/// 定数バッファを取得。
+	/// </summary>
+	/// <returns></returns>
+	ConstantBuffer& GetConstantBuffer()
+	{
+		return m_constantBuffer;
+	}
 private:
-
-	void InitPipelineState(const std::array<DXGI_FORMAT, D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT>& colorBufferFormat);
-
+	/// <summary>
+	/// パイプラインステートの初期化。
+	/// </summary>
+	void InitPipelineState(const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat);
 	/// <summary>
 	/// シェーダーの初期化。
 	/// </summary>
@@ -57,46 +86,35 @@ private:
 	/// <param name="vsEntryPointFunc">頂点シェーダーのエントリーポイントの関数名</param>
 	/// <param name="vsEntryPointFunc">スキンありマテリアル用の頂点シェーダーのエントリーポイントの関数名</param>
 	/// <param name="psEntryPointFunc">ピクセルシェーダーのエントリーポイントの関数名</param>
-
-	void InitShaders(const char* fxFilePath,
-		const char* vsEntrypointFunc,
-		const char* vsSkinEntrypointFunc,
+	void InitShaders(
+		const char* fxFilePath,
+		const char* vsEntryPointFunc,
+		const char* vsSkinEntriyPointFunc,
 		const char* psEntryPointFunc);
-
-	//テクスチャを初期化
-
 	
-	void InitFromAssimpMaterial(const aiMaterial* aiMat, int numSrv, int numCbv, const std::array<DXGI_FORMAT, D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT>& colorBufferFormat, UINT offsetInDescriptorsFromTableStartCB, UINT offsetInDescriptorsFromTableStartSRV, D3D12_FILTER samplerFilter, const char* fxfilePath, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc);
-
-	void InitTexture(const aiMaterial* aiMat);
-
 private:
-
+	/// <summary>
+	/// マテリアルパラメータ。
+	/// </summary>
 	struct SMaterialParam {
-		int hasNormalMap;
-		int hasSpecMap;
-
+		int hasNormalMap;	//法線マップを保持しているかどうかのフラグ。
+		int hasSpecMap;		//スペキュラマップを保持しているかどうかのフラグ。
 	};
-	std::shared_ptr<Texture> m_albedoMap;
-	std::shared_ptr<Texture> m_normalMap;
-	std::shared_ptr<Texture> m_specularMap;
-	std::shared_ptr<Texture> m_reflectionMap;
-	std::shared_ptr<Texture> m_refractionMap;
+	Texture* m_albedoMap;						//アルベドマップ。
+	Texture* m_normalMap;						//法線マップ。
+	Texture* m_specularMap;						//スペキュラマップ。
+	Texture* m_reflectionMap;					//リフレクションマップ。
+	Texture* m_refractionMap;					//屈折マップ。
 
-	
 	ConstantBuffer m_constantBuffer;				//定数バッファ。
 	RootSignature m_rootSignature;					//ルートシグネチャ。
 	PipelineState m_nonSkinModelPipelineState;		//スキンなしモデル用のパイプラインステート。
 	PipelineState m_skinModelPipelineState;			//スキンありモデル用のパイプラインステート。
 	PipelineState m_transSkinModelPipelineState;	//スキンありモデル用のパイプラインステート(半透明マテリアル)。
 	PipelineState m_transNonSkinModelPipelineState;	//スキンなしモデル用のパイプラインステート(半透明マテリアル)。
-
-	std::shared_ptr<Shader> m_vsNonSkinModel = nullptr;
-	std::shared_ptr<Shader> m_vs_SkinModel = nullptr;
-	std::shared_ptr<Shader> m_psModel = nullptr;
-	std::shared_ptr<Shader> m_vsSkinModel = nullptr;
-	std::shared_ptr<Shader> m_psModel = nullptr;
-
-
+	Shader* m_vsNonSkinModel = nullptr;				//スキンなしモデル用の頂点シェーダー。
+	Shader* m_vsSkinModel = nullptr;				//スキンありモデル用の頂点シェーダー。
+	Shader* m_psModel = nullptr;					//モデル用のピクセルシェーダー。
 };
+
 

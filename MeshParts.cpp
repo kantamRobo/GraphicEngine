@@ -1,15 +1,18 @@
-#include "MeshParts.h"
-#include "stdafx.h"
-#include "Skeleton.h"
-#include "Material.h"
-#include "IndexBuffer.h"
-#include "Matrix.h"
+
+
+
+
+
 #include "Vector.h"
+
+#include "Material.h"
+#include "RenderContext.h"
+#include "IndexBuffer.h"
+
 #include "DescriptorHeap.h"
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <assimp/Importer.hpp>
 #include <memory>
+#include "MeshParts.h"
+#include "Vertex.h"
 MeshParts::~MeshParts()
 {
 	for (auto& mesh : m_meshs)
@@ -30,7 +33,7 @@ MeshParts::~MeshParts()
 
 }
 
-void MeshParts::InitFromAssimpFile(const aiScene* scene,const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
+void MeshParts::InitFromGltfFile(const aiScene* scene,const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
 {
 	//assimpから頂点をロードしたいが、
 	// 処理が複雑なので調査してからメッシュメモリ確保の
@@ -71,7 +74,7 @@ void MeshParts::BindSkeleton(std::shared_ptr<Skeleton> skeleton)
 {
 	m_skeleton = skeleton;
 	m_boneMatricesStructureBuffer->InitStructuredBuffer(
-		sizeof(Matrix),
+		sizeof(EngineMath::Matrix),
 		m_skeleton->GetNumBones(),
 		m_skeleton->GetBoneMatricesTopAddress()
 		);
@@ -79,7 +82,7 @@ void MeshParts::BindSkeleton(std::shared_ptr<Skeleton> skeleton)
 
 }
 
-void MeshParts::DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj)
+void MeshParts::DrawCommon(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj)
 {
 	//メッシュごとにドロー
 	//プリミティブのトポロジーはトライアングルリストのみ。
@@ -102,7 +105,7 @@ void MeshParts::DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWor
 }
 
 
-void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj)
+void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj)
 {
 	//定数バッファの設定、更新など描画の共通処理を実行する。
 	DrawCommon(rc, g_matIdentity, mView, mProj);
@@ -131,9 +134,9 @@ void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstanc
 
 
 void MeshParts::Draw(std::shared_ptr<RenderContext> rc, 
-	const Matrix& mWorld, 
-	const Matrix& mView,
-	const Matrix& mProj)
+	const EngineMath::Matrix& mWorld, 
+	const EngineMath::Matrix& mView,
+	const EngineMath::Matrix& mProj)
 {
 	//定数バッファの設定、更新など描画の共通処理を実行する。
 	DrawCommon(rc, mWorld, mView, mProj);
@@ -155,7 +158,7 @@ void MeshParts::Draw(std::shared_ptr<RenderContext> rc,
 
 }
 
-void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj)
+void MeshParts::DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj)
 {
 	//定数バッファの設定、更新など描画の共通処理を実行する。
 	DrawCommon(rc, g_matIdentity, mView, mProj);
@@ -192,9 +195,9 @@ void MeshParts::CreateDescriptorHeaps()
 		for (int matNo = 0; matNo < mesh->m_materials.size(); matNo++) {
 
 			//ディスクリプタヒープにディスクリプタを登録していく。
-			m_descriptorHeap->RegistShaderResource(srvNo, mesh->m_materials[matNo]->GetAlbedoMap());			//アルベドマップ。
-			m_descriptorHeap->RegistShaderResource(srvNo + 1, mesh->m_materials[matNo]->GetNormalMap());		//法線マップ。
-			m_descriptorHeap->RegistShaderResource(srvNo + 2, mesh->m_materials[matNo]->GetSpecularMap());		//スペキュラマップ。
+			m_descriptorHeap->RegistShaderResource(srvNo, mesh->m_materials[matNo]->GetAlbedoMap().get());			//アルベドマップ。
+			m_descriptorHeap->RegistShaderResource(srvNo + 1, mesh->m_materials[matNo]->GetNormalMap().get());		//法線マップ。
+			m_descriptorHeap->RegistShaderResource(srvNo + 2, mesh->m_materials[matNo]->GetSpecularMap().get());		//スペキュラマップ。
 			m_descriptorHeap->RegistShaderResource(srvNo + 3, m_boneMatricesStructureBuffer);					//ボーンのストラクチャードバッファ。
 			for (int i = 0; i < MAX_MODEL_EXPAND_SRV; i++) {
 				if (m_expandShaderResourceView[i]) {
@@ -212,14 +215,76 @@ void MeshParts::CreateDescriptorHeaps()
 	m_descriptorHeap->Commit();
 }
 
-void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
+void MeshParts::CreateMeshFromAssimpMesh(const Microsoft::glTF::Document& doc,int meshNo, int& materialNum, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter)
 {
+
+
+
+
+
+	const Microsoft::glTF::Document& acc = {}; 
+	std::shared_ptr<Microsoft::glTF::GLTFResourceReader> reader;
+
+	using namespace Microsoft::glTF;
+	std::vector<Vertex> vertices;
+	std::vector <uint32_t> indices;
+	for (const auto& mesh : acc.meshes.Elements())
+	{
+		for (const auto& meshPrimitives : mesh.primitives)
+		{
+			
+
+			// 頂点位置情報アクセッサの取得
+			auto& idPos = meshPrimitives.GetAttributeAccessorId(ACCESSOR_POSITION);
+			auto& accPos = doc.accessors.Get(idPos);
+			// 法線情報アクセッサの取得
+			auto& idNrm = meshPrimitives.GetAttributeAccessorId(ACCESSOR_NORMAL);
+			auto& accNrm = doc.accessors.Get(idNrm);
+			// テクスチャ座標情報アクセッサの取得
+			auto& idUV = meshPrimitives.GetAttributeAccessorId(ACCESSOR_TEXCOORD_0);
+			auto& accUV = doc.accessors.Get(idUV);
+			// 頂点インデックス用アクセッサの取得
+			auto& idIndex = meshPrimitives.indicesAccessorId;
+			auto& accIndex = doc.accessors.Get(idIndex);
+
+			// アクセッサからデータ列を取得
+			auto vertPos = reader->ReadBinaryData<float>(doc, accPos);
+			auto vertNrm = reader->ReadBinaryData<float>(doc, accNrm);
+			auto vertUV = reader->ReadBinaryData<float>(doc, accUV);
+			int numVertex = accPos.count;
+
+			for (uint32_t i = 0; i < numVertex; ++i)
+			{
+				// 頂点データの構築
+				int vid0 = 3 * i, vid1 = 3 * i + 1, vid2 = 3 * i + 2;
+				int tid0 = 2 * i, tid1 = 2 * i + 1;
+				vertices.emplace_back(
+					Vertex{
+					  XMFLOAT3(vertPos[vid0], vertPos[vid1],vertPos[vid2]),
+					  XMFLOAT3(vertNrm[vid0], vertNrm[vid1],vertNrm[vid2]),
+					  XMFLOAT2(vertUV[tid0],vertUV[tid1])
+					}
+				);
+			}
+
+			//todo indicesをgltf用に
+	 // インデックスデータ
+			indices = reader->ReadBinaryData<uint32_t>(doc, accIndex);
+
+		}
+	}
+	
+
+
+
+
+
 	//1. 頂点バッファを作成。
-	int numVertex = (int)tkmMesh.vertexBuffer.size();
-	int vertexStride = sizeof(TkmFile::SVertex);
-	auto mesh = new SMesh;
+	
+	int vertexStride = sizeof(Vertex);
+	auto mesh = new SMesh;//しおり。このMeshもgltf用に改修する。
 	mesh->skinFlags.reserve(tkmMesh.materials.size());
-	mesh->m_vertexBuffer.Init(vertexStride * numVertex, vertexStride);
+	mesh->m_vertexBuffer.InitVertexBuffer(vertexStride *vertices.size(), vertexStride);
 	mesh->m_vertexBuffer.Copy((void*)&tkmMesh.vertexBuffer[0]);
 
 	auto SetSkinFlag = [&](int index) {
@@ -238,7 +303,7 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 		mesh->m_indexBufferArray.reserve(tkmMesh.indexBuffer16Array.size());
 		for (auto& tkIb : tkmMesh.indexBuffer16Array) {
 			auto ib = new IndexBuffer;
-			ib->Init(static_cast<int>(tkIb.indices.size()) * 2, 2);
+			ib->InitIndexBuffer(static_cast<int>(tkIb.indices.size()) * 2, 2);
 			ib->Copy((uint16_t*)&tkIb.indices.at(0));
 
 			//スキンがあるかどうかを設定する。
@@ -252,7 +317,7 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 		mesh->m_indexBufferArray.reserve(tkmMesh.indexBuffer32Array.size());
 		for (auto& tkIb : tkmMesh.indexBuffer32Array) {
 			auto ib = new IndexBuffer;
-			ib->Init(static_cast<int>(tkIb.indices.size()) * 4, 4);
+			ib->InitIndexBuffer(static_cast<int>(tkIb.indices.size()) * 4, 4);
 			ib->Copy((uint32_t*)&tkIb.indices.at(0));
 
 			//スキンがあるかどうかを設定する。
@@ -285,3 +350,5 @@ void MeshParts::CreateMeshFromAssimpMesh(int meshNo, int& materialNum, const cha
 
 	m_meshs[meshNo] = mesh;
 }
+
+

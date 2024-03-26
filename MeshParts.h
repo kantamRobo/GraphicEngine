@@ -3,26 +3,31 @@
 /// </summary>
 
 #pragma once
-
-
-#include "StructuredBuffer.h"
-
+class ConstantBuffer;
 class RenderContext;
 class Skeleton;
-class Material;
+class SMaterial;
+class IndexBuffer;
+class VertexBuffer;
 class IShaderResource;
 
+class DescriptorHeap;
+#include "StructuredBuffer.h"
+#include "ConstantBuffer.h"
+#include "VertexBuffer.h"
+#include "Skeleton.h"
+#include "Matrix.h"
 
 
 const int MAX_MODEL_EXPAND_SRV = 6;	//拡張SRVの最大数。
-const int MAX_RENDERING_TARGET = 8;
+
 /// <summary>
 /// メッシュ
 /// </summary>
 struct SMesh {
 	VertexBuffer m_vertexBuffer;						//頂点バッファ。
 	std::vector< std::shared_ptr<IndexBuffer> >		m_indexBufferArray;	//インデックスバッファ。
-	std::vector < std::shared_ptr< Material> > m_materials;			//マテリアル。
+	std::vector < std::shared_ptr< SMaterial> > m_materials;			//マテリアル。
 	std::vector<int>				skinFlags;				//スキンを持っているかどうかのフラグ。
 };
 
@@ -35,31 +40,10 @@ public:
 	/// デストラクタ。
 	/// </summary>
 	~MeshParts();
-	void InitFromAssimpFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
-	/// <summary>
-	/// tkmファイルから初期化
-	/// </summary>
-	/// <param name="tkmFile">tkmファイル。</param>
-	/// /// <param name="fxFilePath">fxファイルのファイルパス</param>
-	/// <param name="vsEntryPointFunc">頂点シェーダーのエントリーポイントの関数名</param>
-	/// <param name="vsSkinEntryPointFunc">スキンありマテリアル用の頂点シェーダーのエントリーポイントの関数名</param>
-	/// <param name="psEntryPointFunc">ピクセルシェーダーのエントリーポイントの関数名</param>
-	/// <param name="colorBufferFormat">このモデルをレンダリングするカラーバッファのフォーマット</param>
-	/// <param name="samplerFilter">サンプラフィルタ</param>
-	void InitFromAssimpFile(
-		const aiScene* scene,
-		const char* fxFilePath,
-		const char* vsEntryPointFunc,
-		const char* vsSkinEntryPointFunc,
-		const char* psEntryPointFunc,
-		void* expandData,
-		int expandDataSize,
-		const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView,
-		const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat,
-		D3D12_FILTER samplerFilter
-	);
+	void InitFromGltfFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<IShaderResource*, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
 	
-	void DrawCommon(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+	
+	void DrawCommon(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
 	/// 描画。
 	/// </summary>
@@ -69,19 +53,10 @@ public:
 	/// <param name="mProj">プロジェクション行列</param>
 	/// <param name="light">ライト</param>
 	
-	void Draw(std::shared_ptr<RenderContext> rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
+	void Draw(std::shared_ptr<RenderContext> rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 
-	void InitFromAssimpFile(const aiScene* scene, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, void* expandData, int expandDataSize, const std::array<std::shared_ptr<IShaderResource>, MAX_MODEL_EXPAND_SRV>& expandShaderResourceView, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
-
-	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
-	/// <summary>
-	/// インスタンシング描画
-	/// </summary>
-	/// <param name="rc">レンダリングコンテキスト</param>
-	/// <param name="numInstance">インスタンス数</param>
-	/// <param name="mView">ビュー行列</param>
-	/// <param name="mProj">プロジェクション行列</param>
-	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const Matrix& mView, const Matrix& mProj);
+	
+	void DrawInstancing(std::shared_ptr<RenderContext> rc, int numInstance, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
 	/// <summary>
 	/// スケルトンを関連付ける。
 	/// </summary>
@@ -97,16 +72,12 @@ public:
 			queryFunc(*mesh);
 		}
 	}
-	void QueryMeshAndDescriptorHeap(std::function<void(const SMesh& mesh, const DescriptorHeap& ds)> queryFunc)
-	{
-		for (int i = 0; i < m_meshs.size(); i++) {
-			queryFunc(*m_meshs[i], m_descriptorHeap);
-		}
-	}
+	
 	/// <summary>
 	/// ディスクリプタヒープを作成。
 	/// </summary>
 	void CreateDescriptorHeaps();
+	void CreateMeshFromAssimpMesh(const Microsoft::glTF::Document& doc, int meshNo, int& materialNum, const char* fxFilePath, const char* vsEntryPointFunc, const char* vsSkinEntryPointFunc, const char* psEntryPointFunc, const std::array<DXGI_FORMAT, MAX_RENDERING_TARGET>& colorBufferFormat, D3D12_FILTER samplerFilter);
 private:
 	/// <summary>
 	/// tkmメッシュからメッシュを作成。
@@ -137,8 +108,8 @@ private:
 	/// <param name="mWorld">ワールド行列</param>
 	/// <param name="mView">ビュー行列</param>
 	/// <param name="mProj">プロジェクション行列</param>
-	void DrawCommon(RenderContext& rc, const Matrix& mWorld, const Matrix& mView, const Matrix& mProj);
-
+	void DrawCommon(RenderContext& rc, const EngineMath::Matrix& mWorld, const EngineMath::Matrix& mView, const EngineMath::Matrix& mProj);
+	
 private:
 	//拡張SRVが設定されるレジスタの開始番号。
 	const int EXPAND_SRV_REG__START_NO = 10;
@@ -153,9 +124,9 @@ private:
 	/// この構造体を変更したら、SimpleModel.fxのCBも変更するように。
 	/// </remarks>
 	struct SConstantBuffer {
-		Matrix mWorld;		//ワールド行列。
-		Matrix mView;		//ビュー行列。
-		Matrix mProj;		//プロジェクション行列。
+		EngineMath::Matrix mWorld;		//ワールド行列。
+		EngineMath::Matrix mView;		//ビュー行列。
+		EngineMath::Matrix mProj;		//プロジェクション行列。
 	};
 	ConstantBuffer m_commonConstantBuffer;					//メッシュ共通の定数バッファ。
 	ConstantBuffer m_expandConstantBuffer;					//ユーザー拡張用の定数バッファ

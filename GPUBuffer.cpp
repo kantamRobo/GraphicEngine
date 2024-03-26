@@ -1,3 +1,5 @@
+#include "stdafx.h"
+#include "GraphicsEngine.h"
 #include "GPUBuffer.h"
 
 
@@ -15,7 +17,7 @@ void GPUBuffer::InitBuffer(D3D12_RESOURCE_DESC desc)
 	};
 
 
-	auto d3dDevice =  g_graphicEngine->GetD3DDevice();
+	auto d3dDevice =  g_graphicsEngine->GetD3DDevice();
 
 	d3dDevice->CreateCommittedResource(
 		&kDefaultHeapProps,
@@ -44,7 +46,7 @@ void GPUBuffer::RegistUnorderAccessView(D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle, i
 
 	auto d3dDevice = g_graphicsEngine->GetD3DDevice();
 	d3dDevice->CreateUnorderedAccessView(
-		m_buffer,
+		m_buffer.Get(),
 		nullptr,
 		&uavDesc,
 		cpuHandle
@@ -66,7 +68,7 @@ void GPUBuffer::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorH
 	}
 	auto d3dDevice = g_graphicsEngine->GetD3DDevice();
 	d3dDevice->CreateShaderResourceView(
-		m_buffer,
+		m_buffer.Get(),
 		nullptr,
 		&srvDesc,
 		descriptorHandle

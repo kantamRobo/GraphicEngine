@@ -1,15 +1,18 @@
 #pragma once
+#include "Matrix.h"
 #include <list>
 #include <functional>
 #include <vector>
 #include <memory>
 #include <WinUser.h>
+
+#include <string>
 class Bone {
 public:
 	//コンストラクタ
 	Bone(const wchar_t* boneName,
-		const Matrix& bindPose,
-		const Matrix& invBindPose,
+		const EngineMath::Matrix& bindPose,
+		const EngineMath::Matrix& invBindPose,
 		int parentBoneNo,
 		int boneId) :
 		m_boneName(boneName),
@@ -22,31 +25,31 @@ public:
 
 	}
 		
-	void SetLocalMatrix(const Matrix& m)
+	void SetLocalMatrix(const EngineMath::Matrix& m)
 	{
 		m_localMatrix = m;
 	}
 
 	//ローカル行列を取得
-	const Matrix& GetLocalMatrix()const
+	const EngineMath::Matrix& GetLocalMatrix()const
 	{
 		return m_localMatrix;
 
 	}
 	//ワールド行列を取得
-	const Matrix& GetWorldMatrix()const
+	const EngineMath::Matrix& GetWorldMatrix()const
 	{
 		return m_worldMatrix;
 	}
 
 	//バインドポーズの行列を取得
-	const Matrix& GetBindPoseMatrix()const
+	const EngineMath::Matrix& GetBindPoseMatrix()const
 	{
 		return m_bindPose;
 	}
 
 	//バインドポーズの逆行列を取得
-	const Matrix& GetInvBindPoseMatrix()const
+	const EngineMath::Matrix& GetInvBindPoseMatrix()const
 	{
 		return m_invBindPose;
 
@@ -79,7 +82,7 @@ public:
 		return m_children;
 	}
 
-	const Matrix& GetOffsetLocalMatrix()const
+	const EngineMath::Matrix& GetOffsetLocalMatrix()const
 	{
 		return m_offsetLocalMatrix;
 	}
@@ -97,6 +100,15 @@ public:
 	}
 
 
+	//(しおり)
+	void BuildBoneMatrices()
+	{
+
+
+
+
+	}
+
 /*!
 	*@brief	名前の取得。
 	*/
@@ -110,21 +122,22 @@ const wchar_t* GetName() const
 *@param[out]	rot			回転量の格納先。
 *@param[out]	scale		拡大率の格納先。
 */
-void CalcWorldTRS(Vector3& trans, Quaternion& rot, Vector3& scale);
+void CalcWorldTRS(EngineMath::Vector3& trans, EngineMath::Quaternion& rot, EngineMath::Vector3& scale);
 private:
 	std::wstring	m_boneName;
 	int		     m_parentBoneNo = -1;
 	int			 m_boneId = -1;
-	Matrix       m_bindPose;
-	Matrix       m_invBindPose;
-	Matrix       m_localMatrix;
-	Matrix       m_worldMatrix;
-	Matrix       m_offsetMatrix;
-	Matrix			m_offsetLocalMatrix;
-	Vector3      m_position;
-	Vector3      m_scale;
-	Quaternion   m_rotation;
+	EngineMath::Matrix       m_bindPose;
+	EngineMath::Matrix       m_invBindPose;
+	EngineMath::Matrix       m_localMatrix;
+	EngineMath::Matrix       m_worldMatrix;
+	EngineMath::Matrix       m_offsetMatrix;
+	EngineMath::Matrix			m_offsetLocalMatrix;
+	EngineMath::Vector3      m_position;
+	EngineMath::Vector3      m_scale;
+	EngineMath::Quaternion   m_rotation;
 	std::list<Bone*> m_children;
+	TksFile m_tksFile;
 };
 
 class Skeleton
@@ -136,7 +149,7 @@ public:
 	~Skeleton();
 
 	//ボーンのローカル行列を設定
-	void SetBoneLocalMatrix(int boneNo, const Matrix& m)
+	void SetBoneLocalMatrix(int boneNo, const EngineMath::Matrix& m)
 	{
 		if (boneNo > (int)m_bones.size() - 1)
 		{
@@ -192,7 +205,7 @@ public:
 	/// ボーン行列の先頭アドレスを取得。
 	/// </summary>
 	/// <returns></returns>
-	Matrix* GetBoneMatricesTopAddress() const
+	EngineMath::Matrix* GetBoneMatricesTopAddress() const
 	{
 		return m_boneMatrixs.get();
 	}
@@ -207,19 +220,19 @@ public:
 
 public:
 	//更新
-	void Update(const Matrix& mWorld);
+	void Update(const EngineMath::Matrix& mWorld);
 
 	//ボーンのワールド行列の更新関数
 
-	static void UpdateBoneWorldMatrix(Bone& bone, const Matrix& parentMatrix);
+	static void UpdateBoneWorldMatrix(Bone& bone, const EngineMath::Matrix& parentMatrix);
 
 	private:
 		static const int BONE_MAX = 512;
 		using BonePtr = std::unique_ptr<Bone>;
 		std::vector<BonePtr> m_bones;
-		std::unique_ptr<Matrix[]>	m_boneMatrixs;
+		std::unique_ptr<EngineMath::Matrix[]>	m_boneMatrixs;
 		bool m_isInited = false;
 		bool m_isPlayAnimation = false;
+		
 	};
 
-}

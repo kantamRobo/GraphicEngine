@@ -1,25 +1,38 @@
 #pragma once
+class TLASBuffer;
+class BLASBuffer;
 class Model;
 class RenderContext;
+#include "Matrix.h"
+#include "Vector.h"
+#include "TLASBuffer.h"
+#include "BLASBuffer.h"
 #include <functional>
+#include <memory>
+
+
 namespace raytracing {
+	
 	class World
 	{
-
+		
 		//レイトレワールド
 	public:
 		//ジオメトリを登録
-		void RegistGeometry(std::shared_ptr<Model> model);
+	
+		void RegistGeometry(Model& model);
+
+		
 
 		//ジオメトリの登録を確定
-		void CommitRegistGeometry(std::shared_ptr<RenderContext> rc);
-
-		//レイトレワールドのインスタンスに対してクエリを行う
-
-		void QueryInstances(std::function<void(Instance&)> queryfunc)const
+		void CommitRegistGeometry(RenderContext& rc);
+		/// <summary>
+		/// レイトレワールドのインスタンスに対してクエリを行う。
+		/// </summary>
+		/// <param name="queryFunc"></param>
+		void QueryInstances(std::function<void(Instance&)> queryFunc) const
 		{
-			for (auto& instance : m_instances)
-			{
+			for (auto& instance : m_instances) {
 				queryFunc(*instance);
 			}
 		}
@@ -31,15 +44,14 @@ namespace raytracing {
 		}
 
 		//BLASバッファーを取得
-		const std::shared_ptr<BLASBuffer> GetBLASBuffer()
+		const BLASBuffer& GetBLASBuffer()
 		{
 
 			return m_blasBuffer;
 		}
 
 		//TLASバッファーを取得。
-
-		const std::shared_ptr<TLASBuffer> GetTLASBuffer()const
+        const TLASBuffer& GetTLASBuffer()const
 		{
 			return m_topLevelASBuffers;
 		}
@@ -49,8 +61,8 @@ namespace raytracing {
 		//カメラ
 
 		struct Camera {
-			Matrix mRot;//回転行列
-			Vector3 pos;//視点
+			EngineMath::Matrix mRot;//回転行列
+			EngineMath::Vector3 pos;//視点
 			float aspect;//アスペクト比
 			float fFar;//遠平面
 			float fNear;//近平面

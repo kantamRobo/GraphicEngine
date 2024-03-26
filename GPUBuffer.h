@@ -1,7 +1,8 @@
 #pragma once
-#include "stdafx.h"
+
 class GPUBuffer
 {
+public:
 	~GPUBuffer()
 	{
 		if (m_buffer != nullptr)

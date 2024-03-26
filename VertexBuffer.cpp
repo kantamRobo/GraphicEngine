@@ -1,5 +1,10 @@
-#include "VertexBuffer.h"
+
 #include "stdafx.h"
+#include <wrl.h>
+#include <d3d12.h>
+#include "GraphicsEngine.h"
+#include "VertexBuffer.h"
+
 VertexBuffer::~VertexBuffer()
 {
 	if (m_vertexBuffer)
@@ -14,7 +19,7 @@ void VertexBuffer::InitVertexBuffer(int size, int stride)
 	auto heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	auto rDesc = CD3DX12_RESOURCE_DESC::Buffer(size);
 
-	d3dDevice->CreateCommitedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rDesc, D3D12_RESOURCE_STATE_GENERIC_READ
+	d3dDevice->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &rDesc, D3D12_RESOURCE_STATE_GENERIC_READ
 		, nullptr,
 		IID_PPV_ARGS(&m_vertexBuffer));
 

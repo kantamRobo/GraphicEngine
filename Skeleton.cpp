@@ -1,15 +1,15 @@
-#include "Skeleton.h"
-#include "Matrix.h"
-#include "Vector.h"
 
-void Skeleton::Update(const Matrix& mWorld)
+#include "Vector.h"
+#include "Skeleton.h"
+
+void Skeleton::Update(const EngineMath::Matrix& mWorld)
 {
 }
 
-void Skeleton::UpdateBoneWorldMatrix(Bone& bone, const Matrix& parentMatrix)
+void Skeleton::UpdateBoneWorldMatrix(Bone& bone, const EngineMath::Matrix& parentMatrix)
 {
-	Matrix mBoneWorld;
-	Matrix localMatrix = bone.GetLocalMatrix();
+	EngineMath::Matrix mBoneWorld;
+	EngineMath::Matrix localMatrix = bone.GetLocalMatrix();
 	mBoneWorld = localMatrix * parentMatrix;
 
 	bone.SetWorldMatrix(mBoneWorld);
@@ -18,9 +18,9 @@ void Skeleton::UpdateBoneWorldMatrix(Bone& bone, const Matrix& parentMatrix)
 	}
 }
 
-void CalcWorldTRS(Vector3& trans, Quaternion& rot, Vector3& scale)
+void CalcWorldTRS(EngineMath::Vector3& trans, EngineMath::Quaternion& rot, EngineMath::Vector3& scale)
 {
-	Matrix mWorld = m_worldMatrix;
+	EngineMath::Matrix mWorld = m_worldMatrix;
 	//行列から拡大率を取得する。
 	scale.x = mWorld.v[0].Length();
 	scale.y = mWorld.v[1].Length();
@@ -44,7 +44,7 @@ void Skeleton::BuildBoneMatrices()
 {
 	m_tksFile.QueryBone([&](TksFile::SBone& tksBone) {
 		//バインドポーズ。
-		Matrix bindPoseMatrix;
+		EngineMath::Matrix bindPoseMatrix;
 		memcpy(bindPoseMatrix.m[0], &tksBone.bindPose[0], sizeof(tksBone.bindPose[0]));
 		memcpy(bindPoseMatrix.m[1], &tksBone.bindPose[1], sizeof(tksBone.bindPose[1]));
 		memcpy(bindPoseMatrix.m[2], &tksBone.bindPose[2], sizeof(tksBone.bindPose[2]));
@@ -55,7 +55,7 @@ void Skeleton::BuildBoneMatrices()
 		bindPoseMatrix.m[3][3] = 1.0f;
 
 		//バインドポーズの逆行列。
-		Matrix invBindPoseMatrix;
+		EngineMath::Matrix invBindPoseMatrix;
 		memcpy(invBindPoseMatrix.m[0], &tksBone.invBindPose[0], sizeof(tksBone.invBindPose[0]));
 		memcpy(invBindPoseMatrix.m[1], &tksBone.invBindPose[1], sizeof(tksBone.invBindPose[1]));
 		memcpy(invBindPoseMatrix.m[2], &tksBone.invBindPose[2], sizeof(tksBone.invBindPose[2]));
@@ -91,8 +91,8 @@ void Skeleton::BuildBoneMatrices()
 		if (bone->GetParentBoneNo() != -1) {
 			m_bones.at(bone->GetParentBoneNo())->AddChild(bone.get());
 			//ローカルマトリクスを計算。
-			const Matrix& parentMatrix = m_bones.at(bone->GetParentBoneNo())->GetInvBindPoseMatrix();
-			Matrix localMatrix;
+			const EngineMath::Matrix& parentMatrix = m_bones.at(bone->GetParentBoneNo())->GetInvBindPoseMatrix();
+			EngineMath::Matrix localMatrix;
 			localMatrix = bone->GetBindPoseMatrix() * parentMatrix;
 			bone->SetLocalMatrix(localMatrix);
 		}
@@ -103,7 +103,7 @@ void Skeleton::BuildBoneMatrices()
 
 
 	//ボーン行列を確保
-	m_boneMatrixs = std::make_unique<Matrix[]>(m_bones.size());
+	m_boneMatrixs = std::make_unique<EngineMath::Matrix[]>(m_bones.size());
 	m_isInited = true;
 
 }

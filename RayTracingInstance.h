@@ -3,6 +3,7 @@
 class Material;
 #include <atlbase.h>
 #include "RWStructuredBuffer.h"
+#include <memory>
 namespace raytracing {
 	using ID3D12DescriptorHeapPtr = CComPtr<ID3D12DescriptorHeap>;
 	struct Instance {

@@ -3,9 +3,10 @@
 */
 
 #pragma once
-#include <SimpleMath.h>
+
+#include "Matrix.h"
 #include "Math.h"
-using namespace DirectX::SimpleMath;
+#include <string.h>
 /// <summary>
 /// カメラクラス。
 /// </summary>
@@ -26,13 +27,13 @@ public:
 	/// 注視点を原点としてカメラを回転させる。
 	/// </summary>
 	/// <param name="qRot">回転させるクォータニオン</param>
-	void RotateOriginTarget(const Quaternion& qRot);
+	void RotateOriginTarget(const EngineMath::Quaternion& qRot);
 
 	/// <summary>
 	/// カメラを動かす。
 	/// </summary>
 	/// <param name="move">動かす量</param>
-	void Move(const Vector3& move)
+	void Move(const EngineMath::Vector3& move)
 	{
 		m_position += move;
 		m_target += move;
@@ -42,7 +43,7 @@ public:
 	/// 注視点を動かす。
 	/// </summary>
 	/// <param name="move">移動量</param>
-	void MoveTarget(const Vector3& move)
+	void MoveTarget(const EngineMath::Vector3& move)
 	{
 		m_target += move;
 		m_isDirty = true;
@@ -51,7 +52,7 @@ public:
 	/// 視点を動かす。
 	/// </summary>
 	/// <param name="move"></param>
-	void MovePosition(const Vector3& move)
+	void MovePosition(const EngineMath::Vector3& move)
 	{
 		m_position += move;
 		m_isDirty = true;
@@ -83,7 +84,7 @@ public:
 	/// <summary>
 	/// カメラの座標を設定する。
 	/// </summary>
-	void SetPosition(const Vector3& pos)
+	void SetPosition(const EngineMath::Vector3& pos)
 	{
 		m_position = pos;
 		m_isDirty = true;
@@ -95,7 +96,7 @@ public:
 	/// <summary>
 	/// カメラの座標を取得。
 	/// </summary>
-	const Vector3& GetPosition() const
+	const EngineMath::Vector3& GetPosition() const
 	{
 		return m_position;
 	}
@@ -106,7 +107,7 @@ public:
 	{
 		SetTarget({ x, y, z });
 	}
-	void SetTarget(const Vector3& target)
+	void SetTarget(const EngineMath::Vector3& target)
 	{
 		m_target = target;
 		m_isDirty = true;
@@ -114,14 +115,14 @@ public:
 	/// <summary>
 	/// 注視点を取得。
 	/// </summary>
-	const Vector3& GetTarget() const
+	const EngineMath::Vector3& GetTarget() const
 	{
 		return m_target;
 	}
 	/// <summary>
 	/// カメラの上方向を設定。
 	/// </summary>
-	void SetUp(const Vector3& up)
+	void SetUp(const EngineMath::Vector3& up)
 	{
 		m_up = up;
 		m_up.Normalize();
@@ -133,7 +134,7 @@ public:
 	/// <summary>
 	/// カメラの上方向を取得。
 	/// </summary>
-	const Vector3& GetUp() const
+	const EngineMath::Vector3& GetUp() const
 	{
 		return m_up;
 	}
@@ -141,7 +142,7 @@ public:
 	/// <summary>
 	/// ビュー行列の逆行列を取得。
 	/// </summary>
-	const Matrix& GetViewMatrixInv()
+	const EngineMath::Matrix& GetViewMatrixInv()
 	{
 		if (m_isDirty) {
 			//更新する必要がある。
@@ -152,7 +153,7 @@ public:
 	/// <summary>
 	/// ビュー行列を取得。
 	/// </summary>
-	const Matrix& GetViewMatrix()
+	const EngineMath::Matrix& GetViewMatrix()
 	{
 		if (m_isDirty) {
 			//更新する必要がある。
@@ -163,7 +164,7 @@ public:
 	/// <summary>
 	/// プロジェクション行列を取得。
 	/// </summary>
-	const Matrix& GetProjectionMatrix()
+	const EngineMath::Matrix& GetProjectionMatrix()
 	{
 		if (m_isDirty) {
 			//更新する必要がある。
@@ -174,7 +175,7 @@ public:
 	/// <summary>
 	/// ビュー×プロジェクション行列を取得。
 	/// </summary>
-	const Matrix& GetViewProjectionMatrix()
+	const EngineMath::Matrix& GetViewProjectionMatrix()
 	{
 		if (m_isDirty) {
 			//更新する必要がある。
@@ -185,7 +186,7 @@ public:
 	/// <summary>
 	/// カメラの回転行列を取得。
 	/// </summary>
-	const Matrix& GetCameraRotation()
+	const EngineMath::Matrix& GetCameraRotation()
 	{
 		if (m_isDirty) {
 			//更新する必要がある。
@@ -301,7 +302,7 @@ public:
 	/// <summary>
 	/// カメラの前方向を取得。
 	/// </summary>
-	const Vector3& GetForward() const
+	const EngineMath::Vector3& GetForward() const
 	{
 		return m_forward;
 	}
@@ -309,7 +310,7 @@ public:
 	/// カメラの右方向を取得。
 	/// </summary>
 
-	const Vector3& GetRight() const
+	const EngineMath::Vector3& GetRight() const
 	{
 		return m_right;
 	}
@@ -338,20 +339,20 @@ public:
 	/// </remarks>
 	/// <param name="screenPos">スクリーン座標の格納先</param>
 	/// <param name="worldPos">ワールド座標</param>
-	void CalcScreenPositionFromWorldPosition(Vector2& screenPos, const Vector3& worldPos) const;
+	void CalcScreenPositionFromWorldPosition(EngineMath::Vector2& screenPos, const EngineMath::Vector3& worldPos) const;
 
 protected:
 	float		m_targetToPositionLen = 1.0f;			//注視点と視点まで距離。
-	Vector3		m_position = { 0.0f, 0.0f, 1.0f };		//カメラ位置。
-	Vector3		m_up = g_vec3Up;						//カメラの上方向。
-	Vector3		m_target;								//カメラの中止点。
-	Matrix		m_viewMatrix;							//ビュー行列。
-	Matrix		m_projectionMatrix;						//プロジェクション行列。
-	Matrix		m_viewProjectionMatrix;					//ビュープロジェクション行列。
-	Matrix		m_viewMatrixInv;						//ビュー行列の逆行列。
-	Matrix		m_cameraRotation;						//カメラの回転行列。
-	Vector3		m_forward = g_vec3Front;				//カメラの前方。
-	Vector3		m_right = g_vec3Right;					//カメラの右。
+	EngineMath::Vector3		m_position = { 0.0f, 0.0f, 1.0f };		//カメラ位置。
+	EngineMath::Vector3		m_up = EngineMath::g_vec3Up;						//カメラの上方向。
+	EngineMath::Vector3		m_target;								//カメラの中止点。
+	EngineMath::Matrix		m_viewMatrix;							//ビュー行列。
+	EngineMath::Matrix		m_projectionMatrix;						//プロジェクション行列。
+	EngineMath::Matrix		m_viewProjectionMatrix;					//ビュープロジェクション行列。
+	EngineMath::Matrix		m_viewMatrixInv;						//ビュー行列の逆行列。
+	EngineMath::Matrix		m_cameraRotation;						//カメラの回転行列。
+	EngineMath::Vector3		m_forward = EngineMath::g_vec3Front;				//カメラの前方。
+	EngineMath::Vector3		m_right = EngineMath::g_vec3Right;					//カメラの右。
 	float		m_near = 1.0f;							//近平面。
 	float		m_far = 5000.0f;						//遠平面。
 	float		m_viewAngle = Math::DegToRad(60.0f);	//画角(ラジアン)。

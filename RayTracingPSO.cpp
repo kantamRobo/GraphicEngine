@@ -1,7 +1,10 @@
 #include "stdafx.h"
-#include "RaytracingPSO.h"
 #include "RaytracingDescriptorHeaps.h"
-using namespace raytracing::PSO;
+#include "Shader.h"
+#include "Raytracing.h"
+#include "GraphicsEngine.h"
+#include "RaytracingPSO.h"
+using namespace raytracing;
 
 namespace raytracing {
 	namespace {
@@ -12,20 +15,20 @@ namespace raytracing {
 	
 		ID3D12RootSignaturePtr CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& desc, const wchar_t* name)
 		{
-			auto d3dDevice = g_graphicEngine->GetD3DDevice();
+			auto d3dDevice = g_graphicsEngine->GetD3DDevice();
 
 			ID3DBlobPtr pSigBlob;
 			ID3DBlobPtr pErrorBlob;
-			HRESULT hr = D3D12SerializeRootSignature(&desc, D3D_ROOT_SIGNATURE_VERSION_1_1, , &pSigBlob, &pErrorBlob);
+			HRESULT hr = D3D12SerializeRootSignature(&desc, D3D_ROOT_SIGNATURE_VERSION_1_1, &pSigBlob, &pErrorBlob);
 
 			if (FAILED(hr))
 			{
-				MessageBoxA(nullptr, (char*)pErrorBlob->GetBufferPointer(), , "エラー", MB_OK);
+				MessageBoxA(nullptr, (char*)pErrorBlob->GetBufferPointer(), "エラー", MB_OK);
 				std::abort();
 
 			}
 
-			ID3D12RootSinagurePtr pRootSig;
+			ID3D12RootSignaturePtr pRootSig;
 			d3dDevice->CreateRootSignature(0, pSigBlob);
 			pRootSig->SetName(name);
 			return pRootSig;
@@ -44,7 +47,7 @@ namespace raytracing {
 
 			}
 
-			void InitLRsignatureSubobject() {
+			void InitLRsignatureSubobject(const D3D12_ROOT_SIGNATURE_DESC& desc, const wchar_t* name) {
 				pRootSig = CreateRootSignature(desc, name);
 				pInterface = pRootSig;
 				subobject.pDesc = &pInterface;
@@ -215,7 +218,7 @@ namespace raytracing {
 	}
 
 
-	void PSO::InitRTPSO(const std::shared_ptr<DescriptorHeaps>descriptorHeaps)
+	void PSO::InitRTPSO(DescriptorHeaps& descriptorHeaps)
 	{
 		m_srvUavCbvHeap = &descriptorHeaps.GetSrvUavCbvDescriptorHeap();
 		using namespace BuildSubObjectHelper;
@@ -259,15 +262,15 @@ namespace raytracing {
 			LocalRootSignatureSubobject& rsSO, ExportAssociationSubobject& ass, ELocalRootSignature eRS, const WCHAR* exportNames[]
 			) {
 				if (eRS == eLocalRootSignature_Raygen) {
-					rsSO.Init(CreateRayGenRootSignatureesc().desc, L"RayGenRootSignature");
+					rsSO.InitLRsignatureSubobject(CreateRayGenRootSignatureesc().desc, L"RayGenRootSignature");
 				}
 				if (eRS == eLocalRootSignature_PBRMaterialHit) {
-					rsSO.Init(CreatePBRMatterialHitRootSignatureDesc().desc, L"PBRMaterialHitGenRootSignature");
+					rsSO.InitLRsignatureSubobject(CreatePBRMatterialHitRootSignatureDesc().desc, L"PBRMaterialHitGenRootSignature");
 				}
 				if (eRS == eLocalRootSignature_Empty) {
 					D3D12_ROOT_SIGNATURE_DESC emptyDesc = {};
 					emptyDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_LOCAL_ROOT_SIGNATURE;
-					rsSO.Init(emptyDesc, L"EmptyRootSignature");
+					rsSO.InitLRsignatureSubobject(emptyDesc, L"EmptyRootSignature");
 				}
 				subobjects[index] = rsSO.subobject;
 				uint32_t rgSOIndex = index++;
@@ -280,9 +283,9 @@ namespace raytracing {
 						useRootSignature++;
 					}
 				}
-				ass.Init(exportNames, useRootSignature, &(subobjects[rgSOIndex]));
+				ass.InitEx_A_Sub_O(exportNames, useRootSignature, &(subobjects[rgSOIndex]));
 				subobjects[index++] = ass.subobject;
-		};
+			};
 		//ルートシグネチャとシェーダーの関連付けを行うサブオブジェクトを作っていく。
 		LocalRootSignatureSubobject rayGenSignatureSO, modelSignatureSO, emptySignatureSO;
 		ExportAssociationSubObject rayGenAssSO, modelAssSO, emptyAssSO;
@@ -290,18 +293,18 @@ namespace raytracing {
 		const WCHAR* modelExportName[eShader_Num];
 		const WCHAR* emptyExportName[eShader_Num];
 
+
 		BuildAndRegistRootSignatureAndAssSubobjectFunc(rayGenSignatureSO, rayGenAssSO, eLocalRootSignature_Raygen, rayGenExportName);
 		BuildAndRegistRootSignatureAndAssSubobjectFunc(modelSignatureSO, modelAssSO, eLocalRootSignature_PBRMaterialHit, modelExportName);
 		BuildAndRegistRootSignatureAndAssSubobjectFunc(emptySignatureSO, emptyAssSO, eLocalRootSignature_Empty, emptyExportName);
-
 
 		// Payloadのサイズと引数の数はとりあえず固定で・・・。後で検討。
 		ShaderConfigSubobject shaderConfig;
 		struct RayPayload
 		{
-			Vector4 color;
-			Vector4 reflectionColor;
-			Vector4 hit_depth;
+			EngineMath::Vector4 color;
+			EngineMath::Vector4 reflectionColor;
+			EngineMath::Vector4 hit_depth;
 		};
 		shaderConfig.InitSCsubobject(sizeof(float) * 2, sizeof(RayPayload));
 		subobjects[index] = shaderConfig.subobject; // 
@@ -312,7 +315,7 @@ namespace raytracing {
 		for (int i = 0; i < eShader_Num; i++) {
 			entryPointNames[i] = shaderDatas[i].entryPointName;
 		}
-		configAssociationSO.Init(entryPointNames, eShader_Num, &subobjects[shaderConfigIndex]);
+		configAssociationSO.InitEASubObject(entryPointNames, eShader_Num, &subobjects[shaderConfigIndex]);
 		subobjects[index++] = configAssociationSO.subobject;
 
 		// パイプライン設定のサブオブジェクトを作成。

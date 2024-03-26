@@ -1,6 +1,6 @@
 #pragma once
-#include "stdafx.h"
-
+#include <d3d12.h>
+#include <wrl.h>
 class Shader;
 class RootSignature
 {
@@ -31,20 +31,11 @@ public:
 		UINT offsetInDescriptorsFromTableStartUAV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND);
 		bool InitRootSignature(Shader& shader);
 
-   		bool InitRootSignature(
-				D3D12_STATIC_SAMPLER_DESC* samplerDescArray,
-				int numSampler,
-				UINT maxCbvDescriptor = 8,
-				UINT maxSrvDescriptor = 32,
-				UINT maxUavDescritor = 8,
-				UINT offsetInDescriptorsFromTableStartCB = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND,
-				UINT offsetInDescriptorsFromTableStartSRV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND,
-				UINT offsetInDescriptorsFromTableStartUAV = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
-			);
-		ComPtr<ID3D12RootSignature> Get() {
+   		
+		Microsoft::WRL::ComPtr<ID3D12RootSignature> GetR() {
 			return m_rootSignature;
 		}
 private:
-	ComPtr<ID3D12RootSignature> m_rootSignature;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_rootSignature;
 };
 

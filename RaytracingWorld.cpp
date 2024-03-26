@@ -1,41 +1,48 @@
-#include "RaytracingWorld.h"
 #include "stdafx.h"
+#include "MeshParts.h"
 
-void raytracing::World::RegistGeometry(std::shared_ptr<Model> model)
-{
-	model->QueryMeshAndDescriptorHeap([&](const std::shared_ptr<SMesh> mesh, const std::shared_ptr<DescriptorHeap> ds) {
+#include "Model.h"
+#include "RaytracingWorld.h"
 
-		for (int i = 0; i < mesh->m_materials.size(); i++)
-		{
-			const auto& vertexBufferView = mesh->m_vertexBuffer.GetView();
-			const auto& indexBufferView = mesh->m_indexBufferArray[i]->GetView();
-			D3D12_RAYTRACING_GEOMETRY_DESC desc;
-			memset(&desc, 0, sizeof(desc));
-			desc.Type = D3D12_RAYTRACING_GEOMETRY_TYPE_TRIANGLES;
-			desc.Triangles.Transform3x4 = 0;
-			desc.Triangles.VertexBuffer.StartAddress = vertexBufferView.BufferLocation;
-			desc.Triangles.VertexCount = vertexBuferView.Size();
-			desc.Triangles.IndexBuffer = indexBufferView.BufferLocation;
-			desc.Triangles.IndexCount = mesh.m_indexBufferArray[i]->GetCount();
-			desc.Triangles.IndexFormat = indexBufferView.Format;
+namespace raytracing {
 
-			InstancePtr instance = std::make_unique<Instance>();
-			instance->geometoryDesc = desc;
-			instance->m_material = mesh.m_materials[i];
-			instance->m_vertexBufferRWSB.Init(mesh.m_vertexBuffer, false);
-			instance->m_indexBufferRWSB.Init(*mesh.m_indexBufferArray[i], false);
 
-			m_instances.emplace_back(std::move(instance));
-		}
-		}
+	void raytracing::World::RegistGeometry(Model& model)
+	{
+		model.QueryMeshAndDescriptorHeap([&](const std::shared_ptr<SMesh> mesh, const std::shared_ptr<DescriptorHeap> ds) {
 
-}
+			for (int i = 0; i < mesh->m_materials.size(); i++)
+			{
+				const auto& vertexBufferView = mesh->m_vertexBuffer.GetView();
+				const auto& indexBufferView = mesh->m_indexBufferArray[i]->GetView();
+				D3D12_RAYTRACING_GEOMETRY_DESC desc;
+				memset(&desc, 0, sizeof(desc));
+				desc.Type = D3D12_RAYTRACING_GEOMETRY_TYPE_TRIANGLES;
+				desc.Triangles.Transform3x4 = 0;
+				desc.Triangles.VertexBuffer.StartAddress = vertexBufferView.BufferLocation;
+				desc.Triangles.VertexCount = vertexBuferView.Size();
+				desc.Triangles.IndexBuffer = indexBufferView.BufferLocation;
+				desc.Triangles.IndexCount = mesh.m_indexBufferArray[i]->GetCount();
+				desc.Triangles.IndexFormat = indexBufferView.Format;
 
-void raytracing::World::CommitRegistGeometry(std::shared_ptr<RenderContext> rc)
-{
-	//BLASÇç\ízÅB
-	m_blasBuffer.Init(rc, m_instances);
-	//TLASÇç\íz
-	m_topLevelASBuffers.Init(rc,m_instances,m_blasBuffer.Get())
+				InstancePtr instance = std::make_unique<Instance>();
+				instance->geometoryDesc = desc;
+				instance->m_material = mesh.m_materials[i];
+				instance->m_vertexBufferRWSB.InitRWStructuredBuffer(mesh.m_vertexBuffer, false);
+				instance->m_indexBufferRWSB.InitRWStructuredBuffer(*mesh.m_indexBufferArray[i], false);
 
+				m_instances.emplace_back(std::move(instance));
+			}
+			}
+
+	}
+
+	void raytracing::World::CommitRegistGeometry(RenderContext& rc)
+	{
+		//BLASÇç\ízÅB
+		m_blasBuffer.InitBLASBuffer(rc, m_instances);
+		//TLASÇç\íz
+		m_topLevelASBuffers.InitTLASBuffer(rc, m_instances, m_blasBuffer.Get());
+
+	}
 }

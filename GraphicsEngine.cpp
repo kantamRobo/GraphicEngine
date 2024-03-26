@@ -1,5 +1,8 @@
-#include "GraphicsEngine.h"
 
+#include "stdafx.h"
+#include "FontEngine.h"
+#include "GraphicsEngine.h"
+Camera* g_camera3D;
 GraphicsEngine::~GraphicsEngine()
 {
 
@@ -52,6 +55,11 @@ GraphicsEngine::~GraphicsEngine()
 	{
 		m_d3dDevice->Release();
 	}
+
+	if (g_camera3D)
+	{
+		delete g_camera3D;
+	}
 	CloseHandle(m_fenceEvent);
 
 }
@@ -95,7 +103,7 @@ ComPtr<IDXGIFactory4> GraphicsEngine::CreateDXGIFactory()
 
 bool GraphicsEngine::InitGraphicsEngine(HWND hwnd, UINT frameBufferWidth, UINT frameBufferHeight)
 {
-	m_graphicsEngine = std::make_shared<GraphicsEngine>();
+	g_graphicsEngine = this;
 
 	frameBufferWidth = frameBufferWidth;
 	frameBufferHeight = frameBufferHeight;
@@ -319,7 +327,7 @@ bool GraphicsEngine::CreateCommandList()
 {
 	//コマンドリストの作成。
 	m_d3dDevice->CreateCommandList(
-		0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator, nullptr, IID_PPV_ARGS(&m_commandList)
+		0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_commandList)
 	);
 	if (!m_commandList) {
 		return false;
@@ -495,7 +503,7 @@ void GraphicsEngine::BeginRender()
 	//深度ステンシルバッファのディスクリプタヒープの開始アドレスを取得。
 	m_currentFrameBufferDSVHandle = m_dsvHeap->GetCPUDescriptorHandleForHeapStart();
 	//バックバッファがレンダリングターゲットとして設定可能になるまで待つ。
-	m_renderContext->WaitUntilToPossibleSetRenderTarget(m_renderTargets[m_frameIndex].Get();
+	m_renderContext->WaitUntilToPossibleSetRenderTarget(m_renderTargets[m_frameIndex].Get());
 
 	//レンダリングターゲットを設定。
 	m_renderContext->SetRenderTarget(m_currentFrameBufferRTVHandle, m_currentFrameBufferDSVHandle);
@@ -512,7 +520,7 @@ void GraphicsEngine::BeginRender()
 void GraphicsEngine::EndRender()
 {
 	// レンダリングターゲットへの描き込み完了待ち
-	m_renderContext->WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex]);
+	m_renderContext->WaitUntilFinishDrawingToRenderTarget(m_renderTargets[m_frameIndex].Get());
 
 
 	m_directXTKGfxMemory->Commit(m_commandQueue.Get());

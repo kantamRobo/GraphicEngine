@@ -1,7 +1,9 @@
-#include "AnimationClip.h"
-#include "stdafx.h"
-#include "Matrix.h"
+
 #include "Vector.h"
+#include "stdafx.h"
+#include "AnimationClip.h"
+
+
 
 
 AnimationClip::~AnimationClip()
@@ -19,11 +21,11 @@ void AnimationClip::Load(const char* filePath)
 void AnimationClip::BuildKeyFramesAndAnimationEvents()
 {
 	//アニメーションイベントの構築。
-	auto numAnimEvent = m_tkaFile.GetNumAnimationEvent();
+	auto numAnimEvent = GetNumAnimationEvent();
 	if (numAnimEvent > 0) {
 		m_animationEvent = std::make_unique<AnimationEvent[]>(numAnimEvent);
 		int eventNo = 0;
-		m_tkaFile.QueryAnimationEvents([&](const TkaFile::AnimationEvent& animEvent) {
+		QueryAnimationEvents([&](const AnimationEvent& animEvent) {
 			static wchar_t wEventName[256];
 
 			mbstowcs(wEventName, animEvent.eventName.c_str(), 255);
@@ -34,8 +36,8 @@ void AnimationClip::BuildKeyFramesAndAnimationEvents()
 
 	}
 	//キーフレーム情報の構築。
-	m_keyframes.reserve(m_tkaFile.GetNumKeyFrame());
-	m_tkaFile.QueryKeyFrames([&](const TkaFile::KeyFrame& tkaKeyFrame) {
+	m_keyframes.reserve(GetNumKeyFrame());
+	QueryKeyFrames([&](const KeyFrame& tkaKeyFrame) {
 		auto keyframe = std::make_unique<KeyFrame>();
 		keyframe->boneIndex = tkaKeyFrame.boneIndex;
 		keyframe->transform = g_matIdentity;

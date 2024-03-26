@@ -1,3 +1,5 @@
+#include "GraphicsEngine.h"
+#include "stdafx.h"
 #include "ConstantBuffer.h"
 
 void ConstantBuffer::InitConstBuffer(int size, void* srcData)

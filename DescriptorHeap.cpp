@@ -1,5 +1,14 @@
-#include "DescriptorHeap.h"
+#include "GraphicsEngine.h"
+#include <vector>
+
 #include "stdafx.h"
+#include "GraphicsEngine.h"
+#include "ConstantBuffer.h"
+#include "IUnorderAccessResrouce.h"
+#include "GPUBuffer.h"
+
+#include "DescriptorHeap.h"
+
 
 
 
@@ -62,22 +71,22 @@ void DescriptorHeap::Commit()
 				cpuHandle.ptr += g_graphicsEngine->GetCbrSrvDescriptorSize();
 			}
 
+			//定数バッファのディスクリプタヒープの開始ハンドルを計算。
+			m_cbGpuDescriptorStart[bufferNo] = gpuHandle;
+			//シェーダーリソースのディスクリプタヒープの開始ハンドルを計算。
+			m_srGpuDescriptorStart[bufferNo] = gpuHandle;
+			m_srGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * m_numConstantBuffer;
+			//UAVリソースのディスクリプタヒープの開始ハンドルを計算。
+			m_uavGpuDescriptorStart[bufferNo] = gpuHandle;
+			m_uavGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer);
+
+			gpuHandle.ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer + m_numUavResource);
+
+			bufferNo++;
 
 
 		}
 	
-		//定数バッファのディスクリプタヒープの開始ハンドルを計算。
-		m_cbGpuDescriptorStart[bufferNo] = gpuHandle;
-		//シェーダーリソースのディスクリプタヒープの開始ハンドルを計算。
-		m_srGpuDescriptorStart[bufferNo] = gpuHandle;
-		m_srGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * m_numConstantBuffer;
-		//UAVリソースのディスクリプタヒープの開始ハンドルを計算。
-		m_uavGpuDescriptorStart[bufferNo] = gpuHandle;
-		m_uavGpuDescriptorStart[bufferNo].ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer);
-
-		gpuHandle.ptr += (UINT64)g_graphicsEngine->GetCbrSrvDescriptorSize() * (m_numShaderResource + m_numConstantBuffer + m_numUavResource);
-
-		bufferNo++;
 	}
 }
 
@@ -109,7 +118,7 @@ void DescriptorHeap::CommitSamplerHeap()
 		for (int i = 0; i < m_numSamplerDesc; i++) {
 			//サンプラステートをディスクリプタヒープに登録していく。
 			d3dDevice->CreateSampler(&m_samplerDescs[i], cpuHandle);
-			cpuHandle.ptr += g_graphicsEngine->GetSapmerDescriptorSize();
+			cpuHandle.ptr += g_graphicsEngine->GetSamplerDescriptorSize();
 		}
 		m_samplerGpuDescriptorStart[bufferNo] = gpuHandle;
 		bufferNo++;

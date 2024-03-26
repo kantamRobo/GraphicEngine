@@ -1,7 +1,9 @@
 #pragma once
-#include "stdafx.h"
-class RWStructuredBuffer
-{
+#include <wrl.h>
+#include "IUnorderAccessResrouce.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+class RWStructuredBuffer:public IUnorderAccessResrouce{
 public:
 	~RWStructuredBuffer();
 
@@ -9,10 +11,13 @@ public:
 
 	void InitRWStructuredBuffer(const VertexBuffer& vb, bool isUpdateByCPU);
 
-	void RegistUnorderAccessView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
-
 	void InitRWStructuredBuffer(const IndexBuffer& ib, bool isUpdateByCPU);
 
+
+	void RegistUnorderAccessView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
+
+
+	
 	void RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHandle, int bufferNo);
 
 	bool IsInited()const

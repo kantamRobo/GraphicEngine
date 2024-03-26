@@ -101,10 +101,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>C:\Users\hatte\DirectX12_Portfolio\GraphicEngine\packages\tinygltfloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -131,12 +133,15 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="AnimationPlayController.h" />
+    <ClInclude Include="BLASBuffer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DescriptorHeap.h" />
     <ClInclude Include="DirectX12Engine.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="FontEngine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GPUBuffer.h" />
     <ClInclude Include="GraphicsEngine.h" />
@@ -147,45 +152,63 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MeshParts.h" />
+    <ClInclude Include="MiniEngine.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="MyAssert.h" />
     <ClInclude Include="NullTextureMaps.h" />
     <ClInclude Include="PipelineState.h" />
+    <ClInclude Include="Raytracing.h" />
+    <ClInclude Include="RaytracingDescriptorHeaps.h" />
+    <ClInclude Include="RaytracingEngine.h" />
     <ClInclude Include="RayTracingPSO.h" />
+    <ClInclude Include="RaytracingShaderTable.h" />
     <ClInclude Include="RaytracingWorld.h" />
     <ClInclude Include="RayTracingInstance.h" />
     <ClInclude Include="RenderContext.h" />
+    <ClInclude Include="RenderContext_inline.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RootSignature.h" />
     <ClInclude Include="RWStructuredBuffer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TkaFile.h" />
+    <ClInclude Include="tinygltfExtended.h" />
+    <ClInclude Include="TLASBuffer.h" />
     <ClInclude Include="TResourceBank.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="AnimationPlayController.cpp" />
+    <ClCompile Include="BLASBuffer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="DirectX12Engine.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="FontEngine.cpp" />
     <ClCompile Include="GPUBuffer.cpp" />
     <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MeshParts.cpp" />
-    <ClCompile Include="NullTexture.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="NullTextureMaps.cpp" />
     <ClCompile Include="PipelineState.cpp" />
+    <ClCompile Include="RaytracingDescriptorHeaps.cpp" />
+    <ClCompile Include="RaytracingEngine.cpp" />
     <ClCompile Include="RayTracingPSO.cpp" />
+    <ClCompile Include="RaytracingShaderTable.cpp" />
     <ClCompile Include="RaytracingWorld.cpp" />
     <ClCompile Include="RayTracingInstance.cpp" />
     <ClCompile Include="RenderContext.cpp" />
@@ -194,9 +217,10 @@
     <ClCompile Include="RWStructuredBuffer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TkaFile.cpp" />
+    <ClCompile Include="TLASBuffer.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
@@ -213,15 +237,15 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets" Condition="Exists('packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets')" />
-    <Import Project="packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets" Condition="Exists('packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" />
-    <Import Project="packages\Assimp.3.0.0\build\native\Assimp.targets" Condition="Exists('packages\Assimp.3.0.0\build\native\Assimp.targets')" />
+    <Import Project="packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets" Condition="Exists('packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets')" />
+    <Import Project="packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets" Condition="Exists('packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\directxtk12_desktop_2019.2023.4.28.1\build\native\directxtk12_desktop_2019.targets'))" />
-    <Error Condition="!Exists('packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets'))" />
-    <Error Condition="!Exists('packages\Assimp.3.0.0\build\native\Assimp.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Assimp.3.0.0\build\native\Assimp.targets'))" />
+    <Error Condition="!Exists('packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\rapidjson.temprelease.0.0.2.20\build\native\rapidjson.temprelease.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.glTF.CPP.1.6.3.1\build\native\Microsoft.glTF.CPP.targets'))" />
   </Target>
 </Project>

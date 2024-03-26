@@ -1,4 +1,10 @@
-#include "Texture.h"
+#include "IShaderResource.h"
+#include <ResourceUploadBatch.h>
+#include "stdafx.h"
+#include "GraphicsEngine.h"
+
+
+
 
 Texture::~Texture()
 {
@@ -24,7 +30,7 @@ void Texture::InitFromMemory(const char* memory, unsigned int size)
 
 }
 
-void Texture::InitFromD3DResource(ComPtr<ID3D12Resource> texture)
+void Texture::InitFromD3DResource(ID3D12Resource* texture)
 {
 	if (m_texture)
 	{
@@ -46,26 +52,26 @@ void Texture::RegistShaderResourceView(D3D12_CPU_DESCRIPTOR_HANDLE descriptorHan
 		srvDesc.Format = m_textureDesc.Format;
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = m_textureDesc.MipLevels;
-		device->CreateShaderResourceView(m_texture, &srvDesc, descriptorHandle);
+		device->CreateShaderResourceView(m_texture.Get(), &srvDesc, descriptorHandle);
 	}
 }
 
 void Texture::LoadTextureFromDDSFile(const wchar_t* filePath)
 {
 	auto device = g_graphicsEngine->GetD3DDevice();
-	DirectX::ResourceUploadBatch re(device);
+	DirectX::ResourceUploadBatch re(device.Get());
 	re.Begin();
 	ComPtr<ID3D12Resource> texture;
 	auto hr = DirectX::CreateDDSTextureFromFileEx(
-		device,
+		device.Get(),
 		re,
 		filePath,
 		0,
 		D3D12_RESOURCE_FLAG_NONE,
-		0,
+		DirectX::DDS_LOADER_DEFAULT,
 		&texture
 	);
-	re.End(g_graphicsEngine->GetCommandQueue());
+	re.End(g_graphicsEngine->GetCommandQueue().Get());
 
 	if (FAILED(hr)) {
 		//テクスチャの作成に失敗しました。
@@ -79,20 +85,20 @@ void Texture::LoadTextureFromDDSFile(const wchar_t* filePath)
 void Texture::LoadTextureFromMemory(const char* memory, unsigned int size)
 {
 	auto device = g_graphicsEngine->GetD3DDevice();
-	DirectX::ResourceUploadBatch re(device);
+	DirectX::ResourceUploadBatch re(device.Get());
 	re.Begin();
 	ID3D12Resource* texture;
 	auto hr = DirectX::CreateDDSTextureFromMemoryEx(
-		device,
+		device.Get(),
 		re,
 		(const uint8_t*)memory,
 		size,
 		0,
 		D3D12_RESOURCE_FLAG_NONE,
-		0,
+		DirectX::DDS_LOADER_DEFAULT,
 		&texture
 	);
-	re.End(g_graphicsEngine->GetCommandQueue());
+	re.End(g_graphicsEngine->GetCommandQueue().Get());
 
 	if (FAILED(hr)) {
 		//テクスチャの作成に失敗しました。

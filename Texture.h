@@ -1,6 +1,6 @@
 #pragma once
 #include "IShaderResource.h"
-#include "stdafx.h"
+#include <wrl.h>
 class Texture:public IShaderResource
 {
 public:
@@ -9,11 +9,7 @@ public:
 		InitFromDDSFile(filePath);
 	}
 	~Texture();
-	/// <summary>
-		/// ファイルからテクスチャをロードするコンストラクタ
-		/// </summary>
-		/// <param name="filePath">ロードするテクスチャのファイルパス。</param>
-	explicit Texture(const wchar_t* filePath);
+
 
 	/// <summary>
 	/// DDSファイルからテクスチャを初期化する。
@@ -26,7 +22,8 @@ public:
 	/// <param name="memory">テクスチャデータが格納されているメモリの先頭アドレス</param>
 	/// <param name="size">テクスチャのサイズ。</param>
 	void InitFromMemory(const char* memory, unsigned int size);
-	void InitFromD3DResource(ComPtr<ID3D12Resource> texture);
+	void InitFromD3DResource(ID3D12Resource* texture);
+	
 	/// <summary>
 	/// D3Dリソースからテクスチャを初期化する。
 	/// </summary>
@@ -46,12 +43,9 @@ public:
 		return m_texture != nullptr;
 	}
 
-	bool IsValid()const
-	{
-		return m_texture != nullptr;
-	}
+	
 
-	ComPtr<ID3D12Resource> Get()
+	Microsoft::WRL::ComPtr<ID3D12Resource> Get()
 	{
 		return m_texture;
 	}
@@ -72,7 +66,7 @@ private:
 	void LoadTextureFromMemory(const char* memory, unsigned int size);
 
 private:
-	ComPtr<ID3D12Resource> m_texture = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> m_texture = nullptr;
 	D3D12_RESOURCE_DESC m_textureDesc;
 };
 
