@@ -3,7 +3,7 @@
 #include "IShaderResource.h"
 #include <DDSTextureLoader.h>
 
-aa
+
 
  DX11Texture::~DX11Texture()
 {
@@ -14,12 +14,12 @@ aa
      DirectX::ScratchImage image;
 	auto hr = LoadFromDDSFile(filePath, DirectX::DDS_FLAGS_NONE, nullptr, image);
 	
-	// ˆÙ•û«ƒtƒBƒ‹ƒ^ƒŠƒ“ƒO•âŠÔAWrapƒ‚[ƒh
+	// ï¿½Ù•ï¿½ï¿½ï¿½ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ÔAWrapï¿½ï¿½ï¿½[ï¿½h
 	D3D11_SAMPLER_DESC desc = {};
-	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;	// üŒ`ƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
-	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;		// ƒeƒNƒXƒ`ƒƒƒAƒhƒŒƒbƒVƒ“ƒOƒ‚[ƒh‚ðWrap‚É
-	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;		// ƒeƒNƒXƒ`ƒƒƒAƒhƒŒƒbƒVƒ“ƒOƒ‚[ƒh‚ðWrap‚É
-	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;		// ƒeƒNƒXƒ`ƒƒƒAƒhƒŒƒbƒVƒ“ƒOƒ‚[ƒh‚ðWrap‚É
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;	// ï¿½ï¿½ï¿½`ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½O
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;		// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Aï¿½hï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½Wrapï¿½ï¿½
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;		// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Aï¿½hï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½Wrapï¿½ï¿½
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;		// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Aï¿½hï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½Wrapï¿½ï¿½
 	desc.MipLODBias = 0;
 	desc.MaxAnisotropy = 0;
 	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -27,7 +27,7 @@ aa
 	desc.MinLOD = 0;
 	desc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	// ƒXƒe[ƒgƒIƒuƒWƒFƒNƒgì¬
+	// ï¿½Xï¿½eï¿½[ï¿½gï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ì¬
 	
 	device->CreateSamplerState(&desc, &m_samplerstate);
 	DirectX::CreateShaderResourceView(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), m_shaderResourceView.GetAddressOf());
