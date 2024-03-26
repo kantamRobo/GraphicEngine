@@ -54,7 +54,7 @@ void Renderer::Init(HWND hwnd)
 	graphicEngine.CreateRTV();
 
 
-	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get(),"hoge");
+	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get(),"C:\\Users\hiz108\source\repos\GraphicEngine\DirectX11GraphicsEngine\life-kuntest.glb");
 
 	model->m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
 	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList, g_IndexList.size()*sizeof(UINT));

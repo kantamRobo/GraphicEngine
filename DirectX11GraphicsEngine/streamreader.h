@@ -27,6 +27,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
+#define  _SILENCE_ALL_CXX20_DEPRECATION_WARNINGS
 #include <GLTFSDK/GLTF.h>
 #include <GLTFSDK/GLBResourceReader.h>
 #include <GLTFSDK/Deserialize.h>
@@ -38,7 +39,6 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #endif
 
-#include <experimental/filesystem>
 
 class StreamReader : public Microsoft::glTF::IStreamReader
 {
@@ -47,7 +47,7 @@ public:
 
     std::shared_ptr<std::istream> GetInputStream(const std::string& filename) const override
     {
-        auto streamPath = m_pathBase / std::experimental::filesystem::u8path(filename).c_str();
+        auto streamPath = m_pathBase / std::filesystem::u8path(filename);
         auto stream = std::make_shared<std::ifstream>(streamPath, std::ios_base::binary);
         if (!stream || !(*stream))
         {
