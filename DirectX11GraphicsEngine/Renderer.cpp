@@ -70,7 +70,7 @@ void Renderer::Tick()
 {
 	
 	context->ClearRenderTargetView(graphicEngine.m_backBufferView.Get(),graphicEngine.m_DepthstencilView.Get());
-	context->SetSingleRenderTarget(graphicEngine.m_backBufferView.Get(), graphicEngine.m_DepthstencilView.Get());
+	context->SetSingleRenderTarget(graphicEngine.m_backBufferView.Get(), graphicEngine.m_DepthstencilView.Get());//‚µ‚¨‚è
 
 	context->SetVertexBuffer(model->m_mesh->m_vertexbuffer->m_vertexbuffer.Get());
 	context->SetIndexBuffer(model->m_mesh->m_indexbuffer->m_IndexBuffer.Get());
