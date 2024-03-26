@@ -70,19 +70,6 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 	}
 
 
-	void DX11RenderContext::ClearRenderTargetView(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv)
-	{
-		const float midnightBlue[] = { 0.098f, 0.098f, 0.439f, 1.000f };
-		m_rendercontext->ClearRenderTargetView(
-			rtv,
-			midnightBlue
-		);
-
-		m_rendercontext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, // 深度とステンシルの両方をクリア
-			1.0f,                                    // 深度値を最大に
-			0);
-	}
-
 	void DX11RenderContext::SetViewPorts(UINT numviewports, const D3D11_VIEWPORT * viewports)
 	{
 		m_rendercontext->RSSetViewports(numviewports, viewports);
@@ -94,7 +81,7 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 	void  DX11RenderContext::SetSingleViewPort(const D3D11_VIEWPORT* viewport)
 	{
 
-		m_rendercontext->RSSetViewports(1, viewport);
+		m_rendercontext->RSSetViewports(2, viewport);
 
 		//エラー処理入れる?(複数のビューポートが入ってるぞとか)
 	}

@@ -31,8 +31,7 @@ public:
 	void SetInputLayout(ID3D11InputLayout* layout);
 
 	
-	
-	void ClearRenderTargetView(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv);
+
 	void SetViewPorts(UINT numviewports, const D3D11_VIEWPORT* viewports);
 	void SetSingleViewPort(const D3D11_VIEWPORT* viewports);
 	void SetScssciorRects(UINT numRects, D3D11_RECT* rects);

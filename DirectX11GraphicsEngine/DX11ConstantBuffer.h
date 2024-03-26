@@ -1,7 +1,6 @@
 #pragma once
 #include <d3d11.h>
 #include <wrl.h>
-#include "DirectX11GraphicEngine.h"
 class DX11ConstantBuffer
 {
 public:
@@ -10,6 +9,6 @@ public:
 	int m_size = 0;
 	int m_allocSize = 0;
 	bool m_isValid = false;
-	void InitConstantBuffer(DirectX11GraphicEngine* engine, int paramsize, void* srcData);
+	void InitConstantBuffer(ID3D11Device* device, int size, void* srcData = nullptr);
 };
 
