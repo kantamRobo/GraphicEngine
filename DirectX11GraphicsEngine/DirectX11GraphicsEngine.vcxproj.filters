@@ -110,9 +110,6 @@
     <ClCompile Include="DirectX11IndexBuffer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="tinygltf.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DX11Model.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>

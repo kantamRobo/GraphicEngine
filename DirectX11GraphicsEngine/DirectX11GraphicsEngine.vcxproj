@@ -178,7 +178,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TextureDX11.cpp" />
-    <ClCompile Include="tinygltf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11GraphicsEngine.rc" />
