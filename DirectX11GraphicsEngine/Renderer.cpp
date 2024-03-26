@@ -48,13 +48,13 @@ void Renderer::Init(HWND hwnd)
 	DirectX::XMVECTOR eye = DirectX::XMVectorSet(2.0f, 2.0f, -2.0f, 0.0f);
 	DirectX::XMVECTOR focus = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtLH(eye, focus, up);
+	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtRH(eye, focus, up);
 
 	float    fov = DirectX::XMConvertToRadians(45.0f);
 	float    aspect = graphicEngine.m_viewport.Width / graphicEngine.m_viewport.Height;
 	float    nearZ = 0.1f;
 	float    farZ = 100.0f;
-	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
+	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovRH(fov, aspect, nearZ, farZ);
 
 
 	m_constbuffer.InitConstantBuffer(&graphicEngine, sizeof(SceneConstant), &temp_const);
