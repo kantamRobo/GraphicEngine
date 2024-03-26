@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-//guwaaa
+//guwaa
 HRESULT DirectX11GraphicEngine::CreateDevice()
 {
   
