@@ -3,7 +3,7 @@
 #include "IShaderResource.h"
 #include <DDSTextureLoader.h>
 
-
+a
 
  DX11Texture::~DX11Texture()
 {
