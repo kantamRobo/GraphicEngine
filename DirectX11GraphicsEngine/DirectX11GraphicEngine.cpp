@@ -9,7 +9,7 @@ HRESULT DirectX11GraphicEngine::CreateDevice()
     m_viewport.TopLeftX = 0.0f;
     m_viewport.TopLeftY = 0.0f;  // 上端をウィンドウの上端に合わせます
     m_viewport.MinDepth = 0.0f;  // 標準的な深度範囲の最小値
-    m_viewport.MaxDepth = 0.5f;  // 標準的な深度範囲の最大値
+    m_viewport.MaxDepth = 1.0f;  // 標準的な深度範囲の最大値
     //=====================================================
 //デバイス生成(主にリソース作成時に使用するオブジェクト)
 //=====================================================

@@ -70,38 +70,6 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 	}
 
 
-	void DX11RenderContext::ClearRenderTargetView(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv)
-	{
-		const float midnightBlue[] = { 0.098f, 0.098f, 0.439f, 1.000f };
-		m_rendercontext->ClearRenderTargetView(
-			rtv,
-			midnightBlue
-		);
-
-		m_rendercontext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, // 深度とステンシルの両方をクリア
-			1.0f,                                    // 深度値を最大に
-			0);
-	}
-
-
-
-	void DX11RenderContext::SetPSSingleSampler(const DX11Texture& texture)
-	{
-		m_rendercontext->PSSetSamplers(0, 1, texture.m_samplerstate.GetAddressOf());
-	}
-
-//https://learn.microsoft.com/ja-jp/windows/uwp/gaming/applying-textures-to-primitives
-//プリミティブへのテクスチャの適用
-	
-	void DX11RenderContext::SetSingleShaderResource(ID3D11ShaderResourceView* srv)
-	{
-		m_rendercontext->PSSetShaderResources(0, 1, &srv);
-	}
-//https://gamesgard.com/directx11_lesson05/#st-toc-h-5
-	//https://gamesgard.com/directx11_lesson06/
-
-
-	
 	void DX11RenderContext::SetViewPorts(UINT numviewports, const D3D11_VIEWPORT * viewports)
 	{
 		m_rendercontext->RSSetViewports(numviewports, viewports);
@@ -113,7 +81,7 @@ void DX11RenderContext::SetInputLayout(ID3D11InputLayout* layout)
 	void  DX11RenderContext::SetSingleViewPort(const D3D11_VIEWPORT* viewport)
 	{
 
-		m_rendercontext->RSSetViewports(1, viewport);
+		m_rendercontext->RSSetViewports(2, viewport);
 
 		//エラー処理入れる?(複数のビューポートが入ってるぞとか)
 	}

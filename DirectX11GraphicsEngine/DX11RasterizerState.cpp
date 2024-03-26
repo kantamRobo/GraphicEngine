@@ -15,6 +15,7 @@ void DX11RasterizerState::InitRasterizerState(const DirectX11GraphicEngine* p_en
 	desc.MultisampleEnable = false;
 	desc.DepthBias = 0;
 	
+	desc.ScissorEnable = true;
 	
 	auto hr = p_engine->m_device->CreateRasterizerState(&desc, m_rasterizerstate.GetAddressOf());
 	UINT count = 1;

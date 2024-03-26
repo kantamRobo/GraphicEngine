@@ -41,6 +41,7 @@ public:
 	
 	
 	void SetSingleShaderResource(ID3D11ShaderResourceView* srv);
+
 	void SetViewPorts(UINT numviewports, const D3D11_VIEWPORT* viewports);
 	void SetSingleViewPort(const D3D11_VIEWPORT* viewports);
 	void SetScssciorRects(UINT numRects, D3D11_RECT* rects);
