@@ -15,38 +15,6 @@ std::vector<UINT> g_IndexList{
 void Renderer::Init(HWND hwnd)
 {
 
-	std::vector<Vertex> g_VertexList{
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f },  },
-	{ { -0.5f, -0.5f, -0.5f },},
-	{ {  0.5f, -0.5f, -0.5f }, },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f, -0.5f,  0.5f }, },
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ { -0.5f, -0.5f,  0.5f }, },
-	{ { -0.5f, -0.5f, -0.5f }, },
-
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f }, },
-	{ {  0.5f, -0.5f, -0.5f } },
-
-	{ { -0.5f,  0.5f,  0.5f },  },
-	{ {  0.5f,  0.5f,  0.5f },  },
-	{ { -0.5f,  0.5f, -0.5f },  },
-	{ {  0.5f,  0.5f, -0.5f },  },
-
-	{ { -0.5f, -0.5f,  0.5f },  },
-	{ { -0.5f, -0.5f, -0.5f },  },
-	{ {  0.5f, -0.5f,  0.5f },  },
-	{ {  0.5f, -0.5f, -0.5f }, },
-	};
-
 
 	
 	graphicEngine.CreateDevice();
@@ -54,11 +22,9 @@ void Renderer::Init(HWND hwnd)
 	graphicEngine.CreateRTV();
 
 
-	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get(),"C:\\Users\hiz108\source\repos\GraphicEngine\DirectX11GraphicsEngine\life-kuntest.glb");
+	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get(),"alicia-solid.vrm");
 
-	model->m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
-	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList, g_IndexList.size()*sizeof(UINT));
-	
+		
 	context = std::make_shared<DX11RenderContext>(graphicEngine.m_deviceContext);
 	rasterizerState = std::make_shared<DX11RasterizerState>();
 	rasterizerState->InitRasterizerState(&graphicEngine, graphicEngine.m_deviceContext.Get(),&graphicEngine.m_viewport);
@@ -70,11 +36,11 @@ void Renderer::Init(HWND hwnd)
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> templayout = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		 { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		
 	 };
 	//ƒoƒO‚Á‚½‚ç‚±‚±(new)(‚µ‚¨‚è)
 	temp_shader->InitLayout(graphicEngine.m_device.Get(), templayout);
-	//model.Init(graphicEngine.m_device.Get(), doc, attrName);
+	
 
 
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
@@ -115,19 +81,19 @@ void Renderer::Tick()
 	context->SetInputLayout(temp_shader->m_InputLayout.Get());
 	context->SetVertexShader(temp_shader->m_VS.Get(), 1);
 	// Rotate the cube 1 degree per frame.
-
+	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
 	DirectX::XMVECTOR eye = DirectX::XMVectorSet(2.0f, 2.0f, -2.0f, 0.0f);
 	DirectX::XMVECTOR focus = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtLH(eye, focus, up);
+	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtRH(eye, focus, up);
 
 	float    fov = DirectX::XMConvertToRadians(45.0f);
 	float    aspect = graphicEngine.m_viewport.Width / graphicEngine.m_viewport.Height;
 	float    nearZ = 0.1f;
 	float    farZ = 100.0f;
-	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
+	DirectX::XMMATRIX projMatrix = DirectX::XMMatrixPerspectiveFovRH(fov, aspect, nearZ, farZ);
 	temp_const.xmproj = XMMatrixTranspose(projMatrix);
 	temp_const.xmview = XMMatrixTranspose(viewMatrix);
 	temp_const.xmworld = XMMatrixTranspose(worldMatrix);
@@ -162,7 +128,7 @@ void Renderer::Tick()
 	//context->SetPSSingleSampler();///newi‚µ‚¨‚è)
 	context->SetSingleViewPort(&graphicEngine.m_viewport);
 	
-	context->DrawIndexed(g_IndexList.size());
+	context->DrawIndexed(model->m_mesh->indices.size());
 
 	graphicEngine.m_swapChain->Present(1, 0);
 }

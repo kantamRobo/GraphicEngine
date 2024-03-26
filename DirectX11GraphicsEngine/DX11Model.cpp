@@ -37,7 +37,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 DX11Model::DX11Model(ID3D11Device* device, const std::string& attrName)
 {
 	// モデルデータの読み込み
-	auto modelFilePath = std::filesystem::path(attrName);
+	auto modelFilePath = std::filesystem::path(attrName.c_str());
 	if (modelFilePath.is_relative())
 	{
 		auto current = std::filesystem::current_path();
@@ -47,29 +47,30 @@ DX11Model::DX11Model(ID3D11Device* device, const std::string& attrName)
 	m_mesh = std::make_shared<DX11Mesh>();
 	
 	
-	auto reader = std::make_unique<StreamReader>(modelFilePath);
-	auto glbStream = reader->GetInputStream(modelFilePath.filename().string());
-	auto glbResourceReader = std::make_shared<Microsoft::glTF::GLBResourceReader>(std::move(reader), std::move(glbStream));
+	auto reader_S = std::make_unique<StreamReader>(modelFilePath.parent_path());
+	auto glbStream = reader_S->GetInputStream(modelFilePath.filename().u8string());
+	
+	auto glbResourceReader = std::make_shared<Microsoft::glTF::GLBResourceReader>(std::move(reader_S), std::move(glbStream));
 	auto document = Microsoft::glTF::Deserialize(glbResourceReader->GetJson());
 	
-	Init(device,document,attrName);
-
+	Init(device,document,attrName, glbResourceReader.get());
+	
 }
 
 bool DX11Model::Init(ID3D11Device* device, const Microsoft::glTF::Document& doc, 
-	const std::string& attrName)
+	const std::string& attrName, Microsoft::glTF::GLTFResourceReader* reader)
 {
 
 
 
-	const Microsoft::glTF::Document& acc = {};
-	std::shared_ptr<Microsoft::glTF::GLTFResourceReader> reader;
+	
+	
 
 	using namespace Microsoft::glTF;
 	
 	
-	m_mesh = std::make_shared<DX11Mesh>();
-	for (const auto& mesh : acc.meshes.Elements())
+	
+	for (const auto& mesh : doc.meshes.Elements())
 	{
 		for (const auto& meshPrimitives : mesh.primitives)
 		{
@@ -78,20 +79,22 @@ bool DX11Model::Init(ID3D11Device* device, const Microsoft::glTF::Document& doc,
 			// 頂点位置情報アクセッサの取得
 			auto& idPos = meshPrimitives.GetAttributeAccessorId(ACCESSOR_POSITION);
 			auto& accPos = doc.accessors.Get(idPos);
+			/*
 			// 法線情報アクセッサの取得
 			auto& idNrm = meshPrimitives.GetAttributeAccessorId(ACCESSOR_NORMAL);
 			auto& accNrm = doc.accessors.Get(idNrm);
 			// テクスチャ座標情報アクセッサの取得
 			auto& idUV = meshPrimitives.GetAttributeAccessorId(ACCESSOR_TEXCOORD_0);
 			auto& accUV = doc.accessors.Get(idUV);
+			*/
 			// 頂点インデックス用アクセッサの取得
 			auto& idIndex = meshPrimitives.indicesAccessorId;
 			auto& accIndex = doc.accessors.Get(idIndex);
 
 			// アクセッサからデータ列を取得
 			auto vertPos = reader->ReadBinaryData<float>(doc, accPos);
-			auto vertNrm = reader->ReadBinaryData<float>(doc, accNrm);
-			auto vertUV = reader->ReadBinaryData<float>(doc, accUV);
+			//auto vertNrm = reader->ReadBinaryData<float>(doc, accNrm);
+			//auto vertUV = reader->ReadBinaryData<float>(doc, accUV);
 			int numVertex = accPos.count;
 
 			for (uint32_t i = 0; i < numVertex; ++i)
@@ -107,9 +110,7 @@ bool DX11Model::Init(ID3D11Device* device, const Microsoft::glTF::Document& doc,
 					}
 				);
 			}
-
-			//todo indicesをgltf用に
-	 // インデックスデータ
+			// インデックスデータ
 			m_mesh->indices = reader->ReadBinaryData<uint32_t>(doc, accIndex);
 
 		}
