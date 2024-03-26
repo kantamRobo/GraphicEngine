@@ -54,7 +54,7 @@ void Renderer::Init(HWND hwnd)
 	graphicEngine.CreateRTV();
 
 
-	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get());
+	model = std::make_shared<DX11Model>(graphicEngine.m_device.Get(),"hoge");
 
 	model->m_mesh->m_vertexbuffer->InitVertexBuffer(graphicEngine.m_device.Get(), g_VertexList);
 	model->m_mesh->m_indexbuffer->InitIndexbuffer(graphicEngine.m_device.Get(),g_IndexList, g_IndexList.size()*sizeof(UINT));
@@ -72,6 +72,7 @@ void Renderer::Init(HWND hwnd)
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		 { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	 };
+	//バグったらここ(new)(しおり)
 	temp_shader->InitLayout(graphicEngine.m_device.Get(), templayout);
 	//model.Init(graphicEngine.m_device.Get(), doc, attrName);
 
@@ -137,7 +138,10 @@ void Renderer::Tick()
 		0,                                    // サブリソースのインデックス
 		D3D11_MAP_WRITE_DISCARD,              // マップのタイプ
 		0,                                    // マップオプション
-		&mappedResource);                     // マップされたリソース情報を受け取る構造体
+		&mappedResource);     
+	// マップされたリソース情報を受け取る構造体
+
+	//TODO:この動的リソースのマッピング・アンマッピングを関数化(しおり)
 	if (SUCCEEDED(hr)) {
 		// 定数バッファにデータをコピー
 		memcpy(mappedResource.pData, &temp_const, sizeof(temp_const));
@@ -154,8 +158,8 @@ void Renderer::Tick()
 	
 	
 	context->SetPixelShader(temp_shader->m_PS.Get(), 1);
-	context->SetSingleShaderResource();(しおり)
-	context->SetPSSingleSampler();///new（しおり)
+	//context->SetSingleShaderResource();(しおり)
+	//context->SetPSSingleSampler();///new（しおり)
 	context->SetSingleViewPort(&graphicEngine.m_viewport);
 	
 	context->DrawIndexed(g_IndexList.size());

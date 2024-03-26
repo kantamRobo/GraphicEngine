@@ -157,6 +157,7 @@
     <ClInclude Include="DirectX11main.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="streamreader.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="DX11Texture.h" />
     <ClInclude Include="Vertex.h" />
@@ -178,7 +179,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TextureDX11.cpp" />
-    <ClCompile Include="tinygltf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11GraphicsEngine.rc" />
