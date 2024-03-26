@@ -3,6 +3,9 @@
 #include <DirectXTex.h>
 #include "IShaderResource.h"
 
+‚ 
+
+ DX11Texture::~DX11Texture()
 
  TextureDX11::~TextureDX11()
 {
